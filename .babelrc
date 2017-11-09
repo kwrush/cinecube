@@ -1,17 +1,28 @@
 {
-    "presets": [
-        [
-            "env",
-            {
-                "modules": false, 
-                "targets": {
-                    "browsers": [
-                        "last 2 versions",
-                        "ie >= 10"
-                    ]
-                }
-            }
-        ],
-        "react"
-    ]
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "ie >= 10"
+          ],
+          "node": "current"
+        }
+      }
+    ],
+    "react"
+  ],
+  "plugins": [ 
+    "react-hot-loader/babel",
+    "transform-async-to-generator",
+    "transform-runtime"
+  ],
+  "env":{
+    "test":{
+      "presets":["env"]
+    }
+  }
 }
