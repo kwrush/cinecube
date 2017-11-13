@@ -9,7 +9,8 @@ export const searchMovie = async (query, option) => {
       year: ''
     }, option);
 
-  return axios.get(API_URL + 
-    `search/movie?api_key=${API_KEY}&language=${LANG}&query=${query}&page=${option.page}&region=${option.region}&year=${option.year}`)
-    .then(res => res.data);
+  return axios.get(API_URL 
+    + `search/movie?api_key=${API_KEY}&language=${LANG}&query=${query}&page=${option.page}&region=${option.region}&year=${option.year}`
+  )
+  .then(res => res.data);
 }
