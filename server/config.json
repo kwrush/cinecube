@@ -1,6 +1,6 @@
 {
   "config": {
-    "httpPort": 9000,
+    "httpPort": 8000,
     "apiKey": "c6b424c3bb5ffc5ca289439319b96b7c",
     "morgan": {
       "logType": "dev"

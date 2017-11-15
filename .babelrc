@@ -16,6 +16,17 @@
     "react"
   ],
   "plugins": [ 
+    ["react-css-modules", {
+      "context": "./client",
+      "exclude": "node_modules",
+      "generateScopedName": "[local]__[hash:base64:5]",
+      "webpackHotModuleReloading": true,
+      "filetypes": {
+        ".scss": {
+          "syntax": "postcss-scss"
+        }
+      }
+    }],
     "react-hot-loader/babel",
     "transform-async-to-generator",
     "transform-runtime"

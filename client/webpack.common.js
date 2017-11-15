@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -12,31 +11,20 @@ module.exports = {
       ? 'bundle-[hash].js' 
       : 'bundle.js',
   },
+  resolve: {
+    alias: {
+      images: path.resolve(__dirname, 'public/images/'),
+      styles: path.resolve(__dirname, 'public/styles/'),
+      components: path.resolve(__dirname, 'src/components/'),
+      containers: path.resolve(__dirname, 'src/containers/'),
+    }
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        include: /src/,
         use: 'babel-loader'
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function () {
-                return [autoprefixer];
-              }
-            }
-          }
-        ]
       },
       {
         test: /\.(png|jp(e*)g|svg)$/,
@@ -44,7 +32,7 @@ module.exports = {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 10000,
+            limit: 40000,
             name: '[path][hash].[ext]'
           }
         }]
@@ -55,7 +43,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Cinematify',
       template: './public/index.html',
-      favicon: './public/index.html',
+      favicon: './public/favicon.ico',
       hash: true,
       filename: 'index.html'
     })

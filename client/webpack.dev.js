@@ -3,13 +3,43 @@ const merge = require('webpack-merge');
 const webpackCommon = require('./webpack.common.js');
 
 module.exports = merge(webpackCommon, {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: true,
+              modules: true,
+              localIdentName: '[local]__[hash:base64:5]'
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [ require('autoprefixer') ]
+            }
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ]
+      }
+    ]
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     contentBase: './build',
     hot: true,
-    port: 3000,
+    port: 8000,
   },
   devtool: 'cheap-module-eval-source-map',
 });

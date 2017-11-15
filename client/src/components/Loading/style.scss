@@ -1,0 +1,19 @@
+@import '~styles/animation.scss';
+
+.loading {
+  
+}
+
+.loading-ripple {
+  transform: scale(0);
+  opacity: 0;
+  animation: ripple 0.8s ease-out 0s infinite;
+}
+
+.loading-ripple:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.loading-ripple:nth-child(3) {
+  animation-delay: 0.6s;
+}

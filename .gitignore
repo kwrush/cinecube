@@ -15,6 +15,7 @@
 .env
 
 # other extensions
+*.css
 *.gz
 *.rar
 *.tar
