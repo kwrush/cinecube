@@ -1,3 +1,7 @@
+/**
+ * Loading components with ripple effect 
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
@@ -12,10 +16,10 @@ const defaultProps = {
 
 const Loading = (props) => {
 
-  //const { size } = props;
+  const { size } = props;
 
   return (
-    <div styleName="loading">
+    <div styleName={`loading loading-${size}`}>
       <div styleName="loading-ripple"></div>
       <div styleName="loading-ripple"></div>
       <div styleName="loading-ripple"></div>
