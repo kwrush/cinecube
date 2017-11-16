@@ -1,0 +1,10 @@
+@import '~styles/theme.scss';
+
+.link-text {
+  font-size: 0.9rem;
+  color: $gray;
+
+  &:hover {
+    color: $black;
+  }
+}

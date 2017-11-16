@@ -3,7 +3,6 @@ import Loading from 'components/Loading/index';
 import Header from 'containers/Header/index';
 import logo from 'images/logo.png';
 
-//styles
 import './style.scss';
 
 class App extends Component {
@@ -12,7 +11,7 @@ class App extends Component {
       <div styleName="App">
         <Header />
         <div className="content">
-          <Loading />
+          <Loading size="large"/>
         </div>
       </div>
     );

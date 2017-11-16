@@ -17,6 +17,7 @@ module.exports = {
       styles: path.resolve(__dirname, 'public/styles/'),
       components: path.resolve(__dirname, 'src/components/'),
       containers: path.resolve(__dirname, 'src/containers/'),
+      constants: path.resolve(__dirname, 'src/constants')
     }
   },
   module: {

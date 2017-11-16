@@ -4,3 +4,18 @@ export const API_KEY = 'c6b424c3bb5ffc5ca289439319b96b7c';
 export const API_URL = 'https://api.themoviedb.org/3/';
 export const LANG = 'language=en-US';
 
+export const navLinks = [
+  { 
+    url: '/movies/',
+    tag: 'Movies' 
+  },
+  {
+    url: '/tv/',
+    tag: 'TVs'
+  },
+  {
+    url: '/people/',
+    tag: 'People'
+  }
+];
+
