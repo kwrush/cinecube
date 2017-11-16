@@ -23,7 +23,8 @@ module.exports = merge(webpackCommon, {
             {
               loader: 'postcss-loader',
               options: {
-                plugins: [ require('autoprefixer') ]
+                ident: 'postcss',
+                plugins: () => [ require('autoprefixer') ]
               }
             },
             {

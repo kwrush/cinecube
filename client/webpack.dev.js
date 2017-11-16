@@ -6,7 +6,26 @@ module.exports = merge(webpackCommon, {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [ require('autoprefixer') ]
+            }
+          }
+        ]
+      },
+      {
         test: /\.scss$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'style-loader'
@@ -23,6 +42,7 @@ module.exports = merge(webpackCommon, {
           {
             loader: 'postcss-loader',
             options: {
+              ident: 'postcss',
               plugins: [ require('autoprefixer') ]
             }
           },
