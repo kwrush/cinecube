@@ -7,7 +7,8 @@
     "test": "mocha --require=env-test --compilers js:babel-register ./client/src/**/__test__/*.test.js",
     "test:watch": "npm test -- -w",
     "start": "webpack-dev-server --open --config ./client/webpack.dev.js",
-    "build": "webpack -p --config ./client/webpack.prod.js"
+    "build": "webpack -p --config ./client/webpack.prod.js",
+    "dev": "concurrently \"npm start\" \"node ./server/index.js\""
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "concurrently": "^3.5.0",
     "css-loader": "^0.28.7",
     "env-test": "^1.0.0",
     "eslint": "^4.10.0",
@@ -62,7 +64,9 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-hot-loader": "^3.1.1",
+    "react-icons": "^2.2.7",
     "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.2"
   }

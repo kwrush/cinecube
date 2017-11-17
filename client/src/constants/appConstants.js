@@ -6,15 +6,15 @@ export const LANG = 'language=en-US';
 
 export const navLinks = [
   { 
-    url: '/movies/',
+    url: '/movies',
     tag: 'Movies' 
   },
   {
-    url: '/tv/',
+    url: '/tvs',
     tag: 'TVs'
   },
   {
-    url: '/people/',
+    url: '/people',
     tag: 'People'
   }
 ];

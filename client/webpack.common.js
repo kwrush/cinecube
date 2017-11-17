@@ -15,6 +15,7 @@ module.exports = {
     alias: {
       images: path.resolve(__dirname, 'public/images/'),
       styles: path.resolve(__dirname, 'public/styles/'),
+      scenes: path.resolve(__dirname, 'src/scenes/'),
       components: path.resolve(__dirname, 'src/components/'),
       containers: path.resolve(__dirname, 'src/containers/'),
       constants: path.resolve(__dirname, 'src/constants')

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Nav, NavItem } from 'reactstrap';
 
 import './style.scss';
 
@@ -18,14 +19,14 @@ const NavMenu = (props) => {
 
   const navItems = links.map((link, index) => (
     <NavItem key={index}>
-      <NavLink href={link.url}>
-        <div styleName="link-text">{link.tag}</div>
-      </NavLink>
+      <Link to={link.url} className="nav-link" styleName="link-text">
+        {link.tag}
+      </Link>
     </NavItem>
   ));
 
   return (
-    <Nav className="ml-auto">
+    <Nav>
       { navItems }
     </Nav>
   );
