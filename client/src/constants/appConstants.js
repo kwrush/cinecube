@@ -16,6 +16,10 @@ export const navLinks = [
   {
     url: '/people',
     tag: 'People'
+  },
+  {
+    url: '/favorites',
+    tag: 'Favorites'
   }
 ];
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from 'containers/App/index';
-import 'bootstrap/dist/css/bootstrap.css';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss';
+
+import App from 'containers/App/index';
 
 ReactDOM.render((
   <BrowserRouter>

@@ -1,0 +1,51 @@
+@import '~styles/theme.scss';
+
+.search-form {
+  width: 16rem;
+}
+
+div.search-button {
+  position: relative;
+  border: none;
+  outline: none;
+  background: transparent;
+  z-index: 10;
+}
+
+input.search-input {
+  padding-left: 0 !important;
+  outline: none !important;
+  border: none;
+  border-radius: 0 !important;
+  transition: border 0.2s ease-out;
+  opacity: 0.6;
+
+  &:focus + div.bottom-border {
+    transform: scaleX(1);
+  }
+
+  &:focus {
+    opacity: 1;
+  }
+}
+
+.bottom-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  transform: scaleX(0);
+  transition: transform 0.16s ease-out;
+  background: $light-gray;
+}
+
+.search-icon {
+  fill: $gray;
+}
+
+@media (max-width: 767px) {
+  .search-form {
+    width: 100%;
+  }
+}

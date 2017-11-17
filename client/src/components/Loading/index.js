@@ -1,10 +1,9 @@
 /**
  * Loading components with ripple effect 
  */
-
+import './style.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import './style.scss';
 
 const propTypes = {
   size: PropTypes.oneOf(['small', 'normal', 'large'])

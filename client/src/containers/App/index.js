@@ -6,6 +6,7 @@ import Home from 'scenes/Home/index';
 import Movie from 'scenes/Movie/index';
 import Tv from 'scenes/Tv/index';
 import People from 'scenes/People/index';
+import Favorite from 'scenes/Favorite/index';
 import logo from 'images/logo.png';
 
 import './style.scss';
@@ -21,6 +22,7 @@ class App extends React.Component {
             <Route path="/movies" component={Movie} />
             <Route path="/tvs" component={Tv} />
             <Route path="/people" component={People} />
+            <Route path="/favorites" component={Favorite} />
           </Switch>
         </div>
       </div>

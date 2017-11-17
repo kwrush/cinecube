@@ -1,11 +1,21 @@
 @import '~styles/theme.scss';
 
-.header {
+div.header {
   color: $black;
   box-shadow: 0 0 2px $light-gray;
 }
 
-.logo-text {
+button.nav-toggler {
+  font-size: 1rem;
+  border-color: $light-gray ;
+  outline: none;
+
+  &:focus {
+    border-color: $light-blue;
+  }
+}
+
+span.logo-text {
   margin: 8px;
   color: inherit;
 }

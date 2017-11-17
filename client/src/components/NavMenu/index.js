@@ -1,9 +1,9 @@
+import './style.scss';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Nav, NavItem } from 'reactstrap';
-
-import './style.scss';
 
 const propTypes = {
   links: PropTypes.arrayOf(
@@ -18,15 +18,15 @@ const NavMenu = (props) => {
   const { links } = props;
 
   const navItems = links.map((link, index) => (
-    <NavItem key={index}>
-      <Link to={link.url} className="nav-link" styleName="link-text">
+    <NavItem key={index} styleName="navmenu-item">
+      <Link to={link.url} styleName="link-text">
         {link.tag}
       </Link>
     </NavItem>
   ));
 
   return (
-    <Nav>
+    <Nav styleName="navmenu" navbar>
       { navItems }
     </Nav>
   );
