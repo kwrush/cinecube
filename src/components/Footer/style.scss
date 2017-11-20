@@ -1,0 +1,26 @@
+@import '~styles/theme.scss';
+
+.footer {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  box-shadow: 0 0 2px $light-gray;
+  text-align: center;
+  color: $gray;
+
+  & p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  & a {
+    color: $dark-gray;
+    text-decoration: none;
+
+    &:nth-child(2) {
+      font-size: 1.25rem;
+    }
+  }
+}

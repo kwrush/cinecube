@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import '~styles/theme.scss';
+
+*,
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family;
+}
+
+.app {
+  position: relative;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
