@@ -1,0 +1,29 @@
+@import '~styles/theme.scss';
+
+.show-group {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  overflow: hidden;
+
+  &:last-child {
+    padding-bottom: 2rem;
+  }
+}
+
+.group-header {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  font-size: 1.2rem;
+  user-select: none;
+  border-bottom: 1px solid $light-gray;
+}
+
+.link-more {
+  font-size: 0.875rem;
+  color: $gray;
+
+  &:hover {
+    color: $dark-gray;
+    text-decoration-line: none !important;
+  }
+}

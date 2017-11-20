@@ -16,8 +16,6 @@ import NavMenu from 'components/NavMenu/index';
 import SearchBox from 'components/SearchBox/index';
 import { navLinks } from 'constants/appConstants';
 
-import logo from 'images/logo.png';
-
 class Header extends React.Component {
   constructor (props) {
     super(props);
@@ -35,26 +33,16 @@ class Header extends React.Component {
 
   render () {
     
-    const imgStyle = {
-      width: '40px',
-      height: '35px'
-    };
-    
     return (
       <Container fluid styleName="header">
         <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/" title="Home">
-            <img 
-              src={logo} 
-              alt="logo" 
-              className="d-inline-block align-middle" 
-              style={imgStyle}
-            />
+          <NavbarBrand href="/" title="Go to Cinematify">
+            <div className="d-inline-block align-middle" styleName="logo"></div>
             <span styleName="logo-text">Cinematify</span>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} styleName="nav-toggler"/>
           <Collapse isOpen={this.state.isOpen} navbar>
-            <NavMenu links={navLinks} className="ml-auto"/>
+            <NavMenu links={navLinks} />
             <SearchBox />
           </Collapse>
         </Navbar> 

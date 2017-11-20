@@ -5,6 +5,14 @@ div.header {
   box-shadow: 0 0 2px $light-gray;
 }
 
+.logo {
+  width: 40px;
+  height: 35px;
+  background-image: url('images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat; 
+}
+
 button.nav-toggler {
   font-size: 1rem;
   border-color: $light-gray ;
