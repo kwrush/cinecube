@@ -8,12 +8,8 @@
   padding: 1rem;
   box-shadow: 0 0 2px $light-gray;
   text-align: center;
+  font-size: 0.875rem;
   color: $gray;
-
-  & p {
-    margin: 0;
-    font-size: 0.875rem;
-  }
 
   & a {
     color: $dark-gray;
@@ -23,4 +19,13 @@
       font-size: 1.25rem;
     }
   }
+}
+
+.footer-logo {
+  margin-bottom: 0.5rem;
+  width: 40px;
+  height: 35px;
+  background-image: url('images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat; 
 }

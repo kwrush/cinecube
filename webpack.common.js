@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  context: path.resolve(__dirname),
+  context: __dirname,
   entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'build'),
@@ -17,7 +17,9 @@ module.exports = {
       styles: path.resolve(__dirname, 'src/styles/'),
       components: path.resolve(__dirname, 'src/components/'),
       containers: path.resolve(__dirname, 'src/containers/'),
-      constants: path.resolve(__dirname, 'src/constants/')
+      constants: path.resolve(__dirname, 'src/constants/'),
+      pages: path.resolve(__dirname, 'src/pages/'),
+      utils: path.resolve(__dirname, 'src/utils/')
     }
   },
   module: {
@@ -27,9 +29,10 @@ module.exports = {
         include: /src/,
         use: 'babel-loader'
       },
+      // for loading bootstrap css
       {
         test: /\.css$/,
-        include: /node_modules/,
+        include: path.resolve(__dirname, 'node_modules/bootstrap/'),
         use: ['style-loader', 'css-loader']
       },
       {
