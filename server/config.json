@@ -1,9 +1,29 @@
 {
   "config": {
-    "httpPort": 8000,
+    "httpPort": 8001,
     "apiKey": "c6b424c3bb5ffc5ca289439319b96b7c",
-    "morgan": {
-      "logType": "dev"
+    "posterUrl": {
+      "xs": "https://images.tmdb.org/t/p/w154/",
+      "s": "https://images.tmdb.org/t/p/w185/",
+      "m": "https://images.tmdb.org/t/p/w342/",
+      "l": "https://images.tmdb.org/t/p/w500/",
+      "xl": "https://images.tmdb.org/t/p/w780/",
+      "orig": "https://images.tmdb.org/t/p/original/"
+    },
+    "backdropUrl": {
+      "s": "https://images.tmdb.org/t/p/w300/",
+      "m": "https://images.tmdb.org/t/p/w780/",
+      "l": "https://images.tmdb.org/t/p/w1280/",
+      "orig": "https://images.tmdb.org/t/p/original/"
+    },
+    "profileUrl": {
+      "s": "https://images.tmdb.org/t/p/w45/",
+      "m": "https://images.tmdb.org/t/p/w185/",
+      "l": "https://images.tmdb.org/t/p/h632/",
+      "orig": "https://images.tmdb.org/t/p/original/"
     }
+  },
+  "morgan": {
+    "logType": "dev"
   }
 }

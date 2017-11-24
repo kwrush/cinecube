@@ -5,7 +5,7 @@
   right: 0;
   left: 0;
   bottom: 0;
-  padding: 1rem;
+  padding: 0.875rem;
   box-shadow: 0 0 2px $light-gray;
   text-align: center;
   font-size: 0.875rem;
@@ -22,10 +22,15 @@
 }
 
 .footer-logo {
-  margin-bottom: 0.5rem;
-  width: 40px;
-  height: 35px;
+  margin-right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
   background-image: url('images/logo.png');
   background-size: contain;
+  background-position: center;
   background-repeat: no-repeat; 
+}
+
+.logo-text {
+  font-size: 1rem;
 }

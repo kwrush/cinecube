@@ -1,7 +1,9 @@
 @import '~styles/theme.scss';
 
-.search-form {
-  width: 16rem;
+.searchbox-container,
+.search-form,
+.searchbox-group {
+  height: 100%;
 }
 
 div.search-button {
@@ -12,12 +14,15 @@ div.search-button {
   z-index: 10;
 }
 
-input.search-input {
-  padding-left: 0 !important;
-  outline: none !important;
+.search-input {
+  padding-left: 0;
   border: none;
-  border-radius: 0 !important;
-  transition: border 0.2s ease-out;
+  border-radius: 0;
+  font-size: inherit;
+  outline: none !important;
+  outline-style: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
   opacity: 0.6;
 
   &:focus + div.bottom-border {
@@ -33,11 +38,13 @@ input.search-input {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
-  height: 1px;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
   transform: scaleX(0);
-  transition: transform 0.16s ease-out;
-  background: $light-gray;
+  transition: transform 0.12s ease-out;
+  background: $blue;
+  z-index: 99;
 }
 
 .search-icon {
@@ -45,8 +52,8 @@ input.search-input {
 }
 
 @media (max-width: 767px) {
-  .search-form {
-    margin-bottom: 0.5rem;
+  .searchbox-container {
+    margin: 0 !important;
     width: 100%;
   }
 }

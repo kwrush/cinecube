@@ -1,24 +1,42 @@
 @import '~styles/theme.scss';
 
-a.link-text {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-size: 0.875rem;
-  color: $gray;
-  text-decoration: none;
+.nav-item {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.link{
+  height: $header-height;
+  font-size: inherit;
+  color: $dark-gray !important;
+  text-decoration: none !important;
+
+  &:after {
+    transform: scaleX(0);
+    transition: transform 0.12s ease-out;
+  }
 
   &:hover {
-    color: $black;
+    &:after {
+      transform: scaleX(1);
+    }
   }
 }
 
-@media (max-width: 767px) {
-  .navmenu {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
+.link:after,
+:global(.active-link:after) {
+  content: '';
+  align-self: center;
+  height: $indicator-height;
+  width: $indicator-width;
+  background: $indicator-color;
+  display: block;
+}
 
-  .navmenu-item {
-    padding-bottom: 0.5rem;
-  }
+:global(.active-link:after) {
+  transform: none ;
+}
+
+.link-text {
+  height: 100%;
 }

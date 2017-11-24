@@ -1,5 +1,5 @@
 /**
- * .../movie
+ * .../api/movie
  */
 
 'use strict';

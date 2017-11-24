@@ -9,7 +9,7 @@ import {
   NavbarToggler, 
   NavbarBrand, 
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import MdFavoriteOutline from 'react-icons/lib/md/favorite-outline';
 
 import NavMenu from 'components/NavMenu/index';
@@ -35,15 +35,16 @@ class Header extends React.Component {
     
     return (
       <Container fluid styleName="header">
-        <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/" title="Go to Cinematify">
-            <div className="d-inline-block align-middle" styleName="logo"></div>
-            <span styleName="logo-text">Cinematify</span>
+        <Navbar color="faded" light expand="md" styleName="navbar">
+          <NavbarBrand title="Go to Cinematify" styleName="brand">
+            <NavLink to="/" className="d-flex align-items-center">
+              <div className="d-inline-block" styleName="logo"></div>
+            </NavLink>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} styleName="nav-toggler"/>
           <Collapse isOpen={this.state.isOpen} navbar>
-            <NavMenu links={navLinks} />
-            <SearchBox />
+            <NavMenu links={navLinks} className="mr-auto" />
+            <SearchBox className="ml-auto" styleName="searchbox"/>
           </Collapse>
         </Navbar> 
       </Container>

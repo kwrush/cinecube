@@ -10,19 +10,20 @@ var morgan  = require('morgan');
 var path    = require('path');
 
 var config = require('./config.json').config;
+
 var staticPath = path.join(__dirname, '../build');
 
 var app = express();
 
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan(config.morgan.logType));
+  app.use(morgan(require('./config.json').morgan.logType));
 }
 
 app.locals.apiKey = config.apiKey;
 app.locals.tmdb = require('moviedb')(app.locals.apiKey);
 
 app.use(cors());
-app.use('/', require('./routes'));
+app.use('/api', require('./routes'));
 
 // server static contents
 app.use(express.static(staticPath));

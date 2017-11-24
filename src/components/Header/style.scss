@@ -1,16 +1,33 @@
 @import '~styles/theme.scss';
 
 div.header {
-  color: $black;
   box-shadow: 0 0 2px $light-gray;
 }
 
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 0.875rem;
+} 
+
 .logo {
-  width: 40px;
-  height: 35px;
+  width: 2.25rem;
+  height: 2.25rem;
   background-image: url('images/logo.png');
   background-size: contain;
+  background-position: center;
   background-repeat: no-repeat; 
+}
+
+.logo-text {
+  margin-top: 0.1rem;
+  margin-left: 0.1rem;
+  width: 120px;
+  height: 28px;
+  background: url('images/logo-text.png');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 button.nav-toggler {
@@ -19,11 +36,19 @@ button.nav-toggler {
   outline: none;
 
   &:focus {
-    border-color: $light-blue;
+    border-color: $blue;
   }
 }
 
-span.logo-text {
-  margin: 8px;
-  color: inherit;
+.searchbox {
+  height: $header-height;
+}
+
+
+
+@media (max-width: 767px) {
+  .brand {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+  }
 }

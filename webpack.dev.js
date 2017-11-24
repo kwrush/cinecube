@@ -40,7 +40,11 @@ module.exports = merge(webpackCommon, {
   devServer: {
     contentBase: './build',
     hot: true,
+    inline: true,
     port: 8000,
+    proxy: {
+      "*": "http://localhost:8001"
+    }
   },
   devtool: 'cheap-module-eval-source-map',
 });
