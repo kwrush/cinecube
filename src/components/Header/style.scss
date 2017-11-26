@@ -5,10 +5,13 @@ div.header {
 }
 
 .navbar {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0 3rem;
   font-size: 0.875rem;
 } 
+
+.brand {
+  margin-right: 3rem;
+}
 
 .logo {
   width: 2.25rem;
@@ -47,6 +50,10 @@ button.nav-toggler {
 
 
 @media (max-width: 767px) {
+  .navbar {
+    padding: 0 1rem;  
+  }
+
   .brand {
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;
