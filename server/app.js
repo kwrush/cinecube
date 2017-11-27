@@ -19,8 +19,11 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(require('./config.json').morgan.logType));
 }
 
-app.locals.apiKey = config.apiKey;
-app.locals.tmdb = require('moviedb')(app.locals.apiKey);
+app.locals.apiKey            = config.apiKey;
+app.locals.tmdb              = require('moviedb')(app.locals.apiKey);
+app.locals.posterUrlPrefix   = config.posterUrl;
+app.locals.backdropUrlPrefix = config.backdropUrl;
+app.locals.profileUrlPrefix  = config.profileUrl;
 
 app.use(cors());
 app.use('/api', require('./routes'));
