@@ -5,20 +5,20 @@
 
 'use strict';
 
-var _  = require('lodash');
+const camelCase = require('lodash').camelCase;
 
-var camelCase = function (obj) {
-  var newObj = _.isArray(obj) ? [] : {};
+const camelCaseKey = (obj) => {
+  const newObj = Array.isArray(obj) ? [] : {};
   
-  for (var prop in obj) {
+  for (let prop in obj) {
     if (typeof obj[prop] === 'object' && obj[prop] !== null) {
-      newObj[_.camelCase(prop)] = camelCase(obj[prop]);
+      newObj[camelCase(prop)] = camelCaseKey(obj[prop]);
     } else {
-      newObj[_.camelCase(prop)] = obj[prop];
+      newObj[camelCase(prop)] = obj[prop];
     }
   }
   
   return newObj;
-}
+};
 
-module.exports = camelCase;
+module.exports = camelCaseKey;

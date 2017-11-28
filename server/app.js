@@ -4,26 +4,25 @@
 
 'use strict';
 
-var express = require('express');
-var cors    = require('cors');
-var morgan  = require('morgan');
-var path    = require('path');
+const express = require('express');
+const cors    = require('cors');
+const morgan  = require('morgan');
+const path    = require('path');
 
-var config = require('./config.json').config;
+const config = require('./config.json').config;
 
-var staticPath = path.join(__dirname, '../build');
+const staticPath = path.join(__dirname, '../build');
 
-var app = express();
+const app = express();
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(require('./config.json').morgan.logType));
 }
 
-app.locals.apiKey            = config.apiKey;
-app.locals.tmdb              = require('moviedb')(app.locals.apiKey);
-app.locals.posterUrlPrefix   = config.posterUrl;
-app.locals.backdropUrlPrefix = config.backdropUrl;
-app.locals.profileUrlPrefix  = config.profileUrl;
+app.locals.apiKey          = config.apiKey;
+app.locals.tmdb            = require('moviedb')(app.locals.apiKey);
+app.locals.tmdbPosterUrl   = config.posterUrl;
+app.locals.tmdbBackdropUrl = config.backdropUrl;
 
 app.use(cors());
 app.use('/api', require('./routes'));

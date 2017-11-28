@@ -6,8 +6,8 @@
 
 'use strict';
 
-var config = require('./config.json').config;
-var app = require('./app');
+const config = require('./config.json').config;
+const app = require('./app');
 
 app.listen(config.httpPort, () => {
   console.log('Server is listening on port:', config.httpPort);

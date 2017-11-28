@@ -4,10 +4,10 @@
 
 'use strict';
 
-var bodyParser = require('body-parser');
-var app = require('express');
+const bodyParser = require('body-parser');
+const app = require('express');
 
-var router = app.Router();
+const router = app.Router();
 router.use(bodyParser.urlencoded({extended: true}));   
 router.use(bodyParser.json());                                                                                 
 router.use(bodyParser.json({ type: 'application/vnd.api+json' }));
