@@ -6,7 +6,9 @@
 
 const router = require('express').Router();
 const camelCaseKey = require('../../middlewares/camelCaseKey');
-const tmdbImageUrl = require('../../middlewares/tmdbImageUrl');
+const tmdbPosters = require('../../middlewares/tmdbPosters');
+const tmdbCredits = require('../../middlewares/tmdbCredits');
+const tmdbScreenshots = require('../../middlewares/tmdbScreenshots');
 
 /**
  * Discover movies
@@ -20,7 +22,7 @@ router.get('/discover', (req, res) => {
 
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
@@ -42,7 +44,7 @@ router.get('/popular', (req, res) => {
 
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
@@ -64,7 +66,7 @@ router.get('/in_theatre', (req, res) => {
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
@@ -86,7 +88,7 @@ router.get('/top_rated', (req, res) => {
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
@@ -108,7 +110,7 @@ router.get('/upcoming', (req, res) => {
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
@@ -170,12 +172,22 @@ router.get('/:id(\\d+)/', (req, res) => {
   .then(tmdbRes => {
     res.send(Object.assign(
       {},
-      tmdbRes[0],
+      tmdbPosters({
+        root: tmdbRes[0],
+        posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+        backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+      }),
       {
-        credits: tmdbRes[1]
+        credits: tmdbCredits({
+          root: tmdbRes[1],
+          profileUrlPrefix: req.app.locals.tmdbProfileUrl
+        })
       },
       {
-        screenshots: tmdbRes[2]
+        screenshots: tmdbScreenshots({
+          root: tmdbRes[2],
+          screenshotUrlPrefix: req.app.locals.tmdbBackdropUrl
+        })
       }
     ));
   })
@@ -195,7 +207,7 @@ router.get('/search', (req, res) => {
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbImageUrl({
+        results: tmdbPosters({
           root: tmdbRes.results,
           posterUrlPrefix: req.app.locals.tmdbPosterUrl,
           backdropUrlPrefix: req.app.locals.tmdbBackdropUrl

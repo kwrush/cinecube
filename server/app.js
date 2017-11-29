@@ -23,6 +23,7 @@ app.locals.apiKey          = config.apiKey;
 app.locals.tmdb            = require('moviedb')(app.locals.apiKey);
 app.locals.tmdbPosterUrl   = config.posterUrl;
 app.locals.tmdbBackdropUrl = config.backdropUrl;
+app.locals.tmdbProfileUrl  = config.profileUrl;
 
 app.use(cors());
 app.use('/api', require('./routes'));

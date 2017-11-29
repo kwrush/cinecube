@@ -7,7 +7,7 @@
 const expect = require('chai').expect;
 
 describe('middleware tests', () => {
-  it ('should convert key value into camel case', () => {
+  it('should convert key value into camel case', () => {
     // dummy data
     let obj = {
       title: 'Something',
@@ -75,9 +75,9 @@ describe('middleware tests', () => {
       orig: 'backdrop/original/'
     };
     
-    const tmdbImageUrl = require('../middlewares/tmdbImageUrl');
+    const tmdbPosters = require('../middlewares/tmdbPosters');
     
-    const newResults = tmdbImageUrl({
+    const newResults = tmdbPosters({
       root: results,
       posterUrlPrefix: posterPrefix,
       backdropUrlPrefix: backdropPrefix
@@ -91,5 +91,37 @@ describe('middleware tests', () => {
     expect(newResults[2].posterPath).to.have.property('m', 'poster/m/poster2.jpeg');
     expect(newResults[2].backdropPath).to.have.property('l', 'backdrop/l/backdrop2.jpeg')
     expect(newResults[2].backdropPath).to.have.property('orig', 'backdrop/original/backdrop2.jpeg');
+  });
+
+  it('should format credits list and complete profile url', () => {
+    const res = require('./mock/creditsResponse.json');
+    const tmdbCredits = require('../middlewares/tmdbCredits');
+    const profilePrefix = {
+      s: 'images/s',
+      m: 'images/m',
+      l: 'images/l'
+    };
+    const credits = tmdbCredits({ root: res, profileUrlPrefix: profilePrefix });
+    
+    expect(credits).to.have.property('directors');
+    expect(credits.cast).to.be.an('array');
+    expect(credits.directors).to.be.an('array');
+    expect(credits.directors[0].profilePath).to.have.property('s', 'images/s/mDLDvsx8PaZoEThkBdyaG1JxPdf.jpg');
+  });
+  
+  it('should complete url of screenshots', () => {
+    const res = require('./mock/imageResponse.json');
+    const tmdbScreenshots = require('../middlewares/tmdbScreenshots');
+    const imgPrefix = {
+      s: 'images/s',
+      m: 'images/m',
+      l: 'images/l'
+    };
+    
+    const img = tmdbScreenshots({ root: res, screenshotUrlPrefix: imgPrefix });
+    expect(img).to.be.an('array');
+    expect(img[0].iso6391).to.be.null;
+    expect(img[0]).to.have.property('filePath');
+    expect(img[0].filePath).to.have.property('m', 'images/m/c4zJK1mowcps3wvdrm31knxhur2.jpg');
   });
 });

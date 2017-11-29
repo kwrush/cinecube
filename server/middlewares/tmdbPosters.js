@@ -1,12 +1,12 @@
 /**
- * complete image urls in API response
+ * complete posters and backdrops url in API response
  */
  
 'use strict';
 
 /**
  * This method overrides posterPath and backdropPath properties
- * in movie/TV object by predefined complete urls which also includes
+ * in movie/TV object by complete urls which also include
  * multiple sizes
  * e.g.
  *  {
@@ -29,6 +29,12 @@ const processPosterUrl = (resultObj, posterPrefix, backdropPrefix) => {
   
   for (let size in backdropPrefix) {
     newBackdropPath[size] = resultObj.backdropPath ? `${backdropPrefix[size]}${resultObj.backdropPath}` : null;
+  }
+  
+  // tv info object also includes season overviews 
+  if (resultObj.seasons) {
+    resultObj.seasons = 
+      resultObj.seasons.map(season => processPosterUrl(season, posterPrefix, null));
   }
   
   return Object.assign({}, resultObj, {
