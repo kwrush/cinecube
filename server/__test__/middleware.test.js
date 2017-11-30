@@ -96,12 +96,16 @@ describe('middleware tests', () => {
   it('should format credits list and complete profile url', () => {
     const res = require('./mock/creditsResponse.json');
     const tmdbCredits = require('../middlewares/tmdbCredits');
+    const tmdbProfiles = require('../middlewares/tmdbProfiles');
     const profilePrefix = {
       s: 'images/s',
       m: 'images/m',
       l: 'images/l'
     };
-    const credits = tmdbCredits({ root: res, profileUrlPrefix: profilePrefix });
+    const credits = tmdbProfiles({
+      root: tmdbCredits(res),
+      profileUrlPrefix: profilePrefix
+    });
     
     expect(credits).to.have.property('directors');
     expect(credits.cast).to.be.an('array');

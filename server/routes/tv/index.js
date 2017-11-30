@@ -5,9 +5,11 @@
 'use strict';
 
 const router = require('express').Router();
-const camelCaseKey = require('../../middlewares/camelCaseKey');
-const tmdbPosters = require('../../middlewares/tmdbPosters');
-const tmdbCredits = require('../../middlewares/tmdbCredits');
+
+const camelCaseKey    = require('../../middlewares/camelCaseKey');
+const tmdbPosters     = require('../../middlewares/tmdbPosters');
+const tmdbCredits     = require('../../middlewares/tmdbCredits');
+const tmdbProfiles    = require('../../middlewares/tmdbProfiles');
 const tmdbScreenshots = require('../../middlewares/tmdbScreenshots');
 
 router.get('/discover', (req, res) => {
@@ -132,7 +134,7 @@ router.get('/:id(\\d+)/', (req, res) => {
     ].map(promise => promise.catch(err => err))
   )
   .then(tmdbRes => {
-    res.send(Object.assign(
+    res.json(Object.assign(
       {},
       tmdbPosters({
         root: tmdbRes[0],
@@ -140,8 +142,8 @@ router.get('/:id(\\d+)/', (req, res) => {
         backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
       }),
       {
-        credits: tmdbCredits({
-          root: tmdbRes[1],
+        credits: tmdbProfiles({
+          root: tmdbCredits(tmdbRes[1]),
           profileUrlPrefix: req.app.locals.tmdbProfileUrl
         })
       },
@@ -153,7 +155,7 @@ router.get('/:id(\\d+)/', (req, res) => {
       }
     ));
   })
-  .catch(err => res.send(res));
+  .catch(err => res.send(err));
 });
 
 router.use('/search', require('../../middlewares/encodeQuery'));

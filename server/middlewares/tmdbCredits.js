@@ -4,24 +4,10 @@
  
 'use strict';
 
-const processProfileUrls = (credits, profilePrefix) => {
+module.exports = (credits) => {
+  if (typeof credits !== 'object') 
+    throw new TypeError('Invalid value for options.root');
   
-  let newCredits = [];
-  
-  for (let i = 0; i < credits.length; i++) {
-    let newProfilePath = {};
-    for (let size in profilePrefix) {
-      newProfilePath[size] = credits[i].profilePath ? 
-        `${profilePrefix[size]}${credits[i].profilePath}` : null;
-    }
-    newCredits.push(Object.assign(
-      {}, credits[i], { profilePath: newProfilePath }));
-  }
-  
-  return newCredits;
-};
-
-const simplifyProfile = (credits) => {
   const cast = credits.cast;
   const crewItems = credits.crew;
   
@@ -64,19 +50,4 @@ const simplifyProfile = (credits) => {
     photography: photography,
     music: music
   };
-};
-
-module.exports = (options) => {
-  const root = (options && options.root) || {};
-  const profilePrefix = (options && options.profileUrlPrefix) || {};
-  
-  if (typeof root !== 'object') throw new TypeError('Invalid value for options.root');
-  
-  const credits = simplifyProfile(root);
-  
-  for (let job in credits) {
-    credits[job] = processProfileUrls(credits[job], profilePrefix);
-  }
-  
-  return credits;
 };

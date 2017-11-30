@@ -19,6 +19,8 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(require('./config.json').morgan.logType));
 }
 
+// Use your own api key which is free to get from 
+// https://www.themoviedb.org/documentation/api.
 app.locals.apiKey          = config.apiKey;
 app.locals.tmdb            = require('moviedb')(app.locals.apiKey);
 app.locals.tmdbPosterUrl   = config.posterUrl;
