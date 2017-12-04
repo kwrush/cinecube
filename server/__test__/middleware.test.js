@@ -1,7 +1,3 @@
-/**
- * TODO: test cases
- */
-
 'use strict'; 
  
 const expect = require('chai').expect;
@@ -94,7 +90,7 @@ describe('middleware tests', () => {
   });
 
   it('should format credits list and complete profile url', () => {
-    const res = require('./mock/creditsResponse.json');
+    const res = require('./__mock__/creditsResponse.json');
     const tmdbCredits = require('../middlewares/tmdbCredits');
     const tmdbProfiles = require('../middlewares/tmdbProfiles');
     const profilePrefix = {
@@ -114,7 +110,7 @@ describe('middleware tests', () => {
   });
   
   it('should complete url of screenshots', () => {
-    const res = require('./mock/imageResponse.json');
+    const res = require('./__mock__/imageResponse.json');
     const tmdbScreenshots = require('../middlewares/tmdbScreenshots');
     const imgPrefix = {
       s: 'images/s',
@@ -127,5 +123,45 @@ describe('middleware tests', () => {
     expect(img[0].iso6391).to.be.null;
     expect(img[0]).to.have.property('filePath');
     expect(img[0].filePath).to.have.property('m', 'images/m/c4zJK1mowcps3wvdrm31knxhur2.jpg');
+  });
+  
+  it('should categorize multi search results and complete image urls', () => {
+    
+    const camelCase = require('../middlewares/camelCaseKey');
+    const tmdbMultiSearch = require('../middlewares/tmdbMultiSearch');
+    
+    const res = camelCase(
+      require('./__mock__/multiSearchResponse.json'));
+    
+    const urlPrefix = {
+      s: 'images/s',
+      m: 'images/m',
+      l: 'images/l'
+    };
+    
+    res.results = 
+      tmdbMultiSearch({
+        root: res.results,
+        posterUrlPrefix: urlPrefix,
+        backdropUrlPrefix: urlPrefix,
+        profileUrlPrefix: urlPrefix
+      });
+    
+    expect(res.results).to.not.be.an('array');
+    expect(res.results).to.have.property('movie');
+    expect(res.results).to.have.property('tv');
+    expect(res.results).to.have.property('person');
+    
+    expect(res.results.person).to.have.lengthOf(1);
+    expect(res.results.movie).to.have.lengthOf(2);
+    expect(res.results.tv).to.have.lengthOf(0);
+    
+    expect(res.results.movie[0].posterPath).to.have.property(
+      's', 
+      'images/s/hdYpb9PhIms17OPL6Yz2C0ruxJ1.jpg');
+      
+    expect(res.results.person[0].profilePath).to.have.property(
+      's', 
+      'images/s/pQFoyx7rp09CJTAb932F2g8Nlho.jpg');
   });
 });

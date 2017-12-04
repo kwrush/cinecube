@@ -13,24 +13,27 @@ const tmdbProfiles = require('../../middlewares/tmdbProfiles');
 router.get('/popular', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .personPopular((err, tmdbRes) => {
-      if (err) res.send(err);
-      
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbProfiles({
-          root: camelCaseKey(tmdbRes.results),
-          profileUrlPrefix: req.app.locals.tmdbProfileUrl
-        })
-      });
-      
-      const results = tmdbRes.results.map(
-        rs => Object.assign({}, rs, { 
-          knownFor: tmdbPosters({
-            root: rs.knownFor,
-            posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-            backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+    .personPopular({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err)
+          return res.status(err.status).send(err.response);
+        
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbProfiles({
+            root: camelCaseKey(tmdbRes.results),
+            profileUrlPrefix: req.app.locals.tmdbProfileUrl
           })
-        }));
+        });
+        
+        const results = tmdbRes.results.map(
+          rs => Object.assign({}, rs, { 
+            knownFor: tmdbPosters({
+              root: rs.knownFor,
+              posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+              backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+            })
+          }));
         
       res.json(Object.assign({}, tmdbRes, {
         results: results
@@ -38,7 +41,7 @@ router.get('/popular', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id(\\d+)/', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   
   // get overview of people
@@ -92,7 +95,32 @@ router.get('/:id', (req, res) => {
       cast: cast,
       crew: crew});
   })
-  .catch(err => res.send(err));
+  .catch(err => res.status(err.status).send(err.response));
+});
+
+router.use('/search', require('../../middlewares/encodeQuery'));
+
+router.get('/search', (req, res) => {
+  const tmdb = req.app.locals.tmdb;
+  
+  tmdb
+    .searchPerson({
+        query: req.query.query,
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err)
+          return res.status(err.status).send(err.response);
+        
+        tmdbRes = camelCaseKey(tmdbRes);
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbProfiles({
+            root: tmdbRes.results,
+            profileUrlPrefix: req.app.locals.tmdbProfileUrl
+          })
+        });
+      
+      res.json(tmdbRes);
+    });
 });
 
 module.exports = router;

@@ -16,8 +16,11 @@ router.get('/discover', (req, res) => {
   const tmdb = req.app.locals.tmdb;
 
   tmdb
-    .discoverTv((err, tmdbRes) => {
-      if (err) res.send(err);
+    .discoverTv({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+      if (err)
+        return res.status(err.status).send(err.response);
 
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -35,8 +38,11 @@ router.get('/discover', (req, res) => {
 router.get('/popular', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscPopularTvs((err, tmdbRes) => {
-      if (err) res.send(err);
+    .miscPopularTvs({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+      if (err)
+        return res.status(err.status).send(err.response);
 
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -54,8 +60,11 @@ router.get('/popular', (req, res) => {
 router.get('/top_rated', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscTopRatedTvs((err, tmdbRes) => {
-      if (err) res.send(err);
+    .miscTopRatedTvs({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+      if (err)
+        return res.status(err.status).send(err.response);
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -74,7 +83,8 @@ router.get('/on_air', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
     .tvOnTheAir((err, tmdbRes) => {
-      if (err) res.send(err);
+      if (err)
+        return res.status(err.status).send(err.response);
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -155,7 +165,7 @@ router.get('/:id(\\d+)/', (req, res) => {
       }
     ));
   })
-  .catch(err => res.send(err));
+  .catch(err => res.status(err.status).send(err.response));
 });
 
 router.use('/search', require('../../middlewares/encodeQuery'));
@@ -165,9 +175,11 @@ router.get('/search', (req, res) => {
   
   tmdb
     .searchTv({
-      query: req.query.query
+      query: req.query.query,
+      page: req.query.page ? req.query.page : 1
     }, (err, tmdbRes) => {
-      if (err) res.send(err);
+      if (err)
+        return res.status(err.status).send(err.response);
       
       tmdbRes = camelCasekey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {

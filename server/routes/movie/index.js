@@ -19,17 +19,20 @@ router.get('/discover', (req, res) => {
   const tmdb = req.app.locals.tmdb;
 
   tmdb
-    .discoverMovie((err, tmdbRes) => {
-      if (err) res.send(err);
+    .discoverMovie({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err) 
+          return res.status(err.status).send(err.response);
 
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
+        tmdbRes = camelCaseKey(tmdbRes);
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbPosters({
+            root: tmdbRes.results,
+            posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+            backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+          })
+        });
 
       res.json(tmdbRes);
     });
@@ -41,17 +44,20 @@ router.get('/discover', (req, res) => {
 router.get('/popular', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscPopularMovies((err, tmdbRes) => {
-      if (err) res.send(err);
+    .miscPopularMovies({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err)
+          return res.status(err.status).send(err.response);
 
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
+        tmdbRes = camelCaseKey(tmdbRes);
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbPosters({
+            root: tmdbRes.results,
+            posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+            backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+          })
+        });
 
       res.json(tmdbRes);
     });
@@ -64,7 +70,8 @@ router.get('/in_theatre', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
     .miscNowPlayingMovies((err, tmdbRes) => {
-      if (err) res.send(err);
+      if (err)
+        return res.status(err.status).send(err.response);
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -85,17 +92,20 @@ router.get('/in_theatre', (req, res) => {
 router.get('/top_rated', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscTopRatedMovies((err, tmdbRes) => {
-      if (err) res.send(err);
-      
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
+    .miscTopRatedMovies({
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err)
+          return res.status(err.status).send(err.response);
+        
+        tmdbRes = camelCaseKey(tmdbRes);
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbPosters({
+            root: tmdbRes.results,
+            posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+            backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+          })
+        });
 
       res.json(tmdbRes);
     });
@@ -108,7 +118,8 @@ router.get('/upcoming', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
     .miscUpcomingMovies((err, tmdbRes) => {
-      if (err) res.send(err);
+      if (err)
+        return res.status(err.status).send(err.response);
       
       tmdbRes = camelCaseKey(tmdbRes);
       tmdbRes = Object.assign({}, tmdbRes, {
@@ -193,7 +204,7 @@ router.get('/:id(\\d+)/', (req, res) => {
       }
     ));
   })
-  .catch(err => res.send(err));
+  .catch(err => res.status(err.status).send(err.response));
 });
 
 router.use('/search', require('../../middlewares/encodeQuery'));
@@ -203,18 +214,20 @@ router.get('/search', (req, res) => {
   
   tmdb
     .searchMovie({
-      query: req.query.query
-    }, (err, tmdbRes) => {
-      if (err) res.send(err);
-      
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
+        query: req.query.query,
+        page: req.query.page ? req.query.page : 1
+      }, (err, tmdbRes) => {
+        if (err)
+          return res.status(err.status).send(err.response);
+        
+        tmdbRes = camelCaseKey(tmdbRes);
+        tmdbRes = Object.assign({}, tmdbRes, {
+          results: tmdbPosters({
+            root: tmdbRes.results,
+            posterUrlPrefix: req.app.locals.tmdbPosterUrl,
+            backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
+          })
+        });
       
       res.json(tmdbRes);
     });
