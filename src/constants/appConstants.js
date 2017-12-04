@@ -1,8 +1,4 @@
-// Use your own api key which is free to get from 
-// https://www.themoviedb.org/documentation/api.
-export const API_KEY = 'c6b424c3bb5ffc5ca289439319b96b7c';
-export const API_URL = 'https://api.themoviedb.org/3/';
-export const LANG = 'language=en-US';
+export const API_URL = 'http://localhost:8000/api';
 
 export const navLinks = [
   { 
@@ -21,5 +17,30 @@ export const navLinks = [
     url: '/favorite',
     tag: 'Favorites'
   }
-];
+]
+
+export const movieEndPoints = {
+  popular:    '/movie/popular',
+  discover:   '/movie/discover',
+  topRated:   '/movie/top_rated',
+  upcoming:   '/movie/upcoming',
+  inTheatre:  '/movie/in_theatre',
+  search:     '/movie/search',
+  info:       '/movie'
+}
+
+export const tvEndPoints = {
+  popular:  '/tv/popular',
+  discover: '/tv/discover',
+  topRated: '/tv/top_rated',
+  onAir:    '/tv/on_air',
+  search:   '/tv/search',
+  info:     '/tv'
+}
+
+export const peopleEndPoints = {
+  popular: '/people/popular',
+  search:  '/poeple/search',
+  info:    '/people'
+}
 
