@@ -1,4 +1,4 @@
-export const popularMoviesFirstPage = {
+export const popularFirstPage = {
   status: 200,
   page: 1,
   results: [
@@ -15,7 +15,7 @@ export const popularMoviesFirstPage = {
   ]
 }
 
-export const popularMoviesSecondPage = {
+export const popularSecondPage = {
   status: 200,
   page: 2,
   results: [
@@ -32,13 +32,26 @@ export const popularMoviesSecondPage = {
   ]
 }
 
-export const movieOverview = {
+export const overview = {
   id: 1,
   title: 'Top Story',
   posterPath: 'image/poster1.jpeg'
 }
 
-export const searchMovieResults = {
+export const searchResults = {
   page: 1,
-  results: popularMoviesFirstPage.results 
+  results: popularFirstPage.results 
+}
+
+export const multiResults = {
+  page: 1,
+  results: {
+    movie: popularFirstPage.results,
+    tv:    popularSecondPage.results,
+    person: [{
+      name: 'Tom Hanks'
+    }, {
+      name: 'Tommy'
+    }]
+  }
 }
