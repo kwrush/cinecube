@@ -3,14 +3,14 @@ export const mapToCssModules = (className, cssModule) => {
   return className.split(/\s+/).map(c => cssModule[c] || c).join(' ');
 }
 
-export const concatUrlParams = (baseUrl, params) => {
-  baseUrl = baseUrl ? baseUrl : '';
-  params = params ? params : {};
+export const generateActions = (actions) => {
+  const actionMap = {};
 
-  const props = Object.keys(params);
-  const paramsUrl = props
-    .map((prop, i) => i === props.length - 1 ? `${prop}=${params[prop]}` : `${prop}=${params[props]}&`)
-    .join('');
+  for (let i in actions) {
+    if (i < actions.length) {
+      actionMap[actions[i]] = actions[i];
+    }
+  }
 
-  return baseUrl + paramsUrl;
+  return actionMap;
 }

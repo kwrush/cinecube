@@ -1,4 +1,4 @@
-import { FETCH_MOVIE } from '../actions/actionTypes';
+import { movieActionTypes } from '../actions/actionTypes';
 
 export default movies = (state = [], action) => {
   switch (action.type) {

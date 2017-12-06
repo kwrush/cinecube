@@ -46,4 +46,6 @@ const SearchBox = (props) => {
   );
 };
 
+SearchBox.propTypes = propTypes;
+
 export default SearchBox;

@@ -1,7 +1,7 @@
 import './style.scss';
 
 import React from 'react'
-import PosterSection from 'components/PosterSection/index';
+import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
 import CardPanel from 'components/CardPanel/index';
 
@@ -13,20 +13,20 @@ class Home extends React.Component {
   render () {
     return (
       <div className="wrap">
-        <PosterSection>
+        <SectionContainer>
           <SectionHeader
             title="Movies"
             url="/movie/popular"
           />
           <CardPanel />
-        </PosterSection>
-        <PosterSection>
+        </SectionContainer>
+        <SectionContainer>
           <SectionHeader
             title="TV shows"
             url="/tv/popular"
           />
           <CardPanel />
-        </PosterSection>
+        </SectionContainer>
       </div>
     );
   }

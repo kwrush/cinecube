@@ -1,7 +1,7 @@
 import './style.scss';
 
 import React from 'react';
-import PosterSection from 'components/PosterSection/index';
+import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
 import ShutterPanel from 'components/ShutterPanel/index';
 
@@ -13,13 +13,13 @@ class Movie extends React.Component {
   render () {
     return (
       <div className="wrap">
-        <PosterSection>
+        <SectionContainer>
           <SectionHeader
             title="Movies"
             url="/movie/popular"
           />
           <ShutterPanel />
-        </PosterSection>
+        </SectionContainer>
       </div>
     );
   }
