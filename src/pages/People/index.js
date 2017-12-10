@@ -6,4 +6,4 @@ const People = () => (
   </div>
 );
 
-export default People
+export default People;

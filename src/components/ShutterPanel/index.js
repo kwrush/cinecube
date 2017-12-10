@@ -62,4 +62,4 @@ const ShutterPanel = (props) => {
   );
 };
 
-export default ShutterPanel
+export default ShutterPanel;

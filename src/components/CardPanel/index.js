@@ -78,4 +78,4 @@ const CardPanel = (props) => (
   </Row>
 );
 
-export default CardPanel
+export default CardPanel;

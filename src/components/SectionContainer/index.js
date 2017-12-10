@@ -26,4 +26,4 @@ const SectionContainer = (props) => {
 
 SectionContainer.propTypes = propTypes;
 
-export default SectionContainer
+export default SectionContainer;

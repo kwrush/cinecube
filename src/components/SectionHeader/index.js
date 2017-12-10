@@ -37,4 +37,4 @@ const SectionHeader = (props) => {
 SectionHeader.propTypes = propTypes;
 SectionHeader.defaultProps = defaultProps;
 
-export default SectionHeader
+export default SectionHeader;

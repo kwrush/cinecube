@@ -17,7 +17,7 @@ export const navLinks = [
     url: '/favorite',
     tag: 'Favorites'
   }
-]
+];
 
 export const movieEndPoints = {
   popular:    '/movie/popular',
@@ -27,7 +27,7 @@ export const movieEndPoints = {
   inTheatre:  '/movie/in_theatre',
   search:     '/movie/search',
   info:       '/movie'
-}
+};
 
 export const tvEndPoints = {
   popular:  '/tv/popular',
@@ -36,11 +36,11 @@ export const tvEndPoints = {
   onAir:    '/tv/on_air',
   search:   '/tv/search',
   info:     '/tv'
-}
+};
 
 export const peopleEndPoints = {
   popular: '/people/popular',
   search:  '/poeple/search',
   info:    '/people'
-}
+};
 
