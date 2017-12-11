@@ -26,9 +26,11 @@ const NavMenu = (props) => {
     <NavItem key={index} className="text-center" styleName="nav-item">
       <NavLink to={link.url} 
         styleName="link" 
-        className="d-flex flex-column justify-content-between"
-        activeClassName="active-link">
-        <span className="d-flex justify-content-center align-items-center" styleName="link-text">{link.tag}</span>
+        className="d-flex flex-column justify-content-center position-relative"
+        activeClassName="active-link"
+      >
+        {link.tag}
+        <div styleName="link-indicator"></div>
       </NavLink>
     </NavItem>
   ));

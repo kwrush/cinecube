@@ -6,7 +6,7 @@
   left: 0;
   bottom: 0;
   padding: 0.875rem;
-  box-shadow: 0 0 2px $light-gray;
+  box-shadow: 0 0 2px $shadow;
   text-align: center;
   font-size: 0.875rem;
   color: $gray;
@@ -32,5 +32,7 @@
 }
 
 .logo-text {
+  font-weight: bold;
+  color: $dark-gray;
   font-size: 1rem;
 }

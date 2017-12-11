@@ -17,22 +17,22 @@ const SearchBox = (props) => {
   const classes = mapToCssModules(className, cssModule);
 
   return (
-    <div className={`row ${classes}`}>
-      <div className="col-sm col-md searchbox-container">
+    <div className={classes}>
+      <div styleName="searchbox-container">
         <Form role="search" styleName="search-form">
           <div className="input-group" styleName="searchbox-group">
-            <Label for="search-box" className="sr-only col-form-label-sm">Search</Label>
+            <Label for="searchbox" className="sr-only col-form-label-sm">Search</Label>
             <div
               className="input-group-addon"
               styleName="search-button"
               title="Search Cinematify"
             >
-              <MdSearch styleName="search-icon" size={20} />
+              <MdSearch styleName="search-icon" size={19} />
             </div>
             <Input
               type="search"
               name="search"
-              id="search-box"
+              id="searchbox"
               className="form-control-sm"
               styleName='search-input'
               placeholder="Search Cinematify"

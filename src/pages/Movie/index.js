@@ -1,6 +1,7 @@
 import './style.scss';
 
 import React from 'react';
+import { Container } from 'reactstrap';
 import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
 import ShutterPanel from 'components/ShutterPanel/index';
@@ -12,7 +13,7 @@ class Movie extends React.Component {
 
   render () {
     return (
-      <div className="wrap">
+      <Container>
         <SectionContainer>
           <SectionHeader
             title="Movies"
@@ -20,7 +21,7 @@ class Movie extends React.Component {
           />
           <ShutterPanel />
         </SectionContainer>
-      </div>
+      </Container>
     );
   }
 }

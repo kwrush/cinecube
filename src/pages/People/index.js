@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Container } from 'reactstrap';
 
 const People = () => (
-  <div>
+  <Container>
     <h1>Page of people</h1>
-  </div>
+  </Container>
 );
 
 export default People;

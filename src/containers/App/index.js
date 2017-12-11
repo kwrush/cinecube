@@ -22,7 +22,7 @@ class App extends React.Component {
       <BrowserRouter>
         <div styleName="app">
           <Header />
-          <Container>
+          <Container fluid>
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/movie" component={Movie} />

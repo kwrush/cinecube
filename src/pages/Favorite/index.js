@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Container } from 'reactstrap';
 
 const Favorite = () => (
-  <div>
+  <Container>
     <h1>Page of favorites</h1>
-  </div>
+  </Container>
 );
 
 export default Favorite;

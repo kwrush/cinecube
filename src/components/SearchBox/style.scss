@@ -1,4 +1,5 @@
 @import '~styles/theme.scss';
+@import '~styles/mixin.scss';
 
 .searchbox-container,
 .search-form,
@@ -15,7 +16,7 @@ div.search-button {
 }
 
 .search-input {
-  padding-left: 0;
+  padding: 0.375rem 0.75rem 0.375rem 0;
   border: none;
   border-radius: 0;
   font-size: inherit;
@@ -27,6 +28,7 @@ div.search-button {
 
   &:focus + div.bottom-border {
     transform: scaleX(1);
+    opacity: 1;
   }
 
   &:focus {
@@ -35,14 +37,12 @@ div.search-button {
 }
 
 .bottom-border {
+  @include fade-shrink;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 3px;
-  width: 100%;
-  transform: scaleX(0);
-  transition: transform 0.12s ease-out;
+  height: $indicator-height;
   background: $blue;
   z-index: 99;
 }
@@ -53,7 +53,7 @@ div.search-button {
 
 @media (max-width: 767px) {
   .searchbox-container {
-    margin: 0 !important;
+    margin: 0 auto !important;
     width: 100%;
   }
 }

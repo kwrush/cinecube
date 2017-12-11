@@ -1,7 +1,7 @@
 @import '~styles/theme.scss';
 
 div.header {
-  box-shadow: 0 0 2px $light-gray;
+  box-shadow: 0 0 2px $shadow;
 }
 
 .navbar {
@@ -44,11 +44,10 @@ button.nav-toggler {
 }
 
 .searchbox {
+  margin-left: auto;
   height: $header-height;
   min-width: 300px;
 }
-
-
 
 @media (max-width: 767px) {
   .navbar {

@@ -49,7 +49,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Cinematify',
+      title: 'CineCube',
       template: './public/index.html',
       favicon: './public/favicon.ico',
       hash: true,

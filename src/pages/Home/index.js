@@ -12,14 +12,8 @@ class Home extends React.Component {
 
   render () {
     return (
-      <Container fluid>
-        <BackdropCard 
-          id={284053}
-          type='movie'
-          backdropUrl='https://image.tmdb.org/t/p/w780/5wNUJs23rT5rTBacNyf5h83AynM.jpg'
-          title='Thor: Ragnarok'
-          actors={['Chris Hemsworth', 'Tom Hiddleston', 'Cate Blanchett', 'Idris Elba', 'Tessa Thompson', 'Jeff Goldblum']}
-        />
+      <Container>
+        <h1>Home</h1>
       </Container>
     );
   }

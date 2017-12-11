@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Container } from 'reactstrap';
 
 const Tv = () => (
-  <div>
+  <Container>
     <h1>Page of TV shows</h1>
-  </div>
+  </Container>
 );
 
 export default Tv
