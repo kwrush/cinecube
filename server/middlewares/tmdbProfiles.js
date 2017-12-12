@@ -23,7 +23,7 @@ module.exports = (options) => {
   if (typeof credits !== 'object') throw new TypeError('Invalid value for options.root');
   
   // if the credits is an object
-  // { cast: [...], directors: [...], ... }
+  // e.g. { cast: [...], directors: [...], ... }
   if (!Array.isArray(credits)) {
     let profiles = {};
     for (let job in credits) {

@@ -5,8 +5,8 @@
 'use strict';
 
 module.exports = (credits) => {
-  if (typeof credits !== 'object') 
-    throw new TypeError('Invalid value for options.root');
+  if (typeof credits !== 'object')
+    throw new TypeError('Invalid value for credits');
   
   const cast = credits.cast;
   const crewItems = credits.crew;

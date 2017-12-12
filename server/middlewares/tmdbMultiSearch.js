@@ -29,7 +29,7 @@ module.exports = (options) => {
   
   root.map(rs => results[rs.mediaType].push(rs));
 
-  return Object.assign(results, {
+  return {
     movie: results.movie.length > 0 ? tmdbPosters({
       root: results.movie,
       posterUrlPrefix: posterPrefix,
@@ -44,5 +44,5 @@ module.exports = (options) => {
       root: results.person,
       profileUrlPrefix: profilePrefix
     }) : []
-  });
+  };
 }

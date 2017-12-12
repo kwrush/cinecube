@@ -30,17 +30,16 @@ const processPosterUrl = (resultObj, posterPrefix, backdropPrefix) => {
   for (let size in backdropPrefix) {
     newBackdropPath[size] = resultObj.backdropPath ? `${backdropPrefix[size]}${resultObj.backdropPath}` : null;
   }
-  
-  // tv info object also includes season overviews 
-  if (resultObj.seasons) {
-    resultObj.seasons = 
-      resultObj.seasons.map(season => processPosterUrl(season, posterPrefix, null));
-  }
-  
-  return Object.assign({}, resultObj, {
-    posterPath: newPosterPath,
-    backdropPath: newBackdropPath
-  });
+
+  return Object.assign({}, resultObj,
+    // tv info object also includes season overviews 
+    resultObj.seasons ? {
+      seasons: resultObj.seasons.map(season => processPosterUrl(season, posterPrefix, null))
+    } : {},
+    {
+      posterPath: newPosterPath,
+      backdropPath: newBackdropPath
+    });
 };
 
 module.exports = (options) => {
