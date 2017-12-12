@@ -5,7 +5,8 @@ div.header {
 }
 
 .navbar {
-  padding: 0 3rem;
+  padding-top: 0;
+  padding-bottom: 0;
   font-size: 0.875rem;
 } 
 
@@ -46,14 +47,9 @@ button.nav-toggler {
 .searchbox {
   margin-left: auto;
   height: $header-height;
-  min-width: 300px;
 }
-
+ 
 @media (max-width: 767px) {
-  .navbar {
-    padding: 0 1rem;  
-  }
-
   .brand {
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;

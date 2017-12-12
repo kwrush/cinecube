@@ -36,11 +36,9 @@ class Header extends React.Component {
     return (
       <Container fluid styleName="header">
         <Navbar color="faded" light expand="md" styleName="navbar">
-          <NavbarBrand title="Home" styleName="brand">
-            <NavLink to="/" className="d-flex align-items-center">
-              <div className="d-inline-block" styleName="logo"></div>
-            </NavLink>
-          </NavbarBrand>
+          <NavLink to="/" styleName="brand" className="d-flex align-items-center" title="Home">
+            <div styleName="logo" className="d-inline-block"></div>
+          </NavLink>
           <NavbarToggler onClick={this.toggle} styleName="nav-toggler"/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <NavMenu links={navLinks} />

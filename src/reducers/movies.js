@@ -1,10 +1,19 @@
-import { movieActionTypes } from '../actions/actionTypes';
+import { movieActionTypes } from '../constants/actionTypes';
 
-export default movies = (state = [], action) => {
+const initialState = {
+  discover: []
+};
+
+const movies = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_MOVIE:
-      return state;
+    case movieActionTypes.DISCOVER_MOVIE_SUCCESS:
+      return {
+        ...state,
+        discover: action.payload
+      };
     default:
       return state;
   }
-}
+};
+
+export default movies;
