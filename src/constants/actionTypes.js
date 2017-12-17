@@ -1,9 +1,10 @@
 import { generateActions } from '../utils/helpers';
 
-const globalActions = [
+const commonActions = [
   'CHANGE_ROUTE',
   'SEARCH_MULTI_REQUEST',
-  'SEARCH_MULTI_SUCCESS'
+  'SEARCH_MULTI_SUCCESS',
+  'FETCH_FAIL'
 ];
 
 const movieActions = [
