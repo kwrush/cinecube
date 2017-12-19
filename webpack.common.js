@@ -18,6 +18,7 @@ module.exports = {
       components: path.resolve(__dirname, 'src/components/'),
       containers: path.resolve(__dirname, 'src/containers/'),
       constants: path.resolve(__dirname, 'src/constants/'),
+      actions: path.resolve(__dirname, 'src/actions/'),
       pages: path.resolve(__dirname, 'src/pages/'),
       utils: path.resolve(__dirname, 'src/utils/')
     }
@@ -26,7 +27,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: /src/,
+        exclude: /node_modules/,
         use: 'babel-loader'
       },
       // for loading bootstrap css
