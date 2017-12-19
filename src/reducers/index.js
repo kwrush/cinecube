@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux';
-import movies from './movies';
+import { combineReducers } from 'redux-immutable';
+import movie from './movie';
+import tv from './tv';
 
 const appReducer = combineReducers({
-  movies
+  movie,
+  tv
 });
 
 export default appReducer;

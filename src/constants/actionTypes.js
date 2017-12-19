@@ -46,7 +46,7 @@ const peopleActions = [
   'FETCH_PEOPLE_INFO_SUCCESS'
 ];
 
-export const glboalActionTypes = generateActions(globalActions);
+export const commonActionTypes = generateActions(commonActions);
 export const movieActionTypes  = generateActions(movieActions);
 export const tvActionTypes     = generateActions(tvActions);
 export const peopleActionTYpes = generateActions(peopleActions);

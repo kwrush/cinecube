@@ -50,7 +50,7 @@ export const searchTvShows = async (query, params) => {
 /**
  * Load details of tv show by its id
  */
-export const tvInfo = async (id) => {
+export const tvShowsInfo = async (id) => {
   return api.get(`${tvEndPoints.info}/${id}`);
 }
 

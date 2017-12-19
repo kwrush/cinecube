@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import { Record, Map } from 'immutable';
+import { fromJS} from 'immutable';
 import thunkMiddleware from 'redux-thunk';
 import appReducer from '../reducers/index';
 
@@ -13,88 +13,57 @@ import appReducer from '../reducers/index';
  * {
  *   movie: {
  *     entities: {'abc': {...}, 'efg': {...}},
- *     discover: {'isFetching': false, result: ['abc', 'efg']},
- *     popular: {'isFetching': false, result: ['abc']},
+ *     discover: {'isFetching': false, result: {'abc': true, 'efg': true}},
+ *     popular: {'isFetching': false, result: {'abc': true}},
  *     ....
  *   },
  *   ....
  * }, which avoid duplicating data in the state
  */
-const initialState = new Record({
-  movie: new Record({
-    entities: Map(),
-    discover: new Record({
-      isFetching: false,
-      result: []
-    }),
-    popular: new Record({
-      isFetching: false,
-      result: []
-    }),
-    upcoming: new Record({
-      isFetching: false,
-      result: []
-    }),
-    inTheatre: new Record({
-      isFetching: false,
-      result: []
-    }),
-    topRated: new Record({
-      isFetching: false,
-      result: []
-    }),
-    search: new Record({
-      isFetching: false,
-      query: '',
-      result: []
-    })
-  }),
-  tv: new Record({
-    entities: Map(),
-    discover: new Record({
-      isFetching: false,
-      result: []
-    }),
-    popular: new Record({
-      isFetching: false,
-      result: []
-    }),
-    onAir: new Record({
-      isFetching: false,
-      result: []
-    }),
-    topRated: new Record({
-      isFetching: false,
-      result: []
-    }),
-    search: new Record({
-      isFetching: false,
-      query: '',
-      result: []
-    })
-  }),
-  people: new Record({
-    entities: Map(),
-    popular: new Record({
-      isFetching: false,
-      result: []
-    }),
-    search: new Record({
-      isFetching: false,
-      query: '',
-      result: []
-    })
-  }),
-  favorite: new Record({
+
+const entityItem = {
+  updateAt: null,
+  isFetching: false,
+  result: {}
+};
+
+const initialState = fromJS({
+  movie: {
+    entities: {},
+    discover: entityItem,
+    popular: entityItem,
+    upcoming: entityItem,
+    inTheatre: entityItem,
+    topRated: entityItem,
+    info: entityItem,
+    search: entityItem
+  },
+  tv: {
+    entities: {},
+    discover: entityItem,
+    popular: entityItem,
+    onAir: entityItem,
+    topRated: entityItem,
+    info: entityItem,
+    search: entityItem
+  },
+  people: {
+    entities: {},
+    popular: entityItem,
+    info: entityItem,
+    search: entityItem
+  },
+  favorite: {
     isFetching: false,
-    movie: [],
-    tv: []
-  }),
-  searchMulti: new Record({
+    movie: {},
+    tv: {}
+  },
+  searchMulti: {
     isFetching: false,
-    query: '',
-    result: []
-  })
+    movie: {},
+    tv: {},
+    people: {}
+  }
 });
 
 export default (initialState = initialState) => {
