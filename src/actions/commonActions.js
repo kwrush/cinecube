@@ -10,7 +10,7 @@ export const fetchRequest = (actionType) => ({
 export const fetchSuccess = (data, actionType ) => ({
   type: actionType,
   payload: {
-    updateAt: Date.now(),
+    updatedAt: Date.now(),
     isFetching: false,
     data: data
   }

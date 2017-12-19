@@ -1,7 +1,7 @@
 export const mapToCssModules = (className, cssModule) => {
   if (!cssModule) return className;
   return !className ? '' : className.split(/\s+/).map(c => cssModule[c] || c).join(' ');
-}
+};
 
 export const generateActions = (actions) => {
   const actionMap = {};
@@ -13,4 +13,4 @@ export const generateActions = (actions) => {
   }
 
   return actionMap;
-}
+};

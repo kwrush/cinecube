@@ -12,7 +12,7 @@ import {
 import { 
   api,
   loadMovies, searchMovies, movieInfo,
-  loadTvShows, searchTvShows, tvInfo,
+  loadTvShows, searchTvShows, tvShowsInfo,
   searchPeople, peopleInfo, searchMulti
 } from '../api';
 
@@ -186,7 +186,7 @@ describe('Client side api testing', () => {
         });
 
       let onResolve = sinon.spy();
-      tvInfo(1)
+      tvShowsInfo(1)
         .then(res => res.data)
         .then(onResolve);
   

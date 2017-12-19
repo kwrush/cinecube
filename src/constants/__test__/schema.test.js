@@ -6,7 +6,7 @@ describe('Normalizr schema testing', () => {
   describe('Movie schema testing', () => {
     it('should normalize popular movie api response', () => {
       const data = require('./__mock__/popularMovie.json');
-      const rs = normalize(data.results, movieResultSchema);
+      const rs = normalize(data.result, movieResultSchema);
       expect(rs).to.be.an('object');
       expect(Object.keys(rs)).to.have.lengthOf(2);
     });

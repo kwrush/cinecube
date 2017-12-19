@@ -7,7 +7,11 @@ import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
     const { data } = await loadMovies(type, params); 
-    const result = normalize(data.results, movieResultSchema);
+    const result = {
+      page: data.page,
+      totalPages: data.totalPages,
+      ...normalize(data.results, movieResultSchema)
+    };
     dispatch(fetchSuccess(result, fetchSuccessAction));
   } catch (err) {
     dispatch(fetchFailure(err));

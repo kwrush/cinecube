@@ -7,7 +7,11 @@ import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 const performTvShowsFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
     const { data } = await loadTvShows(type, params); 
-    const result = normalize(data.results, tvResultSchema);
+    const result = {
+      page: data.page,
+      totalPages: data.totalPages,
+      ...normalize(data.results, tvResultSchema)
+    };
     dispatch(fetchSuccess(result, fetchSuccessAction));
   } catch (err) {
     dispatch(fetchFailure(err));

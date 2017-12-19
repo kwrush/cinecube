@@ -5,9 +5,9 @@ import BackdropCarousel from 'components/BackdropCarousel/index';
 
 const mapStateToProps = (state) => {
   const entities = state.getIn(['movie', 'entities']);
-  const entity = state.getIn(['movie', 'discover', 'result']);
+  const pages = state.getIn(['movie', 'discover', 'pages']);
   return {
-    items: Object.keys(entity.toJS()).map(id => entities.getIn(['movie', `${id}`]).toJS())
+    items: pages.size === 0 ? [] : Object.keys(pages.get(`${pages.size}`).toJS()).map(id => entities.getIn(['movie', `${id}`]).toJS())
   };
 };
 
