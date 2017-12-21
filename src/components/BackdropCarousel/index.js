@@ -86,12 +86,12 @@ class BackdropCarousel extends React.Component {
         <CarouselItem
           key={item.id}
           src={item.backdropPath.l}
-          altText={item.title}
+          altText={item.title || item.name}
           onExiting={this.onExiting}
           onExited={this.onExited}
           styleName="item"
         >
-          <CarouselCaption captionText={item.releaseDate} captionHeader={item.title} />  
+          <CarouselCaption captionText={item.releaseDate || ''} captionHeader={item.title} />  
         </CarouselItem>
       );
     });
@@ -104,7 +104,12 @@ class BackdropCarousel extends React.Component {
           previous={this.prevSlide}
           interval={false}
         >
-          <CarouselIndicators items={keys} activeIndex={activeIndex} onClickHandler={this.goToSlide} />
+          <CarouselIndicators 
+            styleName="carousel-indicator"
+            items={keys} 
+            activeIndex={activeIndex} 
+            onClickHandler={this.goToSlide} 
+          />
           {slides}
           <CarouselControl direction="prev" directionText="previous" onClickHandler={this.prevSlide} />
           <CarouselControl direction="next" directionText="next" onClickHandler={this.nextSlide} />

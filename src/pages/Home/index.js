@@ -1,10 +1,37 @@
 import './style.scss';
 
 import React from 'react'
-import { Container } from 'reactstrap';
+import { connect } from 'react-redux';
+import { Container, Row, Col } from 'reactstrap';
+import { getDiscoverMovies, getInTheatreMovies } from 'selectors/movieSelectors';
+import { getDiscoverTvs, getOnAirTvs } from 'selectors/tvSelectors';
+import { movieActionTypes, tvActionTypes } from 'constants/actionTypes';
+import { fetchMovies } from 'actions/movieActions';
+import { fetchTvShows } from 'actions/tvActions';
 import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
-import CarouselCountainer from 'containers/CarouselContainer/index';
+import BackdropCarousel from 'components/BackdropCarousel/index';
+import PosterPanel from 'components/PosterPanel/index';
+
+const mapStateToProps = (state) => {
+  return {
+    discoverMovies: getDiscoverMovies(state).slice(0, 5),
+    discoverTvs: getDiscoverTvs(state).slice(0, 3),
+    inTheatreMovies: getInTheatreMovies(state).slice(0, 4),
+    onAirTvs: getOnAirTvs(state).slice(0, 4)
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadDiscovery: () => {
+      dispatch(fetchMovies(movieActionTypes.DISCOVER_MOVIE_REQUEST));
+      dispatch(fetchTvShows(tvActionTypes.DISCOVER_TV_REQUEST));
+    },
+    loadInTheatreMovies: () => dispatch(fetchMovies(movieActionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST)),
+    loadOnAirTvs: () => dispatch(fetchTvShows(tvActionTypes.FETCH_ON_AIR_TV_REQUEST))
+  };
+}
 
 class Home extends React.Component {
   constructor (props) {
@@ -12,16 +39,50 @@ class Home extends React.Component {
   }
 
   render () {
+    const { 
+      discoverMovies, 
+      discoverTvs,
+      inTheatreMovies,
+      onAirTvs,
+      loadDiscovery,
+      loadInTheatreMovies,
+      loadOnAirTvs
+    } = this.props;
+    
+    const discover = discoverMovies.concat(discoverTvs);
+    
     return (
       <Container>
         <SectionContainer>
           <SectionHeader title="Discover" />
-          <CarouselCountainer />
-          <div>Something below</div>
+          <BackdropCarousel
+            items={discover.toList().toJS()}
+            loadItems={loadDiscovery}
+          />
         </SectionContainer>
+        <Row>
+          <Col sm="12" md="6">
+            <SectionContainer>
+              <SectionHeader title="Now Playing" />
+              <PosterPanel
+                posters={inTheatreMovies.toList().toJS()}
+                loadPosters={loadInTheatreMovies}
+              />
+            </SectionContainer>
+          </Col>
+          <Col sm="12" md="6">
+            <SectionContainer>
+              <SectionHeader title="On the Air" />
+              <PosterPanel
+                posters={onAirTvs.toList().toJS()}
+                loadPosters={loadOnAirTvs}
+              />
+            </SectionContainer>
+          </Col>
+        </Row>
       </Container>
     );
   }
 }
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

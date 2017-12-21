@@ -7,10 +7,11 @@
  * }
  */
 export const pageEntity = {
-  pages: {},
-  totalPages: 0,
+  pageIndex: null,
+  totalPages: null,
   isFetching: false,
-  updatedAt: null
+  updatedAt: null,
+  result: {}
 };
 
 export const infoEntity = {

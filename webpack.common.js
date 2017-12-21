@@ -20,6 +20,7 @@ module.exports = {
       constants: path.resolve(__dirname, 'src/constants/'),
       actions: path.resolve(__dirname, 'src/actions/'),
       pages: path.resolve(__dirname, 'src/pages/'),
+      selectors: path.resolve(__dirname, 'src/selectors'),
       utils: path.resolve(__dirname, 'src/utils/')
     }
   },

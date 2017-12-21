@@ -3,12 +3,19 @@ import { movieEntity } from 'constants/storeConstants';
 import { movieActionTypes as actionTypes } from 'constants/actionTypes';
 import { 
   updateFetchStatus, 
-  updateResultEntity, 
-  updateInfoEntity 
+  updateResultEntity
 } from 'utils/reducerHandlers';
 
 const initialState = fromJS(movieEntity); 
 
+const updateMoiveInfoEntity = (state, newData) =>
+  state
+    .mergeDeep({
+      entities: newData.entities.movie,
+      info: {
+        id: newData.result
+      }
+    });
 
 const movie = (state = initialState, action) => {
   switch (action.type) {
@@ -27,32 +34,32 @@ const movie = (state = initialState, action) => {
     case actionTypes.DISCOVER_MOVIE_SUCCESS:
       return updateResultEntity(
         updateFetchStatus(state, 'discover', action.payload), 
-        'discover', action.payload.data
+        'discover', action.payload
       );
     case actionTypes.FETCH_POPULAR_MOVIE_SUCCESS:
       return updateResultEntity(
         updateFetchStatus(state, 'popular', action.payload), 
-        'popular', action.payload.data
+        'popular', action.payload
       );
     case actionTypes.FETCH_TOP_RATED_MOVIE_SUCCESS:
       return updateResultEntity(
         updateFetchStatus(state, 'topRated', action.payload), 
-        'topRated', action.payload.data
+        'topRated', action.payload
       );
     case actionTypes.FETCH_UPCOMING_MOVIE_SUCCESS:
       return updateResultEntity(
         updateFetchStatus(state, 'upcoming', action.payload), 
-        'upcoming', action.payload.data
+        'upcoming', action.payload
       );
     case actionTypes.FETCH_IN_THEATRE_MOVIE_SUCCESS:
       return updateResultEntity(
         updateFetchStatus(state, 'inTheatre', action.payload), 
-        'inTheatre', action.payload.data
+        'inTheatre', action.payload
       );
     case actionTypes.FETCH_MOVIE_INFO_SUCCESS:
-      return updateInfoEntity(
+      return updateMovieInfoEntity(
         updateFetchStatus(state, 'info', action.payload), 
-        action.payload.data);
+        action.payload);
     default:
       return state;
   }

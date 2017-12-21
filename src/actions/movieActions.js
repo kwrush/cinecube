@@ -7,12 +7,16 @@ import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
     const { data } = await loadMovies(type, params); 
-    const result = {
-      page: data.page,
+    const normalized = normalize(data.results, movieResultSchema);
+    const payload = {
+      pageIndex: data.page,
       totalPages: data.totalPages,
-      ...normalize(data.results, movieResultSchema)
+      entities: { ...normalized.entities.movie },
+      result: normalized.result,
+      isFetching: false,
+      updatedAt: Date.now()
     };
-    dispatch(fetchSuccess(result, fetchSuccessAction));
+    dispatch(fetchSuccess(payload, fetchSuccessAction));
   } catch (err) {
     dispatch(fetchFailure(err));
     // for debug
@@ -35,8 +39,14 @@ const fetchUpcomingMovie = (params) => performMovieFetch('upcoming', params, act
 const fetchMovieInfo = (id) => async (dispatch) => {
   try {
     const { data } = await movieInfo(id);
-    const result = normalize(data, movieInfoSchema);
-    dispatch(fetchSuccess(result, actionTypes.FETCH_MOVIE_INFO_SUCCESS));
+    const normalized = normalize(data, movieInfoSchema);
+    const payload = {
+      entities: normalized.entities,
+      result: normalized.result,
+      isFetching: false,
+      updatedAt: Date.now()
+    };
+    dispatch(fetchSuccess(payload, actionTypes.FETCH_MOVIE_INFO_SUCCESS));
   } catch (err) {
     dispatch(fetchFailure(err));
     // for debug
@@ -49,8 +59,15 @@ const fetchMovieInfo = (id) => async (dispatch) => {
 const performMovieSearch = (query, params) => async (dispatch) => {
   try {
     const { data } = await searchMovies(query, params);
-    const result = normalize(data.results, movieResultSchema);
-    dispatch(fetchSuccess(data.results, actionTypes.SEARCH_MOVIE_SUCCESS));
+    const normalized = normalize(data.results, movieResultSchema);
+    const payload = {
+      pageIndex: data.page,
+      totalPages: data.totalPages,
+      entities: { ...normalized.entities.movie },
+      result: normalized.result,
+      isFetching: false
+    };
+    dispatch(fetchSuccess(payload, actionTypes.SEARCH_MOVIE_SUCCESS));
   } catch (err) {
     dispatch(fetchFailure(err));
     // for debug
