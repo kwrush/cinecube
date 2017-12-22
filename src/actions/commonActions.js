@@ -9,13 +9,14 @@ export const fetchRequest = (actionType) => ({
 
 export const fetchSuccess = (data, actionType ) => ({
   type: actionType,
+  isFetching: false,
+  updatedAt: Date.now,
   payload: { ...data }
 });
 
 export const fetchFailure = (error) => ({
   type: commonAction.FETCH_FAIL,
   isFetching: false,
-  payload: 'Failed to load content.',
-  _debug: error  
+  payload: 'Failed to load content.'
 });
 

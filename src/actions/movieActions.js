@@ -12,9 +12,7 @@ const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch)
       pageIndex: data.page,
       totalPages: data.totalPages,
       entities: { ...normalized.entities.movie },
-      result: normalized.result,
-      isFetching: false,
-      updatedAt: Date.now()
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, fetchSuccessAction));
   } catch (err) {
@@ -42,9 +40,7 @@ const fetchMovieInfo = (id) => async (dispatch) => {
     const normalized = normalize(data, movieInfoSchema);
     const payload = {
       entities: normalized.entities,
-      result: normalized.result,
-      isFetching: false,
-      updatedAt: Date.now()
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, actionTypes.FETCH_MOVIE_INFO_SUCCESS));
   } catch (err) {
@@ -64,8 +60,7 @@ const performMovieSearch = (query, params) => async (dispatch) => {
       pageIndex: data.page,
       totalPages: data.totalPages,
       entities: { ...normalized.entities.movie },
-      result: normalized.result,
-      isFetching: false
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, actionTypes.SEARCH_MOVIE_SUCCESS));
   } catch (err) {

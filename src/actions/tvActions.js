@@ -12,9 +12,7 @@ const performTvShowsFetch = (type, params, fetchSuccessAction) => async (dispatc
       pageIndex: data.page,
       totalPages: data.totalPages,
       entities: { ...normalized.entities.tv },
-      result: normalized.result,
-      isFetching: false,
-      updatedAt: Date.now()
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, fetchSuccessAction));
   } catch (err) {
@@ -40,9 +38,7 @@ const fetchTvShowsInfo = (id) => async (dispatch) => {
     const normalized = normalize(data, tvInfoSchema);
     const payload = {
       entities: normalized.entities,
-      result: normalized.result,
-      isFetching: false,
-      updatedAt: Date.now()
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, actionTypes.FETCH_TV_INFO_SUCCESS));
   } catch (err) {
@@ -62,9 +58,7 @@ const performTvShowsSearch = (query, params) => async (dispatch) => {
       pageIndex: data.page,
       totalPages: data.totalPages,
       entities: { ...normalized.entities.tv },
-      result: normalized.result,
-      isFetching: false,
-      updatedAt: Date.now()
+      result: normalized.result
     };
     dispatch(fetchSuccess(payload, actionTypes.SEARCH_TV_SUCCESS));
   } catch (err) {

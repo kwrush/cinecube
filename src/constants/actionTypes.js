@@ -4,7 +4,7 @@ const commonActions = [
   'CHANGE_ROUTE',
   'SEARCH_MULTI_REQUEST',
   'SEARCH_MULTI_SUCCESS',
-  'FETCH_FAIL'
+  'FETCH_REQUEST_FAIL'
 ];
 
 const movieActions = [
@@ -42,8 +42,10 @@ const tvActions = [
 const peopleActions = [
   'SEARCH_PEOPLE_REQUEST',
   'SEARCH_PEOPLE_SUCCESS',
-  'FETCH_PEOPLE_INFO_REQUEST',
-  'FETCH_PEOPLE_INFO_SUCCESS'
+  'FETCH_POPULAR_PEOPLE_REQUEST',
+  'FETCH_POPULAR_PEOPLE_SUCCESS',
+  'FETCH_PEOPLE_PROFILE_REQUEST',
+  'FETCH_PEOPLE_PROFILE_SUCCESS'
 ];
 
 export const commonActionTypes = generateActions(commonActions);

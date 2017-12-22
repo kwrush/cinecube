@@ -15,7 +15,7 @@ import PosterPanel from 'components/PosterPanel/index';
 
 const mapStateToProps = (state) => {
   return {
-    discoverMovies: getDiscoverMovies(state).slice(0, 5),
+    discoverMovies: getDiscoverMovies(state).slice(0, 4),
     discoverTvs: getDiscoverTvs(state).slice(0, 3),
     inTheatreMovies: getInTheatreMovies(state).slice(0, 4),
     onAirTvs: getOnAirTvs(state).slice(0, 4)
@@ -56,7 +56,7 @@ class Home extends React.Component {
         <SectionContainer>
           <SectionHeader title="Discover" />
           <BackdropCarousel
-            items={discover.toList().toJS()}
+            items={discover}
             loadItems={loadDiscovery}
           />
         </SectionContainer>
@@ -65,8 +65,10 @@ class Home extends React.Component {
             <SectionContainer>
               <SectionHeader title="Now Playing" />
               <PosterPanel
-                posters={inTheatreMovies.toList().toJS()}
+                posters={inTheatreMovies}
                 loadPosters={loadInTheatreMovies}
+                endPoint={'/movie'}
+                posterSize={'s'}
               />
             </SectionContainer>
           </Col>
@@ -74,8 +76,10 @@ class Home extends React.Component {
             <SectionContainer>
               <SectionHeader title="On the Air" />
               <PosterPanel
-                posters={onAirTvs.toList().toJS()}
+                posters={onAirTvs}
                 loadPosters={loadOnAirTvs}
+                endPoint={'/tv'}
+                posterSize={'s'}
               />
             </SectionContainer>
           </Col>

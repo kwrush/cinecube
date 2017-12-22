@@ -54,6 +54,12 @@ export const tvShowsInfo = async (id) => {
   return api.get(`${tvEndPoints.info}/${id}`);
 }
 
+export const popularPeople = async (params) => {
+  return api.get(peopleEndPoints.popular, {
+    params: { ...params }
+  });
+}
+
 /**
  * Search for people by the given query
  */
@@ -64,14 +70,14 @@ export const searchPeople = async (query, params) => {
 }
 
 /**
- * Overview of the person with the given id
+ * Get profile of the person with the given id
  */
-export const peopleInfo = async (id) => {
+export const peopleProfile = async (id) => {
   return api.get(`${peopleEndPoints.info}/${id}`);
 }
 
 /**
- * Search for movies, tv shows and persons in a single request
+ * Search for movies and tv shows in a single request
  */
 export const searchMulti = async (query, params) => {
   return api.get('/search/multi', {

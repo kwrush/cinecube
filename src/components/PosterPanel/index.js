@@ -2,10 +2,38 @@ import './style.scss';
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Map } from 'immutable';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { mapToCssModules } from 'utils/helpers';
 import ImageCard from 'components/ImageCard';
+
+const propTypes = {
+  posters: ImmutablePropTypes.mapOf(
+    ImmutablePropTypes.mapContains({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string,
+      title: PropTypes.string,
+      posterPath: ImmutablePropTypes.mapContains({
+        xs: PropTypes.string,
+        s: PropTypes.string,
+        m: PropTypes.string,
+        orig: PropTypes.string
+      })
+    })
+  ),
+  loadPosters: PropTypes.func,
+  endPoint: PropTypes.string,
+  posterSize: PropTypes.oneOf(['xs', 's', 'm', 'l', 'orig'])
+};
+
+const defaultProps = {
+  posters: Map(),
+  loadPosters: () => {},
+  endPoint: '/',
+  posterSize: 's'
+};
 
 class PosterPanel extends React.Component {
   constructor (props) {
@@ -13,22 +41,24 @@ class PosterPanel extends React.Component {
   }
   
   componentWillMount () {
-    const { loadPosters } = this.props;
-    loadPosters();
+    this.props.loadPosters();
   }
   
   render () {
     const { posters, className, cssModule } = this.props;
     const classes = mapToCssModules(className, cssModule);
-    const colSize = 12 / posters.length;
+    const colSize = 12 / posters.size;
     
-    const posterCols = posters.map(poster => {
+    const posterCols = posters.toList().map(poster => {
       return (
-        <Col key={poster.id} md={`${colSize}`}>
-          <Link to={`/movie/${poster.id}`} styleName="poster-link">
+        <Col key={poster.get('id')} md={`${colSize}`}>
+          <Link 
+            styleName="poster-link" 
+            to={`${this.props.endPoint}/${poster.get('id')}`} 
+            title={poster.get('title') || poster.get('name')}>
             <ImageCard 
               styleName='poster'
-              imgUrl={poster.posterPath.s} 
+              imgUrl={poster.getIn(['posterPath', this.props.posterSize])} 
             />
           </Link>
         </Col>
@@ -42,5 +72,8 @@ class PosterPanel extends React.Component {
     );
   }
 } 
+
+PosterPanel.propTypes = propTypes;
+PosterPanel.defaultProps = defaultProps;
 
 export default PosterPanel;

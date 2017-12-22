@@ -1,7 +1,9 @@
 import './style.scss';
 
 import React from 'react';
+import { Map } from 'immutable';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import {
   Carousel,
   CarouselCaption,
@@ -13,19 +15,22 @@ import ImageCard from 'components/ImageCard/index';
 import { mapToCssModules } from 'utils/helpers';
 
 const propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
+  items: ImmutablePropTypes.mapOf(
+    ImmutablePropTypes.mapContains({
+      id: PropTypes.number.isRequired,
       title: PropTypes.string,
-      genreIds: PropTypes.arrayOf(PropTypes.number),
-      posterUrl: PropTypes.string,
-      backdropUrl: PropTypes.string
+      name: PropTypes.string,
+      releaseDate: PropTypes.string,
+      posterUrl: ImmutablePropTypes.map,
+      backdropUrl: ImmutablePropTypes.map,
     })
-  )
+  ),
+  loadItems: PropTypes.func
 };
 
 const defaultProps = {
-  items: []
+  items: Map(),
+  loadItems: () => {}
 }
 
 class BackdropCarousel extends React.Component {
@@ -37,8 +42,7 @@ class BackdropCarousel extends React.Component {
   }
 
   componentWillMount () {
-    const { loadItems } = this.props;
-    loadItems();
+    this.props.loadItems();
   }
 
   onExiting = () => {
@@ -51,7 +55,7 @@ class BackdropCarousel extends React.Component {
   
   nextSlide = () => {
     if (this.animating) return;
-    const nextIndex = this.state.activeIndex === this.props.items.length - 1 
+    const nextIndex = this.state.activeIndex === this.props.items.size - 1 
       ? 0 : this.state.activeIndex + 1;
     this.setState({ activeIndex: nextIndex });
   }
@@ -59,13 +63,13 @@ class BackdropCarousel extends React.Component {
   prevSlide = () => {
     if (this.animating) return;
     const nextIndex = this.state.activeIndex === 0
-      ? this.props.items.length - 1 : this.state.activeIndex - 1;
+      ? this.props.items.size - 1 : this.state.activeIndex - 1;
     this.setState({ activeIndex: nextIndex });
   }
   
   goToSlide = (index) => {
     if (this.animating) return;
-    if (index >= 0 && index < this.props.items.length) {
+    if (index >= 0 && index < this.props.items.size) {
       this.setState({ activeIndex: index });
     } 
   }
@@ -74,24 +78,30 @@ class BackdropCarousel extends React.Component {
     const { activeIndex } = this.state;
     const { items, className, cssModule } = this.props;
     const classes = mapToCssModules(className, cssModule);
-
     const keys = [];
-    
-    const slides = items.map((item) => {
+
+    const slides = items.toList().map((item, index) => {
+
+      let captionText = item.get('releaseDate') || '';
+      let captionHeader = item.get('title') || item.get('name');
+
+      let id = index + '-' + item.get('id');
+
+      // for indexing carousel indicators
       keys.push({
-        key: item.id
+        key: id
       });
 
       return (
         <CarouselItem
-          key={item.id}
-          src={item.backdropPath.l}
-          altText={item.title || item.name}
+          key={id}
+          src={item.getIn(['backdropPath', 'l'])}
+          altText={captionHeader}
           onExiting={this.onExiting}
           onExited={this.onExited}
           styleName="item"
         >
-          <CarouselCaption captionText={item.releaseDate || ''} captionHeader={item.title} />  
+          <CarouselCaption captionText={captionText} captionHeader={captionHeader} />  
         </CarouselItem>
       );
     });

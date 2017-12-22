@@ -10,13 +10,7 @@ export const getInTheatreMovieIds = state => state.getIn(['movie', 'inTheatre', 
 
 export const getPopularMovies = createSelector(
   [ getMovieOverviewEntity, getPopularMovieIds ],
-  (data, ids) => {
-    return ids
-    .map(id => data.get(id))
-    .sortBy(
-      movie => movie.get('popularity'),
-      (p1, p2) => descendComparator(p1, p2)
-  )}
+  (data, ids) => ids.map(id => data.get(id))
 ); 
 
 export const getDiscoverMovies = createSelector(
