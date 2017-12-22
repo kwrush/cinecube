@@ -8,6 +8,7 @@ const router = require('express').Router();
 
 const camelCaseKey = require('../../middlewares/camelCaseKey');
 const tmdbPosters  = require('../../middlewares/tmdbPosters');
+const tmdbCredits  = require('../../middlewares/tmdbCredits');
 const tmdbProfiles = require('../../middlewares/tmdbProfiles');
 
 router.get('/popular', (req, res) => {
@@ -90,10 +91,13 @@ router.get('/:id(\\d+)/', (req, res) => {
       backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
     });
     
-    res.json({
-      profile: profile,
-      cast: cast,
-      crew: crew});
+    res.json(Object.assign(profile,
+      {
+        knownFor: tmdbCredits({
+          cast: cast,
+          crew: crew
+        })
+      }));
   })
   .catch(err => res.status(err.status).send(err.response));
 });
