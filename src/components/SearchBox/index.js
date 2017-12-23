@@ -25,7 +25,7 @@ const SearchBox = (props) => {
             <div
               className="input-group-addon"
               styleName="search-button"
-              title="Search Cinematify"
+              title="Search CineCube"
             >
               <MdSearch styleName="search-icon" size={19} />
             </div>
@@ -35,8 +35,8 @@ const SearchBox = (props) => {
               id="searchbox"
               className="form-control-sm"
               styleName='search-input'
-              placeholder="Search Cinematify"
-              title="Search Cinematify"
+              placeholder="Search CineCube"
+              title="Search CineCube"
             />
             <div styleName="bottom-border"></div>
           </div>

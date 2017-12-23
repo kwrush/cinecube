@@ -3,6 +3,7 @@ import { tvActionTypes as actionTypes } from 'constants/actionTypes';
 import { tvResultSchema, tvInfoSchema } from 'constants/schema';
 import { loadTvShows, tvShowsInfo, searchTvShows } from 'utils/api';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
+import { differenceInDays } from 'utils/helpers';
 
 const performTvShowsFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
@@ -70,7 +71,7 @@ const performTvShowsSearch = (query, params) => async (dispatch) => {
   }
 };
 
-export const fetchTvShows = (requestType, params) => (dispatch) => {
+const fetchTvShows = (requestType, params) => (dispatch) => {
   let action = null;
   
   switch (requestType) {
@@ -91,6 +92,42 @@ export const fetchTvShows = (requestType, params) => (dispatch) => {
   if (action) {
     dispatch(fetchRequest(requestType));
     dispatch(action(params));
+  }
+};
+
+const shouldFetchTvShows = (state, entityType) => {
+
+  if (state.getIn(['tv', entityType])) {
+    const result = state.getIn(['tv', entityType, 'result']);
+    const updatedAt = state.getIn(['tv', entityType, 'updatedAt']);
+    return !result || result.size === 0 || 
+      updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
+  }
+
+  return false;
+};
+
+export const fetchTvShowsIfNeeded = (requestType, params) => (dispatch, getState) => {
+  
+  let entityType = null;
+  
+  switch (requestType) {
+    case actionTypes.DISCOVER_TV_REQUEST:
+      entityType = 'discover';
+      break;
+    case actionTypes.FETCH_POPULAR_TV_REQUEST:
+      entityType = 'popular'
+      break;
+    case actionTypes.FETCH_TOP_RATED_TV_REQUEST:
+      entityType = 'topRated';
+      break;
+    case actionTypes.FETCH_ON_AIR_TV_REQUEST:
+      entityType = 'onAir';
+      break;
+  }
+
+  if (shouldFetchTvShows(getState(), entityType)) {
+    dispatch(fetchTvShows(requestType, params));
   }
 };
 

@@ -9,9 +9,11 @@ export const fetchRequest = (actionType) => ({
 
 export const fetchSuccess = (data, actionType ) => ({
   type: actionType,
-  isFetching: false,
-  updatedAt: Date.now,
-  payload: { ...data }
+  payload: { 
+    isFetching: false,
+    updatedAt: Date.now(),
+    ...data
+  }
 });
 
 export const fetchFailure = (error) => ({

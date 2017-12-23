@@ -19,20 +19,23 @@ const propTypes = {
         xs: PropTypes.string,
         s: PropTypes.string,
         m: PropTypes.string,
+        l: PropTypes.string,
         orig: PropTypes.string
       })
     })
   ),
   loadPosters: PropTypes.func,
   endPoint: PropTypes.string,
-  posterSize: PropTypes.oneOf(['xs', 's', 'm', 'l', 'orig'])
+  posterSize: PropTypes.oneOf(['xs', 's', 'm', 'l', 'orig']),
+  columns: PropTypes.number
 };
 
 const defaultProps = {
   posters: Map(),
   loadPosters: () => {},
   endPoint: '/',
-  posterSize: 's'
+  posterSize: 's',
+  columns: 4
 };
 
 class PosterPanel extends React.Component {
@@ -47,7 +50,7 @@ class PosterPanel extends React.Component {
   render () {
     const { posters, className, cssModule } = this.props;
     const classes = mapToCssModules(className, cssModule);
-    const colSize = 12 / posters.size;
+    const colSize = 12 / this.props.columns;
     
     const posterCols = posters.toList().map(poster => {
       return (

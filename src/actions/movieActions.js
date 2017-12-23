@@ -3,6 +3,7 @@ import { movieActionTypes as actionTypes } from 'constants/actionTypes';
 import { movieResultSchema, movieInfoSchema } from 'constants/schema';
 import { loadMovies, movieInfo, searchMovies } from 'utils/api';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
+import { differenceInDays } from 'utils/helpers';
 
 const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
@@ -72,7 +73,7 @@ const performMovieSearch = (query, params) => async (dispatch) => {
   }
 };
 
-export const fetchMovies = (requestType, params) => (dispatch) => {
+const fetchMovies = (requestType, params) => (dispatch) => {
   let action = null;
   
   switch (requestType) {
@@ -101,6 +102,46 @@ export const fetchMovies = (requestType, params) => (dispatch) => {
     dispatch(action(params));
   }
 }
+
+const shouldFetchMovie = (state, entityType) => {
+
+  if (state.getIn(['movie', entityType])) {
+    const result = state.getIn(['movie', entityType, 'result']);
+    const updatedAt = state.getIn(['movie', entityType, 'updatedAt']);
+    return !result || result.size === 0 || 
+           updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
+  }
+
+  return false;
+};
+
+export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState) => {
+  let entityType = null;
+  switch (requestType) {
+    case actionTypes.DISCOVER_MOVIE_REQUEST:
+      entityType = 'discover';
+      break;
+    case actionTypes.FETCH_POPULAR_MOVIE_REQUEST:
+      entityType = 'popular';
+      break;
+    case actionTypes.FETCH_UPCOMING_MOVIE_REQUEST:
+      entityType = 'upcoming';
+      break;
+    case actionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST:
+      entityType = 'inTheatre'
+      break;
+    case actionTypes.FETCH_TOP_RATED_MOVIE_REQUEST:
+      entityType = 'topRated';
+      break;
+    case actionTypes.FETCH_MOVIE_INFO_REQUEST:
+      entityType = 'info';
+      break;
+  }
+  
+  if (shouldFetchMovie(getState(), entityType)) {
+    dispatch(fetchMovies(requestType, params));
+  }
+};
 
 export const movieSearch = (params) => (dispatch) => {
   const { query, ...options } = params;

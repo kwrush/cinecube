@@ -6,8 +6,8 @@ import { Container, Row, Col } from 'reactstrap';
 import { getDiscoverMovies, getInTheatreMovies } from 'selectors/movieSelectors';
 import { getDiscoverTvs, getOnAirTvs } from 'selectors/tvSelectors';
 import { movieActionTypes, tvActionTypes } from 'constants/actionTypes';
-import { fetchMovies } from 'actions/movieActions';
-import { fetchTvShows } from 'actions/tvActions';
+import { fetchMoviesIfNeeded } from 'actions/movieActions';
+import { fetchTvShowsIfNeeded } from 'actions/tvActions';
 import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
 import BackdropCarousel from 'components/BackdropCarousel/index';
@@ -25,11 +25,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadDiscovery: () => {
-      dispatch(fetchMovies(movieActionTypes.DISCOVER_MOVIE_REQUEST));
-      dispatch(fetchTvShows(tvActionTypes.DISCOVER_TV_REQUEST));
+      dispatch(fetchMoviesIfNeeded(movieActionTypes.DISCOVER_MOVIE_REQUEST));
+      dispatch(fetchTvShowsIfNeeded(tvActionTypes.DISCOVER_TV_REQUEST));
     },
-    loadInTheatreMovies: () => dispatch(fetchMovies(movieActionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST)),
-    loadOnAirTvs: () => dispatch(fetchTvShows(tvActionTypes.FETCH_ON_AIR_TV_REQUEST))
+    loadInTheatreMovies: () => dispatch(fetchMoviesIfNeeded(movieActionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST)),
+    loadOnAirTvs: () => dispatch(fetchTvShowsIfNeeded(tvActionTypes.FETCH_ON_AIR_TV_REQUEST))
   };
 }
 
