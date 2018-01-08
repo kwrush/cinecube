@@ -1,4 +1,4 @@
-@import '~styles/theme.scss';
+@import '~assets/styles/theme.scss';
 
 div.header {
   box-shadow: 0 0 2px $shadow;
@@ -17,21 +17,10 @@ div.header {
 .logo {
   width: 2.25rem;
   height: 2.25rem;
-  background-image: url('images/logo.png');
+  background-image: url('assets/images/logo.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat; 
-}
-
-.logo-text {
-  margin-top: 0.1rem;
-  margin-left: 0.1rem;
-  width: 120px;
-  height: 28px;
-  background: url('images/logo-text.png');
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
 }
 
 button.nav-toggler {

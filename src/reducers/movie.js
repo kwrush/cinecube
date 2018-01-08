@@ -57,7 +57,7 @@ const movie = (state = initialState, action) => {
         'inTheatre', action.payload
       );
     case actionTypes.FETCH_MOVIE_INFO_SUCCESS:
-      return updateMovieInfoEntity(
+      return updateMoiveInfoEntity(
         updateFetchStatus(state, 'info', action.payload), 
         action.payload);
     default:

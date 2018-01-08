@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-import { concatUrlParams } from './helpers';
 import { API_URL, movieEndPoints, tvEndPoints, peopleEndPoints } from '../constants/appConstants';
 
 export const api = axios.create({
@@ -64,7 +62,7 @@ export const popularPeople = async (params) => {
  * Search for people by the given query
  */
 export const searchPeople = async (query, params) => {
-  return api.get(peoplEndPoints.search, {
+  return api.get(peopleEndPoints.search, {
     params: { query: query, ...params }
   });
 }

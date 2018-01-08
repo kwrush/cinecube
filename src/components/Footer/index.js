@@ -1,7 +1,6 @@
 import './style.scss';
 
 import React from 'react';
-import { Container, NavbarBrand } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import FaGithub from 'react-icons/lib/fa/github';
 

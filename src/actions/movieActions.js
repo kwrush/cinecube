@@ -95,6 +95,8 @@ const fetchMovies = (requestType, params) => (dispatch) => {
     case actionTypes.FETCH_MOVIE_INFO_REQUEST:
       action = fetchMovieInfo;
       break;
+    default:
+      break;
   }
   
   if (action) {
@@ -135,6 +137,8 @@ export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState)
       break;
     case actionTypes.FETCH_MOVIE_INFO_REQUEST:
       entityType = 'info';
+      break;
+    default:
       break;
   }
   

@@ -4,7 +4,7 @@
 
 import './style.scss';
 import React from 'react';
-import { BrowserRouter, HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Header from 'components/Header/index';
 import Footer from 'components/Footer/index';

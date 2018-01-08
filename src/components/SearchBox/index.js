@@ -2,7 +2,7 @@ import './style.scss';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Label, Input } from 'reactstrap';
+import { Form, Label, Input, InputGroupAddon } from 'reactstrap';
 import MdSearch from 'react-icons/lib/md/search';
 import { mapToCssModules } from 'utils/helpers';
 
@@ -22,13 +22,11 @@ const SearchBox = (props) => {
         <Form role="search" styleName="search-form">
           <div className="input-group" styleName="searchbox-group">
             <Label for="searchbox" className="sr-only col-form-label-sm">Search</Label>
-            <div
-              className="input-group-addon"
-              styleName="search-button"
-              title="Search CineCube"
-            >
+            <InputGroupAddon 
+              className="d-flex flex-column justify-content-center"
+              styleName="search-button">
               <MdSearch styleName="search-icon" size={19} />
-            </div>
+            </InputGroupAddon>
             <Input
               type="search"
               name="search"

@@ -1,6 +1,6 @@
 {
   "config": {
-    "httpPort": 8001,
+    "httpPort": 3001,
     "apiKey": "c6b424c3bb5ffc5ca289439319b96b7c",
     "posterUrl": {
       "xs": "https://image.tmdb.org/t/p/w154",
