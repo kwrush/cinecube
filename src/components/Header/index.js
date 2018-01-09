@@ -2,19 +2,22 @@ import './style.scss';
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { mapToCssModules } from 'utils/helpers';
 import { 
   Container,
   Collapse, 
   Navbar, 
-  NavbarToggler, 
-  NavbarBrand, 
+  NavbarToggler
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import MdFavoriteOutline from 'react-icons/lib/md/favorite-outline';
-
 import NavMenu from 'components/NavMenu/index';
 import SearchBox from 'components/SearchBox/index';
 import { navLinks } from 'constants/appConstants';
+
+const propTypes = {
+  className: PropTypes.string,
+  cssModule: PropTypes.object
+};
 
 class Header extends React.Component {
   constructor (props) {
@@ -32,9 +35,11 @@ class Header extends React.Component {
   }
 
   render () {
-    
+    const { className, cssModule } = this.props;
+    const classes = mapToCssModules(className, cssModule);
+
     return (
-      <Container fluid styleName="header">
+      <Container fluid className={classes} styleName="header">
         <Navbar color="faded" light expand="md" styleName="navbar">
           <NavLink to="/" styleName="brand" className="d-flex align-items-center" title="Home">
             <div styleName="logo" className="d-inline-block"></div>
@@ -49,5 +54,7 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = propTypes;
 
 export default Header;

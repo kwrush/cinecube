@@ -33,6 +33,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
+// TODO: show loading ripple while fetching data
 class Home extends React.Component {
   constructor (props) {
     super(props);

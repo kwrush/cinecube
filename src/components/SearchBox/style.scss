@@ -1,7 +1,6 @@
 @import '~assets/styles/theme.scss';
 @import '~assets/styles/mixin.scss';
 
-.searchbox-container,
 .search-form,
 .searchbox-group {
   height: 100%;
@@ -49,11 +48,4 @@
 
 .search-icon {
   fill: $gray;
-}
-
-@media (max-width: 767px) {
-  .searchbox-container {
-    margin: 0 auto !important;
-    width: 100%;
-  }
 }

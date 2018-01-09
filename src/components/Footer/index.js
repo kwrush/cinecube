@@ -4,7 +4,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import FaGithub from 'react-icons/lib/fa/github';
 
-
 const Footer = () => (
   <footer styleName="footer">
     <div className="d-flex flex-column align-items-center">

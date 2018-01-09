@@ -11,7 +11,7 @@ const propTypes = {
   links: PropTypes.arrayOf(
     PropTypes.shape({
       url: PropTypes.string.isRequired,
-      tag: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
   className: PropTypes.string,
@@ -29,7 +29,7 @@ const NavMenu = (props) => {
         className="d-flex flex-column justify-content-center position-relative"
         activeClassName="active-link"
       >
-        {link.tag}
+        {link.label}
         <div styleName="link-indicator"></div>
       </NavLink>
     </NavItem>
