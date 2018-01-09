@@ -18,7 +18,10 @@ export const fetchSuccess = (data, actionType ) => ({
 
 export const fetchFailure = (error) => ({
   type: commonAction.FETCH_REQUEST_FAIL,
-  isFetching: false,
-  payload: 'Failed to load content.'
+  payload: {
+    isFetching: false,
+    error: error,
+    errorMessage: 'Failed to load content.'
+  }
 });
 

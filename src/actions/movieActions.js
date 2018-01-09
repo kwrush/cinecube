@@ -2,9 +2,16 @@ import { normalize } from 'normalizr';
 import { movieActionTypes as actionTypes } from 'constants/actionTypes';
 import { movieResultSchema, movieInfoSchema } from 'constants/schema';
 import { loadMovies, movieInfo, searchMovies } from 'utils/api';
+import { getResult, getUpdateTime } from 'selectors/commonSelectors';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 import { differenceInDays } from 'utils/helpers';
 
+/**
+ * Dispatch action for fetching the specific types of movies
+ * @param {String} type type of movies to be fetched
+ * @param {Object} params parameters for performing async api call
+ * @param {String} fetchSuccessAction action to be dispatched after a successful fetch request
+ */
 const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
   try {
     const { data } = await loadMovies(type, params); 
@@ -53,6 +60,11 @@ const fetchMovieInfo = (id) => async (dispatch) => {
   }
 };
 
+/**
+ * Dispatch searching action for the given query
+ * @param {String} query search query 
+ * @param {Object} params parameters for searching 
+ */
 const performMovieSearch = (query, params) => async (dispatch) => {
   try {
     const { data } = await searchMovies(query, params);
@@ -73,77 +85,52 @@ const performMovieSearch = (query, params) => async (dispatch) => {
   }
 };
 
-const fetchMovies = (requestType, params) => (dispatch) => {
-  let action = null;
+const shouldFetchMovie = (state, entityType) => {
   
+  const result = getResult(state, 'movie', entityType);
+  const updatedAt = getUpdateTime(state, 'movie', entityType);
+
+  return !result || result.size === 0 || 
+    updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
+};
+
+export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState) => {
+  
+  let entityType = null;
+  let action = null;
+
   switch (requestType) {
     case actionTypes.DISCOVER_MOVIE_REQUEST:
+      entityType = 'discover';
       action = discoverMovie;
       break;
     case actionTypes.FETCH_POPULAR_MOVIE_REQUEST:
+      entityType = 'popular';
       action = fetchPopularMovie;
       break;
     case actionTypes.FETCH_UPCOMING_MOVIE_REQUEST:
+      entityType = 'upcoming';
       action = fetchUpcomingMovie;
       break;
     case actionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST:
+      entityType = 'inTheatre';
       action = fetchInTheatreMovie;
       break;
     case actionTypes.FETCH_TOP_RATED_MOVIE_REQUEST:
+      entityType = 'topRated';
       action = fetchTopRatedMovie;
       break;
     case actionTypes.FETCH_MOVIE_INFO_REQUEST:
+      entityType = 'info';
       action = fetchMovieInfo;
       break;
     default:
       break;
   }
   
-  if (action) {
+  if (action && shouldFetchMovie(getState(), entityType)) {
     dispatch(fetchRequest(requestType));
     dispatch(action(params));
-  }
-}
-
-const shouldFetchMovie = (state, entityType) => {
-
-  if (state.getIn(['movie', entityType])) {
-    const result = state.getIn(['movie', entityType, 'result']);
-    const updatedAt = state.getIn(['movie', entityType, 'updatedAt']);
-    return !result || result.size === 0 || 
-           updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
-  }
-
-  return false;
-};
-
-export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState) => {
-  let entityType = null;
-  switch (requestType) {
-    case actionTypes.DISCOVER_MOVIE_REQUEST:
-      entityType = 'discover';
-      break;
-    case actionTypes.FETCH_POPULAR_MOVIE_REQUEST:
-      entityType = 'popular';
-      break;
-    case actionTypes.FETCH_UPCOMING_MOVIE_REQUEST:
-      entityType = 'upcoming';
-      break;
-    case actionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST:
-      entityType = 'inTheatre'
-      break;
-    case actionTypes.FETCH_TOP_RATED_MOVIE_REQUEST:
-      entityType = 'topRated';
-      break;
-    case actionTypes.FETCH_MOVIE_INFO_REQUEST:
-      entityType = 'info';
-      break;
-    default:
-      break;
-  }
-  
-  if (shouldFetchMovie(getState(), entityType)) {
-    dispatch(fetchMovies(requestType, params));
   }
 };
 

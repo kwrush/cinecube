@@ -1,12 +1,14 @@
 /**
- * Store entity for the specific end point, for example
+ * Store entity for the specific domain, for example
  * {
- *   pages: {1: { 123: '123', 456: '456' }, 2: {....}},
- *   pageCount: 100,
- *   isFetching: { 1: false, 2: true }
+ *   pageIndex: 1
+ *   totalPages: 100,
+ *   isFetching: false,
+ *   updatedAt: 10059593,
+ *   result: { id1: 'id1', id2: 'id2' }
  * }
  */
-export const pageEntity = {
+export const resultEntity = {
   pageIndex: null,
   totalPages: null,
   isFetching: false,
@@ -20,30 +22,41 @@ export const infoEntity = {
   id: null
 };
 
+
+/**
+ * Data store in which entities stores data objects, e.g.
+ * dataEntity = {
+ *   entities: { id1: {...}, id2: {...} },
+ *   discover: {
+ *     ...,
+ *     result: { id1: 'id1', id2: 'id2' }
+ *   }
+ * }
+ */
 export const movieEntity = {
   entities: {},
-  discover: pageEntity,
-  popular: pageEntity,
-  upcoming: pageEntity,
-  inTheatre: pageEntity,
-  topRated: pageEntity,
-  search: pageEntity,
+  discover: resultEntity,
+  popular: resultEntity,
+  upcoming: resultEntity,
+  inTheatre: resultEntity,
+  topRated: resultEntity,
+  search: resultEntity,
   info: infoEntity
 };
 
 export const tvEntity = {
   entities: {},
-  discover: pageEntity,
-  popular: pageEntity,
-  onAir: pageEntity,
-  topRated: pageEntity,
-  search: pageEntity,
+  discover: resultEntity,
+  popular: resultEntity,
+  onAir: resultEntity,
+  topRated: resultEntity,
+  search: resultEntity,
   info: infoEntity
 };
 
 export const peopleEntity = {
   entities: {},
-  popular: pageEntity,
-  search: pageEntity,
+  popular: resultEntity,
+  search: resultEntity,
   info: infoEntity
 };

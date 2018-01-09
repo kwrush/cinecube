@@ -2,6 +2,7 @@ import { normalize } from 'normalizr';
 import { tvActionTypes as actionTypes } from 'constants/actionTypes';
 import { tvResultSchema, tvInfoSchema } from 'constants/schema';
 import { loadTvShows, tvShowsInfo, searchTvShows } from 'utils/api';
+import { getResult, getUpdateTime } from 'selectors/commonSelectors';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 import { differenceInDays } from 'utils/helpers';
 
@@ -71,63 +72,48 @@ const performTvShowsSearch = (query, params) => async (dispatch) => {
   }
 };
 
-const fetchTvShows = (requestType, params) => (dispatch) => {
-  let action = null;
-  
-  switch (requestType) {
-    case actionTypes.DISCOVER_TV_REQUEST:
-      action = discoverTvShows;
-      break;
-    case actionTypes.FETCH_POPULAR_TV_REQUEST:
-      action = fetchPopularTvShows;
-      break;
-    case actionTypes.FETCH_TOP_RATED_TV_REQUEST:
-      action = fetchTopRatedTvShows;
-      break;
-    case actionTypes.FETCH_ON_AIR_TV_REQUEST:
-      action = fetchOnAirTvShows;
-      break;
-  }
-  
-  if (action) {
-    dispatch(fetchRequest(requestType));
-    dispatch(action(params));
-  }
-};
-
 const shouldFetchTvShows = (state, entityType) => {
 
-  if (state.getIn(['tv', entityType])) {
-    const result = state.getIn(['tv', entityType, 'result']);
-    const updatedAt = state.getIn(['tv', entityType, 'updatedAt']);
-    return !result || result.size === 0 || 
-      updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
-  }
+  const result = getResult(state, 'tv', entityType);
+  const updatedAt = getUpdateTime(state, 'tv', entityType);
 
-  return false;
+  return !result || result.size === 0 || 
+    updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
 };
 
 export const fetchTvShowsIfNeeded = (requestType, params) => (dispatch, getState) => {
   
   let entityType = null;
+  let action = null;
   
   switch (requestType) {
     case actionTypes.DISCOVER_TV_REQUEST:
       entityType = 'discover';
+      action = discoverTvShows;
       break;
     case actionTypes.FETCH_POPULAR_TV_REQUEST:
       entityType = 'popular'
+      action = fetchPopularTvShows;
       break;
     case actionTypes.FETCH_TOP_RATED_TV_REQUEST:
       entityType = 'topRated';
+      action = fetchTopRatedTvShows;
       break;
     case actionTypes.FETCH_ON_AIR_TV_REQUEST:
       entityType = 'onAir';
+      action = fetchOnAirTvShows;
+      break;
+    case actionTypes.FETCH_TV_INFO_REQUEST:
+      entityType = 'info';
+      action = fetchTvShowsInfo;
+      break;
+    default:
       break;
   }
 
-  if (shouldFetchTvShows(getState(), entityType)) {
-    dispatch(fetchTvShows(requestType, params));
+  if (action && shouldFetchTvShows(getState(), entityType)) {
+    dispatch(fetchRequest(requestType));
+    dispatch(action(params));
   }
 };
 

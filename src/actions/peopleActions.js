@@ -4,7 +4,7 @@ import { peopleResultSchema, peopleProfileSchema } from 'constants/schema';
 import { popularPeople, searchPeople, peopleProfile } from 'utils/api';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 
-export const fetchPopularPeople = async (params) => {
+export const fetchPopularPeople = (params) => async (dispatch) => {
   dispatch(fetchRequest(actionTypes.FETCH_POPULAR_PEOPLE_REQUEST));
   try {
     const { data } = await popularPeople(params);
@@ -51,8 +51,8 @@ export const peopleSearch = (params) => async (dispatch) => {
   dispatch(fetchRequest(actionTypes.SEARCH_PEOPLE_REQUEST));
   
   try {
-    const { data } = await searchPeople(query, params);
-    const normalized = normalize(data.results, tvResultSchema);
+    const { data } = await searchPeople(query, options);
+    const normalized = normalize(data.results, peopleResultSchema);
     const payload = {
       pageIndex: data.page,
       totalPages: data.totalPages,

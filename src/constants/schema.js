@@ -12,7 +12,6 @@ const movieSchema = new schema.Entity('movie');
 const tvSchema = new schema.Entity('tv');
 const peopleSchema = new schema.Entity('people');
 const profileSchema = new schema.Entity('profile');
-const crewSchema = new schema.Entity('crew');
 
 const movieInfo = new schema.Entity('movie', {
   movie: movieSchema,
