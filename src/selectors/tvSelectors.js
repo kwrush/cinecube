@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect';
-import { getDataEntities, getResult } from './commonSelectors';
+import { getDataEntities, getEntityResult } from './commonSelectors';
 import { descendComparator } from 'utils/helpers';
 
 export const getTvOverviewEntity = state => getDataEntities(state, 'tv');
-export const getPopularTvIds = state => getResult(state, 'tv', 'popular');
-export const getDiscoverTvIds = state => getResult(state, 'tv', 'discover');
-export const getTopRatedTvIds = state => getResult(state, 'tv', 'topRated');
-export const getOnAirTvIds = state => getResult(state, 'tv', 'onAir');
+export const getPopularTvIds = state => getEntityResult(state, 'tv', 'popular');
+export const getDiscoverTvIds = state => getEntityResult(state, 'tv', 'discover');
+export const getTopRatedTvIds = state => getEntityResult(state, 'tv', 'topRated');
+export const getOnAirTvIds = state => getEntityResult(state, 'tv', 'onAir');
 
 export const getPopularTvs = createSelector(
   [ getTvOverviewEntity, getPopularTvIds ],

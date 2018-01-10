@@ -1,6 +1,4 @@
 'use strict'; 
- 
-const expect = require('chai').expect;
 
 describe('middleware tests', () => {
   it('should convert key value into camel case', () => {
@@ -34,11 +32,11 @@ describe('middleware tests', () => {
     const directorProps = Object.keys(newObj.crew.director);
     const actorProps = Object.keys(newObj.crew.actors[1]);
     
-    expect(props[1]).to.equal('releaseDate');
-    expect(props[2]).to.equal('posterUrl');
-    expect(directorProps[1]).to.equal('dateOfBirth');
-    expect(actorProps[0]).to.equal('name');
-    expect(actorProps[1]).to.equal('dateOfBirth');
+    expect(props[1]).toBe('releaseDate');
+    expect(props[2]).toBe('posterUrl');
+    expect(directorProps[1]).toBe('dateOfBirth');
+    expect(actorProps[0]).toBe('name');
+    expect(actorProps[1]).toBe('dateOfBirth');
   });
   
   it('should complete image urls by adding prefix', () => {
@@ -79,14 +77,14 @@ describe('middleware tests', () => {
       backdropUrlPrefix: backdropPrefix
     });
     
-    expect(newResults[0].posterPath).to.have.property('s', 'poster/s/poster0.jpeg');
-    expect(newResults[0].posterPath).to.have.property('m', 'poster/m/poster0.jpeg');
-    expect(newResults[0].backdropPath).to.have.property('l', 'backdrop/l/backdrop0.jpeg')
-    expect(newResults[0].backdropPath).to.have.property('orig', 'backdrop/original/backdrop0.jpeg');
-    expect(newResults[2].posterPath).to.have.property('s', 'poster/s/poster2.jpeg');
-    expect(newResults[2].posterPath).to.have.property('m', 'poster/m/poster2.jpeg');
-    expect(newResults[2].backdropPath).to.have.property('l', 'backdrop/l/backdrop2.jpeg')
-    expect(newResults[2].backdropPath).to.have.property('orig', 'backdrop/original/backdrop2.jpeg');
+    expect(newResults[0].posterPath).toHaveProperty('s', 'poster/s/poster0.jpeg');
+    expect(newResults[0].posterPath).toHaveProperty('m', 'poster/m/poster0.jpeg');
+    expect(newResults[0].backdropPath).toHaveProperty('l', 'backdrop/l/backdrop0.jpeg')
+    expect(newResults[0].backdropPath).toHaveProperty('orig', 'backdrop/original/backdrop0.jpeg');
+    expect(newResults[2].posterPath).toHaveProperty('s', 'poster/s/poster2.jpeg');
+    expect(newResults[2].posterPath).toHaveProperty('m', 'poster/m/poster2.jpeg');
+    expect(newResults[2].backdropPath).toHaveProperty('l', 'backdrop/l/backdrop2.jpeg')
+    expect(newResults[2].backdropPath).toHaveProperty('orig', 'backdrop/original/backdrop2.jpeg');
   });
 
   it('should format credits list and complete profile url', () => {
@@ -103,10 +101,10 @@ describe('middleware tests', () => {
       profileUrlPrefix: profilePrefix
     });
     
-    expect(credits).to.have.property('directors');
-    expect(credits.cast).to.be.an('array');
-    expect(credits.directors).to.be.an('array');
-    expect(credits.directors[0].profilePath).to.have.property('s', 'images/s/mDLDvsx8PaZoEThkBdyaG1JxPdf.jpg');
+    expect(credits).toHaveProperty('directors');
+    expect(credits.cast).toBeInstanceOf(Array);
+    expect(credits.directors).toBeInstanceOf(Array);
+    expect(credits.directors[0].profilePath).toHaveProperty('s', 'images/s/mDLDvsx8PaZoEThkBdyaG1JxPdf.jpg');
   });
   
   it('should complete url of screenshots', () => {
@@ -119,10 +117,10 @@ describe('middleware tests', () => {
     };
     
     const img = tmdbScreenshots({ root: res, screenshotUrlPrefix: imgPrefix });
-    expect(img).to.be.an('array');
-    expect(img[0].iso6391).to.be.null;
-    expect(img[0]).to.have.property('filePath');
-    expect(img[0].filePath).to.have.property('m', 'images/m/c4zJK1mowcps3wvdrm31knxhur2.jpg');
+    expect(img).toBeInstanceOf(Array);
+    expect(img[0].iso6391).toBeNull();
+    expect(img[0]).toHaveProperty('filePath');
+    expect(img[0].filePath).toHaveProperty('m', 'images/m/c4zJK1mowcps3wvdrm31knxhur2.jpg');
   });
   
   it('should categorize multi search results and complete image urls', () => {
@@ -147,20 +145,20 @@ describe('middleware tests', () => {
         profileUrlPrefix: urlPrefix
       });
     
-    expect(res.results).to.not.be.an('array');
-    expect(res.results).to.have.property('movie');
-    expect(res.results).to.have.property('tv');
-    expect(res.results).to.have.property('person');
+    expect(res.results).toBeInstanceOf(Object);
+    expect(res.results).toHaveProperty('movie');
+    expect(res.results).toHaveProperty('tv');
+    expect(res.results).toHaveProperty('person');
     
-    expect(res.results.person).to.have.lengthOf(1);
-    expect(res.results.movie).to.have.lengthOf(2);
-    expect(res.results.tv).to.have.lengthOf(0);
+    expect(res.results.person).toHaveLength(1);
+    expect(res.results.movie).toHaveLength(2);
+    expect(res.results.tv).toHaveLength(0);
     
-    expect(res.results.movie[0].posterPath).to.have.property(
+    expect(res.results.movie[0].posterPath).toHaveProperty(
       's', 
       'images/s/hdYpb9PhIms17OPL6Yz2C0ruxJ1.jpg');
       
-    expect(res.results.person[0].profilePath).to.have.property(
+    expect(res.results.person[0].profilePath).toHaveProperty(
       's', 
       'images/s/pQFoyx7rp09CJTAb932F2g8Nlho.jpg');
   });

@@ -4,12 +4,12 @@ export const popularFirstPage = {
   results: [
     {
       id: 1,
-      title: 'Top Story',
+      title: 'Toy Story',
       posterPath: 'image/poster1.jpeg'
     },
     {
       id: 2,
-      title: 'Top Story 3',
+      title: 'Toy Story 3',
       posterPath: 'image/poster2.jpeg'
     }
   ]
@@ -34,7 +34,7 @@ export const popularSecondPage = {
 
 export const overview = {
   id: 1,
-  title: 'Top Story',
+  title: 'Toy Story',
   posterPath: 'image/poster1.jpeg'
 }
 

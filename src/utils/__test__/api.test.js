@@ -1,19 +1,16 @@
 import moxios from 'moxios';
-import { expect } from 'chai';
-import sinon from 'sinon';
 
 import { 
   API_URL, 
-  movieEndPoints, 
-  tvEndPoints, 
-  peopleEndPoints 
-} from '../../constants/appConstants';
+  movieDomains, 
+  tvDomains
+} from 'constants/domains';
 
 import { 
   api,
   loadMovies, searchMovies, movieInfo,
   loadTvShows, searchTvShows, tvShowsInfo,
-  searchPeople, peopleInfo, searchMulti
+  searchMulti
 } from '../api';
 
 import { 
@@ -36,190 +33,152 @@ describe('Client side api testing', () => {
 
   describe('Movie api testing', () => {
 
-    it('should return the popular movies in page 1', (done) => {
-
-      moxios.stubRequest(`${API_URL}${movieEndPoints.popular}?page=1`, 
+    it('should return the popular movies in page 1', async () => {
+      
+      moxios.stubRequest(`${API_URL}${movieDomains.popular}?page=1`, 
         {
           status: 200,
           response: popularFirstPage
         });
 
-      let onResolve = sinon.spy();
-      loadMovies('popular', {
+      const data = await loadMovies('popular', {
           page: 1
         })
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(popularFirstPage);
-        done();
-      });
+        .then(res => res.data);
+      
+      expect.assertions(1);
+      expect(data).toEqual(popularFirstPage);
     });
 
-    it('should return the popular movies in page 2', (done) => {
+    it('should return the popular movies in page 2', async () => {
       
-      moxios.stubRequest(`${API_URL}${movieEndPoints.popular}?page=2`, 
+      moxios.stubRequest(`${API_URL}${movieDomains.popular}?page=2`, 
         {
           status: 200,
           response: popularSecondPage
         });
 
-      let onResolve = sinon.spy();
-      loadMovies('popular', {
+      const data = await loadMovies('popular', {
           page: 2
         })
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(popularSecondPage);
-        done();
-      });
+        .then(res => res.data);
+      
+      expect.assertions(1);
+      expect(data).toEqual(popularSecondPage);
     });
 
-    it('should return the movie\'s overview', (done) => {
+    it('should return the movie\'s overview', async () => {
       
-      moxios.stubRequest(`${API_URL}${movieEndPoints.info}/1`, 
+      moxios.stubRequest(`${API_URL}${movieDomains.info}/1`, 
         {
           status: 200,
           response: overview
         });
 
-      let onResolve = sinon.spy();
-      movieInfo(1)
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(overview);
-        done();
-      });
+      const data = await movieInfo(1)
+        .then(res => res.data);
+      
+      expect.assertions(1);
+      expect(data).toEqual(overview);
     });
 
-    it('should return search result', (done) => {
+    it('should return search result', async () => {
       
-      moxios.stubRequest(`${API_URL}${movieEndPoints.search}?query=toy&page=1`, 
+      moxios.stubRequest(`${API_URL}${movieDomains.search}?query=toy&page=1`, 
         {
           status: 200,
           response: searchResults
         });
 
-      let onResolve = sinon.spy();
-      searchMovies('toy', {
+      const data = await searchMovies('toy', {
           page: 1
         })
-        .then(res => res.data)
-        .then(onResolve);
+        .then(res => res.data);
   
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(searchResults);
-        done();
-      });
+      expect.assertions(1);
+      expect(data).toEqual(searchResults);
     });
     
-    it('should catch the error', (done) => {
-      moxios.stubRequest(`${API_URL}${movieEndPoints.popular}`, 
+    it('should catch the error', async () => {
+      moxios.stubRequest(`${API_URL}${movieDomains.popular}`, 
         {
           status: 404,
           responseText: 'Not found'
         });
         
-      let onReject = sinon.spy();
-      loadMovies('popular')
-        .catch(onReject)
-  
-      moxios.wait(() => {
-        expect(onReject.getCall(0));
-        done();
-      });
+      return loadMovies('popular').catch(err => 
+        expect(err.response.status).toBe(404)
+      );
     });
   });
 
   describe('TV shows api testing', () => {
-    it('should return the popular tv shows in page 2', (done) => {
+    it('should return the popular tv shows in page 2', async () => {
 
-      moxios.stubRequest(`${API_URL}${tvEndPoints.popular}?page=2`, 
+      moxios.stubRequest(`${API_URL}${tvDomains.popular}?page=2`, 
         {
           status: 200,
           response: popularSecondPage
         });
 
-      let onResolve = sinon.spy();
-      loadTvShows('popular', {
+      const data = await loadTvShows('popular', {
           page: 2
         })
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(popularSecondPage);
-        done();
-      });
+        .then(res => res.data);
+
+      expect.assertions(1);
+      expect(data).toEqual(popularSecondPage);
     });
     
-    it('should return the tv shows on the air', (done) => {
+    it('should return the tv shows on the air', async () => {
 
-      moxios.stubRequest(`${API_URL}${tvEndPoints.onAir}`, 
+      moxios.stubRequest(`${API_URL}${tvDomains.onAir}`, 
         {
           status: 200,
           response: popularFirstPage
         });
 
-      let onResolve = sinon.spy();
-      loadTvShows('onAir')
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(popularFirstPage);
-        done();
-      });
+      const data = await loadTvShows('onAir')
+        .then(res => res.data);
+      
+      expect.assertions(1);
+      expect(data).toEqual(popularFirstPage);
     });
 
-    it('should return the overview', (done) => {
+    it('should return the overview', async () => {
       
-      moxios.stubRequest(`${API_URL}${tvEndPoints.info}/1`, 
+      moxios.stubRequest(`${API_URL}${tvDomains.info}/1`, 
         {
           status: 200,
           response: overview
         });
 
-      let onResolve = sinon.spy();
-      tvShowsInfo(1)
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(overview);
-        done();
-      });
+      const data = await tvShowsInfo(1)
+        .then(res => res.data);
+      expect.assertions(1);
+      expect(data).toEqual(overview);
     });
 
-    it('should return search result', (done) => {
+    it('should return search result', async () => {
       
-      moxios.stubRequest(`${API_URL}${tvEndPoints.search}?query=toy&page=1`, 
+      moxios.stubRequest(`${API_URL}${tvDomains.search}?query=toy&page=1`, 
         {
           status: 200,
           response: searchResults
         });
 
-      let onResolve = sinon.spy();
-      searchTvShows('toy', {
+      const data = await searchTvShows('toy', {
           page: 1
         })
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(searchResults);
-        done();
-      });
+        .then(res => res.data);
+
+      expect.assertions(1);
+      expect(data).toEqual(searchResults);
     });
   });
   
-  describe('Search multi testing', (done) => {
-    it('should return multi search result', (done) => {
+  describe('Search multi testing', () => {
+    it('should return multi search result', async () => {
       
       moxios.stubRequest(`${API_URL}/search/multi?query=Tom&page=1`, 
         {
@@ -227,17 +186,13 @@ describe('Client side api testing', () => {
           response: multiResults
         });
 
-      let onResolve = sinon.spy();
-      searchMulti('Tom', {
+      const data = await searchMulti('Tom', {
           page: 1
         })
-        .then(res => res.data)
-        .then(onResolve);
-  
-      moxios.wait(() => {
-        expect(onResolve.getCall(0).args[0]).eql(multiResults);
-        done();
-      });
+        .then(res => res.data);
+
+      expect.assertions(1);
+      expect(data).toEqual(multiResults);
     });
   });
 });

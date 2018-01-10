@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 import { movieActionTypes as actionTypes } from 'constants/actionTypes';
 import { movieResultSchema, movieInfoSchema } from 'constants/schema';
 import { loadMovies, movieInfo, searchMovies } from 'utils/api';
-import { getResult, getUpdateTime } from 'selectors/commonSelectors';
+import { getEntityResult,getEntityUpdateTime } from 'selectors/commonSelectors';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 import { differenceInDays } from 'utils/helpers';
 
@@ -87,8 +87,8 @@ const performMovieSearch = (query, params) => async (dispatch) => {
 
 const shouldFetchMovie = (state, entityType) => {
   
-  const result = getResult(state, 'movie', entityType);
-  const updatedAt = getUpdateTime(state, 'movie', entityType);
+  const result = getEntityResult(state, 'movie', entityType);
+  const updatedAt = getEntityUpdateTime(state, 'movie', entityType);
 
   return !result || result.size === 0 || 
     updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;

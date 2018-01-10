@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { API_URL, movieDomains, tvDomains, peopleDomains, searchMultiDomain } from 'constants/domains';
+import { 
+  API_URL, 
+  movieDomains, 
+  tvDomains,
+  peopleDomains, 
+  searchMultiDomain 
+} from 'constants/domains';
 
 export const api = axios.create({
   baseURL: API_URL,

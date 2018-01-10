@@ -54,6 +54,7 @@
     "lodash": "^4.17.4",
     "morgan": "^1.9.0",
     "moviedb": "^0.2.10",
+    "moxios": "^0.4.0",
     "node-sass-chokidar": "0.0.3",
     "normalizr": "^3.2.4",
     "object-assign": "4.1.1",
@@ -99,8 +100,13 @@
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
+      "<rootDir>/src/**/__test__/**/*.{js,jsx,mjs}",
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}",
+      "<rootDir>/server/__test__/?(*.)(spec|test).{js,jsx,mjs}"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__mock__/"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",

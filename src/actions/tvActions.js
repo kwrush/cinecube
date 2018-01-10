@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 import { tvActionTypes as actionTypes } from 'constants/actionTypes';
 import { tvResultSchema, tvInfoSchema } from 'constants/schema';
 import { loadTvShows, tvShowsInfo, searchTvShows } from 'utils/api';
-import { getResult, getUpdateTime } from 'selectors/commonSelectors';
+import { getEntityResult, getEntityUpdateTime } from 'selectors/commonSelectors';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 import { differenceInDays } from 'utils/helpers';
 
@@ -74,8 +74,8 @@ const performTvShowsSearch = (query, params) => async (dispatch) => {
 
 const shouldFetchTvShows = (state, entityType) => {
 
-  const result = getResult(state, 'tv', entityType);
-  const updatedAt = getUpdateTime(state, 'tv', entityType);
+  const result = getEntityResult(state, 'tv', entityType);
+  const updatedAt = getEntityUpdateTime(state, 'tv', entityType);
 
   return !result || result.size === 0 || 
     updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
