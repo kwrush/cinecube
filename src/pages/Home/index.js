@@ -8,6 +8,7 @@ import { getDiscoverTvs, getOnAirTvs } from 'selectors/tvSelectors';
 import { movieActionTypes, tvActionTypes } from 'constants/actionTypes';
 import { fetchMoviesIfNeeded } from 'actions/movieActions';
 import { fetchTvShowsIfNeeded } from 'actions/tvActions';
+import LoadingHOC from 'components/LoadingHOC/index';
 import SectionContainer from 'components/SectionContainer/index';
 import SectionHeader from 'components/SectionHeader/index';
 import BackdropCarousel from 'components/BackdropCarousel/index';
@@ -35,9 +36,6 @@ const mapDispatchToProps = (dispatch) => {
 
 // TODO: show loading ripple while fetching data
 class Home extends React.Component {
-  constructor (props) {
-    super(props);
-  }
 
   render () {
     const { 
@@ -51,23 +49,28 @@ class Home extends React.Component {
     } = this.props;
     
     const discover = discoverMovies.concat(discoverTvs);
+
+    const CarouselHOC = LoadingHOC(BackdropCarousel);
+    const InTheatreMovieHOC = LoadingHOC(PosterPanel);
+    const OnAirTvHOC = LoadingHOC(PosterPanel);
     
     return (
       <Container>
         <SectionContainer>
           <SectionHeader title="Discover" />
-          <BackdropCarousel
-            items={discover}
-            loadItems={loadDiscovery}
+          <CarouselHOC 
+            items={discover} 
+            loadData={loadDiscovery}
+            loadingEffectSize={'large'}
           />
         </SectionContainer>
         <Row>
           <Col sm="12" md="6">
             <SectionContainer>
               <SectionHeader title="Now Playing" />
-              <PosterPanel
-                posters={inTheatreMovies}
-                loadPosters={loadInTheatreMovies}
+              <InTheatreMovieHOC
+                items={inTheatreMovies}
+                loadData={loadInTheatreMovies}
                 endPoint={'/movie'}
                 posterSize={'s'}
               />
@@ -76,9 +79,9 @@ class Home extends React.Component {
           <Col sm="12" md="6">
             <SectionContainer>
               <SectionHeader title="On the Air" />
-              <PosterPanel
-                posters={onAirTvs}
-                loadPosters={loadOnAirTvs}
+              <OnAirTvHOC
+                items={onAirTvs}
+                loadData={loadOnAirTvs}
                 endPoint={'/tv'}
                 posterSize={'s'}
               />

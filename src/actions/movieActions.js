@@ -2,7 +2,7 @@ import { normalize } from 'normalizr';
 import { movieActionTypes as actionTypes } from 'constants/actionTypes';
 import { movieResultSchema, movieInfoSchema } from 'constants/schema';
 import { loadMovies, movieInfo, searchMovies } from 'utils/api';
-import { getEntityResult,getEntityUpdateTime } from 'selectors/commonSelectors';
+import { getEntityResult, getEntityUpdateTime, getCurrentPage } from 'selectors/commonSelectors';
 import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
 import { differenceInDays } from 'utils/helpers';
 
@@ -85,12 +85,14 @@ const performMovieSearch = (query, params) => async (dispatch) => {
   }
 };
 
-const shouldFetchMovie = (state, entityType) => {
+const shouldFetchMovie = (state, entityType, params = {}) => {
   
   const result = getEntityResult(state, 'movie', entityType);
   const updatedAt = getEntityUpdateTime(state, 'movie', entityType);
+  const currentPage = getCurrentPage(state, 'movie', entityType);
+  const page = params.page ? params.page : 1;
 
-  return !result || result.size === 0 || 
+  return currentPage !== page || !result || result.size === 0 || 
     updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
 };
 
@@ -128,7 +130,7 @@ export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState)
       break;
   }
   
-  if (action && shouldFetchMovie(getState(), entityType)) {
+  if (action && shouldFetchMovie(getState(), entityType, params)) {
     dispatch(fetchRequest(requestType));
     dispatch(action(params));
   }
@@ -139,3 +141,4 @@ export const movieSearch = (params) => (dispatch) => {
   dispatch(fetchRequest(actionTypes.SEARCH_MOVIE_REQUEST));
   dispatch(performMovieSearch(query, options));
 }; 
+

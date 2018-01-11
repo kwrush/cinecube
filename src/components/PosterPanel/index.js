@@ -10,7 +10,7 @@ import { mapToCssModules } from 'utils/helpers';
 import ImageCard from 'components/ImageCard';
 
 const propTypes = {
-  posters: ImmutablePropTypes.mapOf(
+  items: ImmutablePropTypes.mapOf(
     ImmutablePropTypes.mapContains({
       id: PropTypes.number.isRequired,
       name: PropTypes.string,
@@ -24,56 +24,45 @@ const propTypes = {
       })
     })
   ),
-  loadPosters: PropTypes.func,
   endPoint: PropTypes.string,
   posterSize: PropTypes.oneOf(['xs', 's', 'm', 'l', 'orig']),
   columns: PropTypes.number
 };
 
 const defaultProps = {
-  posters: Map(),
-  loadPosters: () => {},
+  items: Map(),
   endPoint: '/',
   posterSize: 's',
   columns: 4
 };
 
-class PosterPanel extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-  
-  componentWillMount () {
-    this.props.loadPosters();
-  }
-  
-  render () {
-    const { posters, className, cssModule } = this.props;
-    const classes = mapToCssModules(className, cssModule);
-    const colSize = 12 / this.props.columns;
-    
-    const posterCols = posters.toList().map(poster => {
-      return (
-        <Col key={poster.get('id')} md={`${colSize}`}>
-          <Link 
-            styleName="poster-link" 
-            to={`${this.props.endPoint}/${poster.get('id')}`} 
-            title={poster.get('title') || poster.get('name')}>
-            <ImageCard 
-              styleName='poster'
-              imgUrl={poster.getIn(['posterPath', this.props.posterSize])} 
-            />
-          </Link>
-        </Col>
-      );
-    });
-    
+const PosterPanel = (props) => {
+
+  const { items, className, cssModule, columns, endPoint, posterSize } = props;
+  const classes = mapToCssModules(className, cssModule);
+  const colSize = 12 / columns;
+
+  const posterCols = items.toList().map(poster => {
     return (
-      <Row styleName='panel-row' className={classes}>
-        { posterCols }
-      </Row>
+      <Col key={items.get('id')} md={`${colSize}`}>
+        <Link
+          styleName="poster-link"
+          to={`${endPoint}/${items.get('id')}`}
+          title={poster.get('title') || poster.get('name')}>
+          <ImageCard
+            styleName='poster'
+            imgUrl={poster.getIn(['posterPath', posterSize])}
+          />
+        </Link>
+      </Col>
     );
-  }
+  });
+
+  return (
+    <Row styleName='panel-row' className={classes}>
+      {posterCols}
+    </Row>
+  );
 } 
 
 PosterPanel.propTypes = propTypes;

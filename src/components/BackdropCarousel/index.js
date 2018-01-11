@@ -11,7 +11,6 @@ import {
   CarouselIndicators,
   CarouselItem
 } from 'reactstrap';
-import ImageCard from 'components/ImageCard/index';
 import { mapToCssModules } from 'utils/helpers';
 
 const propTypes = {
@@ -24,13 +23,11 @@ const propTypes = {
       posterUrl: ImmutablePropTypes.map,
       backdropUrl: ImmutablePropTypes.map,
     })
-  ),
-  loadItems: PropTypes.func
+  )
 };
 
 const defaultProps = {
-  items: Map(),
-  loadItems: () => {}
+  items: Map()
 }
 
 class BackdropCarousel extends React.Component {
@@ -39,10 +36,6 @@ class BackdropCarousel extends React.Component {
     this.state = {
       activeIndex: 0
     };
-  }
-
-  componentWillMount () {
-    this.props.loadItems();
   }
 
   onExiting = () => {
