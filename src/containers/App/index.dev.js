@@ -9,11 +9,11 @@ import { Container } from 'reactstrap';
 import DevTools from 'containers/DevTools/index';
 import Header from 'components/Header/index';
 import Footer from 'components/Footer/index';
-import Home from 'pages/Home/index';
-import Movie from 'pages/Movie/index';
-import Tv from 'pages/Tv/index';
-import People from 'pages/People/index';
-import Favorite from 'pages/Favorite/index';
+import Home from 'containers/Home/index';
+import Movie from 'containers/Movie/index';
+import Tv from 'containers/Tv/index';
+import People from 'containers/People/index';
+import Favorite from 'containers/Favorite/index';
 
 
 class App extends React.Component {

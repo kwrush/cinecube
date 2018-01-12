@@ -34,3 +34,13 @@ export const getInTheatreMovies = createSelector(
       (p1, p2) => descendComparator(p1, p2)
     )
 );
+
+export const getUpcomingMovies = createSelector(
+  [ getMovieOverviewEntity, getUpcomingMovieIds ],
+  (data, ids) => ids
+    .map(id => data.get(id))
+    .sortBy(
+      movie => movie.get('releaseDate'),
+      (d1, d2) => descendComparator(new Date(d1).getTime(), new Date(d2).getTime())
+    )
+);

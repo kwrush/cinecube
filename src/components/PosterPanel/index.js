@@ -24,30 +24,30 @@ const propTypes = {
       })
     })
   ),
-  endPoint: PropTypes.string,
+  domain: PropTypes.string,
   posterSize: PropTypes.oneOf(['xs', 's', 'm', 'l', 'orig']),
   columns: PropTypes.number
 };
 
 const defaultProps = {
   items: Map(),
-  endPoint: '/',
+  domain: '/',
   posterSize: 's',
   columns: 4
 };
 
 const PosterPanel = (props) => {
 
-  const { items, className, cssModule, columns, endPoint, posterSize } = props;
+  const { items, className, cssModule, columns, domain, posterSize } = props;
   const classes = mapToCssModules(className, cssModule);
   const colSize = 12 / columns;
 
   const posterCols = items.toList().map(poster => {
     return (
-      <Col key={items.get('id')} md={`${colSize}`}>
+      <Col key={poster.get('id')} md={`${colSize}`}>
         <Link
           styleName="poster-link"
-          to={`${endPoint}/${items.get('id')}`}
+          to={`${domain}/${poster.get('id')}`}
           title={poster.get('title') || poster.get('name')}>
           <ImageCard
             styleName='poster'
