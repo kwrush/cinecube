@@ -75,8 +75,8 @@ class BackdropCarousel extends React.Component {
 
     const slides = items.toList().map((item, index) => {
 
-      let captionText = item.get('releaseDate') || '';
-      let captionHeader = item.get('title') || item.get('name');
+      let captionText = item.get('releaseDate');
+      let captionHeader = item.get('title');
 
       let id = index + '-' + item.get('id');
 

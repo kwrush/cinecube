@@ -2,55 +2,67 @@ import './style.scss';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import {
   Card,
-  CardBody,
+  CardText,
   CardTitle,
   CardSubtitle
 } from 'reactstrap';
+import FaCalendar from 'react-icons/lib/fa/calendar';
+
 import { mapToCssModules } from 'utils/helpers';
-import ImageCard from 'components/ImageCard';
+
+import ImageCard from 'components/ImageCard/index';
 
 const propTypes = {
   id: PropTypes.number.isRequired,
-  type: PropTypes.oneOf(['movie', 'tv', 'people']),
+  mediaType: PropTypes.oneOf(['movie', 'tv', 'people']),
   posterUrl: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  intro: PropTypes.string,
   releaseDate: PropTypes.string,
   className: PropTypes.string,
   cssModule: PropTypes.object
 };
 
 const defaultProps = {
-  type: 'movie'
+  mediaType: 'movie',
+  posterUrl: '',
+  title: '',
+  intro: '',
+  releaseDate: ''
 };
 
 const PosterCard = (props) => {
   const {
     id,
+    mediaType,
     posterUrl,
     title,
     releaseDate,
+    intro,
+    className,
+    cssModules
   } = props;
 
-  const classes = mapToCssModules(className, cssModule);
+  const classes = mapToCssModules(className, cssModules);
 
   return (
-    <ImageCard imgUrl={posterUrl} className={classes}>
-      <NavLink to={`/${type}/${id}`}>
-        <Card>
-          <CardBody className='d-flex flex-column justify-content-end'>
-            <CardTitle>{title}</CardTitle>
-            {
-              releaseDate 
-              ? <CardSubtitle>Release: {releaseDate}</CardSubtitle> 
-              : null
-            }
-          </CardBody>
-        </Card>
-      </NavLink>
-    </ImageCard> 
+    <div className={classes}>
+      <Card styleName="poster-card" className="d-flex flex-row justify-content-between">
+        <ImageCard imgUrl={posterUrl} styleName="image-content"/>
+        <div styleName="card-content">
+          <CardTitle>{title}</CardTitle>
+          <CardSubtitle>
+            <FaCalendar />{releaseDate}
+          </CardSubtitle>
+          <CardText styleName="overview">{intro}</CardText>
+          <Link to={`/${mediaType}/${id}`}>Explore</Link>
+        </div>
+      </Card>
+    </div>
   );
 };
 

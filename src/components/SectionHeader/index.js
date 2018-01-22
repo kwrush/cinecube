@@ -3,6 +3,7 @@ import './style.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+import { Link } from 'react-router-dom';
 import { mapToCssModules } from 'utils/helpers';
 
 const propTypes = {
@@ -26,9 +27,9 @@ const SectionHeader = (props) => {
     <header styleName="section-header" className={classes}>
       <div className="d-flex justify-content-between">
         <span className="font-weight-bold">{title}</span>
-        <a href={url} className="align-self-center text-uppercase" styleName="link-more">
+        <Link to={url} className="align-self-center text-uppercase" styleName="link-more">
           <span>More</span><MdKeyboardArrowRight />
-        </a>
+        </Link>
       </div>
     </header> 
   );

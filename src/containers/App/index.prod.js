@@ -8,7 +8,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Header from 'components/Header/index';
 import Footer from 'components/Footer/index';
-import Loading from 'components/Loading/index';
 import Home from 'containers/Home/index';
 import Movie from 'containers/Movie/index';
 import Tv from 'containers/Tv/index';
