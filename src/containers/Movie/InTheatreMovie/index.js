@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 
+import { getCurrentPage, getTotalPages } from 'selectors/commonSelectors';
 import { getInTheatreMovies } from 'selectors/movieSelectors';
 import { fetchMoviesIfNeeded } from 'actions/movieActions';
 import { movieActionTypes as actionTypes } from 'constants/actionTypes';
@@ -13,35 +14,67 @@ import PosterCard from 'components/PosterCard/index';
 
 const mapStateToProps = (state) => {
   return {
+    currentPage: getCurrentPage(state, 'movie', 'inTheatre'),
+    totalPages: getTotalPages(state, 'movie', 'inTheatre'),
     inTheatreMovies: getInTheatreMovies(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadInTheatreMovies: (params) => dispatch(fetchMoviesIfNeeded(actionTypes.FETCH_POPULAR_MOVIE_REQUEST, params)) 
+    loadInTheatreMovies: (params) => dispatch(fetchMoviesIfNeeded(actionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST, params)) 
   }
 };
 
 class InTheatreMovies extends React.Component {
 
-  componentDidMount () {
+  constructor (props) {
+    super(props);
+    this.state = {
+      movies: this.props.inTheatreMovies.toList(),
+      hasMore: this.props.currentPage < this.props.totalPages
+    };
+  }
+
+  componentWillMount () {
     this.props.loadInTheatreMovies();
   }
 
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      movies: this.state.movies.concat(nextProps.inTheatreMovies.toList()),
+      hasMore: nextProps.currentPage < nextProps.totalPages
+    });
+  }
+
   render () {
-    const { inTheatreMovies, className, cssModules } = this.props;
+    const { className, cssModules } = this.props;
     const classes = mapToCssModules(className, cssModules);
 
-    const posterCards = inTheatreMovies.toList().map((movie) => {
+    const posterCards = this.state.movies.toList().map((movie) => {
        return this.renderPosterCard(movie);
     });
+
+    const loadMoreButton = (
+      <div style={{
+        margin: '1rem 0'
+      }}>
+        <Button color="info" onClick={this.loadMore} block>More...</Button>
+      </div>
+    );
 
     return (
       <Container className={classes}>
         <Row>{ posterCards }</Row>
+        { this.state.hasMore ? loadMoreButton : null }
       </Container>
     );
+  }
+
+  loadMore = () => {
+    this.props.loadInTheatreMovies({
+      page: this.props.currentPage + 1
+    });
   }
 
   renderPosterCard = (movie) => {

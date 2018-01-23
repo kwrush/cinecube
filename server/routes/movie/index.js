@@ -69,7 +69,9 @@ router.get('/popular', (req, res) => {
 router.get('/in_theatre', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscNowPlayingMovies((err, tmdbRes) => {
+    .miscNowPlayingMovies({
+      page: req.query.page ? req.query.page : 1
+    }, (err, tmdbRes) => {
       if (err)
         return res.status(err.status).send(err.response);
       
@@ -117,7 +119,9 @@ router.get('/top_rated', (req, res) => {
 router.get('/upcoming', (req, res) => {
   const tmdb = req.app.locals.tmdb;
   tmdb
-    .miscUpcomingMovies((err, tmdbRes) => {
+    .miscUpcomingMovies({
+      page: req.query.page ? req.query.page : 1
+    }, (err, tmdbRes) => {
       if (err)
         return res.status(err.status).send(err.response);
       
