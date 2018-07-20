@@ -1,0 +1,20 @@
+.loader {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.loader-sub {
+  animation-name: wave;
+  animation-fill-mode: both;
+  transform: scaleY(0.5);
+}
+
+@keyframes wave {
+  0%, 40%, 100% {
+    transform: scaleY(0.5)
+  }
+
+  20% {
+    transform: scaleY(1)
+  }
+}

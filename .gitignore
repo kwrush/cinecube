@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+# .css files, because we're using scss
+src/**/*.css
+
 # testing
 /coverage
 

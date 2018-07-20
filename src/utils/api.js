@@ -20,7 +20,7 @@ export const api = axios.create({
 export const loadMovies = async (type, params) => {
   return api.get(movieRoutes[type], {
     params: params
-  })
+  });
 };
 
 /**
