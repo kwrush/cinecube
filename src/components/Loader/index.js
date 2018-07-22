@@ -26,7 +26,7 @@ const defaultProps = {
   loaderNumber: 6
 };
 
-const Loader = (props) => {
+const Loader = props => {
 
   // make rectangles
   const subs = Array(props.loaderNumber).fill().map((s, i) => {

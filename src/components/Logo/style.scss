@@ -1,0 +1,62 @@
+.logo {
+  margin: 0 auto;
+  padding: 0;
+  background: none;
+  text-align: center;
+}
+
+.border {
+  stroke-linecap: square;
+}
+
+.inner,
+.outer,
+.fill {
+  transform: translateX(5px);
+}
+
+.border,
+.fill {
+  transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.border,
+.outer,
+.inner {
+  stroke-width: 3px;
+}
+
+.fill {
+  
+  stroke-dashoffset: 0;
+
+  &.fill-outer {
+    stroke-width: 4px;
+    stroke-dasharray: 214;
+  }
+
+  &.fill-inner {
+    stroke-width: 4px;
+    stroke-dasharray: 164;
+  }
+}
+
+.border {
+  stroke-dasharray: 192;
+  stroke-dashoffset: 0;
+}
+
+.hover-logo:hover {
+  & .border {
+    stroke-dashoffset: -384;
+  }
+
+  & .fill-outer {
+    stroke-dashoffset: 214;
+  }
+
+  & .fill-inner {
+    stroke-dashoffset: -164;
+  }
+
+}
