@@ -1,3 +1,10 @@
 import React from 'react';
-import PropType from 'prop-types';
+import HeaderNav from '../HeaderNav/index';
 
+const Header = props => (
+  <div>
+    <HeaderNav />
+  </div>
+);
+
+export default Header;

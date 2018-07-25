@@ -13,9 +13,7 @@ const Footer = props => (
       <Container>
         <Row>
           <Col>
-            <a href="/">
-              <Logo size={1.2} color="#333" hoverAnimation={false} />
-            </a>
+            <Logo size={1.2} color="#333" hoverAnimation={false} />
           </Col>
           <Col>Link</Col>
           <Col>Something</Col>
@@ -24,4 +22,4 @@ const Footer = props => (
   </div>
 );
 
-export default Footer
+export default Footer;
