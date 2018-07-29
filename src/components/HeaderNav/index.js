@@ -12,17 +12,18 @@ import {
   tvRoutes,
   peopleRoutes
 } from '../../constants/routes';
- 
+
+import './style.scss';
 
 const HeaderNav = props => (
-  <Nav className="ml-auto">
-    <NavItem>
-      <Link to={`${movieRoutes.home}`}>Movie</Link>
+  <Nav justified navbar>
+    <NavItem styleName="nav-item">
+        <Link to={`${movieRoutes.home}`}>Movie</Link>
     </NavItem>
-    <NavItem>
+    <NavItem styleName="nav-item">
         <Link to={`${tvRoutes.home}`}>TV</Link>
     </NavItem>
-    <NavItem>
+    <NavItem styleName="nav-item">
       <Link to={`${peopleRoutes.home}`}>People</Link>
     </NavItem>
   </Nav>

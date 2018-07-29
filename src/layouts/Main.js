@@ -10,25 +10,20 @@ import {
   peopleRoutes
 } from '../constants/routes';
 
-import Header from '../components/Header/index';
-import Footer from '../components/Footer/index';
-
 import Home from '../pages/Home';
-import Movie from '../pages/movie/index';
-import TV from '../pages/tv/index';
-import People from '../pages/people/index';
+import Movie from './Movie';
+import TV from './TV';
+import People from './People';
+import NotFound from '../pages/404';
 
 const Main = props => (
-  <div>
-    <Header />
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path={movieRoutes.home} component={Movie} />
-      <Route exact path={tvRoutes.home} component={TV} />
-      <Route exact path={peopleRoutes.home} component={People} />
-    </Switch>
-    <Footer />
-  </div>
+  <Switch>
+    <Route exact path="/" component={Home} />
+    <Route path={movieRoutes.home} component={Movie} />
+    <Route path={tvRoutes.home} component={TV} />
+    <Route path={peopleRoutes.home} component={People} />
+    <Route component={NotFound} />
+  </Switch>
 );
 
 export default Main;

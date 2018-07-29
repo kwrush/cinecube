@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Carousel } from 'reactstrap';
 
-class Carousel extends React.Component {
+class Slides extends React.Component {
 
   static propTypes = {
 
@@ -22,4 +22,4 @@ class Carousel extends React.Component {
   }
 }
 
-export default Carousel;
+export default Slides;

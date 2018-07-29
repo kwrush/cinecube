@@ -4,6 +4,7 @@ import {
   Row,
   Col 
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import Logo from '../Logo/index';
 
 import './style.scss';
@@ -13,10 +14,11 @@ const Footer = props => (
       <Container>
         <Row>
           <Col>
-            <Logo size={1.2} color="#333" hoverAnimation={false} />
+            <Logo size={1.7} color="#333" hoverAnimation={false} />
           </Col>
-          <Col>Link</Col>
-          <Col>Something</Col>
+          <Col>
+            <a href="https://kwrush.github.io/">Github</a>
+          </Col>
         </Row>
       </Container>
   </div>
