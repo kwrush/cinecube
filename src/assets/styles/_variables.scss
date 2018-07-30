@@ -1,0 +1,9 @@
+@import "./_base.scss";
+
+$media-xs: map-get($grid-breakpoints, 'xs');
+$media-sm: map-get($grid-breakpoints, 'sm');
+$media-md: map-get($grid-breakpoints, 'md');
+$media-lg: map-get($grid-breakpoints, 'lg');
+$media-xl: map-get($grid-breakpoints, 'xl');
+
+$header-bg: rgba(0, 0, 0, 0.2);

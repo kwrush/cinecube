@@ -1,0 +1,17 @@
+@import '../../assets/styles/_variables.scss';
+
+.header {
+  padding: 0 3rem;
+}
+
+@media (max-width: $media-md) {
+  .header {
+    padding: 0 1rem;
+    background: map-get($theme-colors, 'dark');
+  }
+
+  .header-nav {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+}

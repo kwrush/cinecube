@@ -12,6 +12,7 @@ const tv = '/tv';
 const people = '/people';
 
 export const movieRoutes = {
+  name: 'Movie',
   home: `${movie}`,
   popular: `${movie}/popular`,
   discover: `${movie}/discover`,
@@ -23,6 +24,7 @@ export const movieRoutes = {
 };
 
 export const tvRoutes = {
+  name: 'TV Shows',
   home: `${tv}`,
   popular: `${tv}/popular`,
   discover: `${tv}/discover`,
@@ -33,6 +35,7 @@ export const tvRoutes = {
 };
 
 export const peopleRoutes = {
+  name: 'People',
   home: `${people}`,
   popular: `${people}/popular`,
   search: `${people}/search`,

@@ -1,33 +1,59 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Navbar,
   NavbarBrand,
   NavbarToggler,
   Collapse,
-  Container,
-  Row,
-  Col
+  Util
 } from 'reactstrap';
-import HeaderNav from '../HeaderNav/index';
-import Logo from '../Logo';
 
-const Header = props => (
-  <div>
-    <Navbar color="dark" light expand="md">
-        <NavbarBrand href="/">
-          <Logo />
-        </NavbarBrand>
-        <Collapse navbar>
-          <Row style={{width: '100%'}}>
-            <Col md="8">
-              <HeaderNav />
-            </Col>
-            <Col md="4"></Col>
-          </Row>
-        </Collapse>
-      <NavbarToggler />
-    </Navbar>
-  </div>
-);
+import HeaderNav from '../HeaderNav/index';
+import SearchBox from '../SearchBox/index';
+import Logo from '../Logo';
+import './style.scss';
+
+class Header extends React.Component {
+
+  static propTypes = {
+    className: PropTypes.string,
+    cssModule: PropTypes.object
+  }
+
+  static defaultProps = {}
+
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      isNavOpen: false
+    };
+  }
+
+  toggle = () => {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen
+    });
+  }
+
+  render () {
+    let classes = Util.mapToCssModules(this.props.className, this.props.cssModule);
+
+    return (
+      <div styleName="header" className={classes}>
+        <Navbar expand="md" className="mr-auto">
+          <NavbarBrand href="/">
+            <Logo size={2.5} />
+          </NavbarBrand>
+          <NavbarToggler onClick={ this.toggle } />
+          <Collapse isOpen={this.state.isNavOpen} navbar>
+            <HeaderNav styleName="header-nav" />
+            <SearchBox className="ml-auto" />
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
+}
 
 export default Header;

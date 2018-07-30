@@ -53,7 +53,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  size: 3.2,
+  size: 3,
   units: 'rem',
   color: '#FFFFFF',
   hoverAnimation: true
@@ -68,8 +68,8 @@ const Logo = props => {
     height: `${props.size}${props.units}`,    
   };
 
-  const outer = makeArc(36, 45, 7, false, false);
-  const inner = makeArc(16, 45, 7, false, false);
+  const outer = makeArc(36, 45, 8, false, false);
+  const inner = makeArc(16, 45, 8, false, false);
 
   const fillOuter = makeArc(32, 45, 6, false, true);
   const fillInner = makeArc(12, 45, 6, false, true);

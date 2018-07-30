@@ -1,0 +1,11 @@
+.searchbox {
+  width: 100%;
+}
+
+.search-input {
+  font-size: 0.9rem;
+
+  &:focus {
+    outline-color: rgba(0, 0, 0, 0.2);
+  }
+}
