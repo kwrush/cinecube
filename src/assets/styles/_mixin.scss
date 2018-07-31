@@ -1,0 +1,25 @@
+@mixin underline ($state: ":hover", $bg: "#F00") {
+  
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    opacity: 0;
+    background: #{$bg};
+    transform-origin: 0%;
+    transform: scaleX(0);
+    transition: transform 0.2s, opacity 0.18s ease-in-out; 
+  }
+
+  #{$state} {
+    &:after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+}

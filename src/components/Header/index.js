@@ -5,6 +5,7 @@ import {
   NavbarBrand,
   NavbarToggler,
   Collapse,
+  Container,
   Util
 } from 'reactstrap';
 
@@ -40,18 +41,20 @@ class Header extends React.Component {
     let classes = Util.mapToCssModules(this.props.className, this.props.cssModule);
 
     return (
-      <div styleName="header" className={classes}>
-        <Navbar expand="md" className="mr-auto">
-          <NavbarBrand href="/">
-            <Logo size={2.5} />
-          </NavbarBrand>
-          <NavbarToggler onClick={ this.toggle } />
-          <Collapse isOpen={this.state.isNavOpen} navbar>
-            <HeaderNav styleName="header-nav" />
-            <SearchBox className="ml-auto" />
-          </Collapse>
-        </Navbar>
-      </div>
+      <header styleName="header" className={classes}>
+        <Container>
+          <Navbar expand="md" className="mr-auto">
+            <NavbarBrand href="/">
+              <Logo size={2.5} />
+            </NavbarBrand>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isNavOpen} navbar>
+              <HeaderNav styleName="header-nav" />
+              <SearchBox styleName="searchbox" />
+            </Collapse>
+          </Navbar>
+        </Container>
+      </header>
     );
   }
 }

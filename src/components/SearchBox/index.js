@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 import {
   InputGroup,
   InputGroupAddon,
@@ -15,10 +16,13 @@ class SearchBox extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
-    cssModule: PropTypes.object
+    cssModule: PropTypes.object,
+    onSearch: PropTypes.func
   }
 
-  static defaultProps = {}
+  static defaultProps = {
+    onSearch: () => {}
+  }
 
   constructor (props) {
     super(props);
@@ -27,6 +31,18 @@ class SearchBox extends React.Component {
       query: '',
       results: []
     };
+
+    this.onKeyPress = debounce(this.onKeyPress, 300);
+  }
+
+  updateQuery = event => {
+    this.setState({
+      query: event.target.value
+    });
+  }
+
+  onKeyPress = event => {
+    this.props.onSearch(this.state.query);
   }
 
   render () {
@@ -35,17 +51,23 @@ class SearchBox extends React.Component {
     const classes = Util.mapToCssModules(className, cssModule);
 
     return (
-      <div className={classes}>
+      <div styleName="searchbox" className={classes}>
         <InputGroup>
-          <Input 
-            styleName="search-input"
-            placeholder="Search for movies, tv shows and more" 
-          />
-          <InputGroupAddon addonType="append">
-            <InputGroupText>
+          <InputGroupAddon
+            styleName="input-addon"
+            addonType="prepend"
+          >
+            <InputGroupText styleName="search-icon">
               <GoSearch />
             </InputGroupText>
           </InputGroupAddon>
+          <Input
+            styleName="search-input"
+            placeholder="Search for movies, tv shows and more"
+            onChange={this.updateQuery}
+            onKeyPress={this.onKeyPress}
+          />
+          <div styleName="underline"></div>
         </InputGroup>
         <Suggestions results={this.state.results} />
       </div>

@@ -24,7 +24,7 @@ export const movieRoutes = {
 };
 
 export const tvRoutes = {
-  name: 'TV Shows',
+  name: 'TV Series',
   home: `${tv}`,
   popular: `${tv}/popular`,
   discover: `${tv}/discover`,

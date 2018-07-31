@@ -1,11 +1,54 @@
+@import "../../assets/styles/_base.scss";
+@import "../../assets/styles/_mixin.scss";
+
 .searchbox {
+  flex-grow: 0.5;
+}
+
+.input-addon {
+  background: none;
+  border: none;
+  color: map-get($theme-colors, "light");
+
+  & .search-icon {
+    background: none;
+    color: inherit;
+    border: none;
+  }  
+}
+
+.underline {
+  @include underline(".search-input:focus + &", map-get($theme-colors, "light"));
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
 }
 
-.search-input {
+input.search-input {
   font-size: 0.9rem;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: none;
+  opacity: 0.7;
+  color: map-get($theme-colors, "light");
+
+  &::placeholder {
+    color: map-get($theme-colors, "light");
+    opacity: 0.7;
+    font-weight: 300;
+  }
 
   &:focus {
-    outline-color: rgba(0, 0, 0, 0.2);
+    outline: none;
+    border: none;
+    box-shadow: none;
+    background: none;
+    opacity: 1;
+    color: map-get($theme-colors, "light");
   }
 }
+
+
