@@ -6,10 +6,9 @@ import axios from 'axios';
 
 import {
   API_URL,
-  movieRoutes,
-  tvRoutes,
-  peopleRoutes,
-  searchRoutes
+  MOVIE_ROUTES,
+  TV_ROUTES,
+  PEOPLE_ROUTES
 } from '../constants/routes';
 
 export const api = axios.create({
@@ -18,7 +17,7 @@ export const api = axios.create({
 });
 
 export const loadMovies = async (type, params) => {
-  return api.get(movieRoutes[type], {
+  return api.get(MOVIE_ROUTES[type], {
     params: params
   });
 };
@@ -27,7 +26,7 @@ export const loadMovies = async (type, params) => {
  * Search for movies by the given query
  */
 export const searchMovies = async (query, params) => {
-  return api.get(movieRoutes.search, {
+  return api.get(MOVIE_ROUTES.search, {
     params: { query: query, ...params }
   });
 }
@@ -36,21 +35,21 @@ export const searchMovies = async (query, params) => {
  * Load details of a movie by its id
  */
 export const movieInfo = async (id) => {
-  return api.get(`${movieRoutes.info}/${id}`);
+  return api.get(`${MOVIE_ROUTES.info}/${id}`);
 }
 
 /**
  * Load the specific category (popular, top rated...) of tv shows
  */
 export const loadTvShows = async (type, params) => {
-  return api.get(tvRoutes[type], { params: params });
+  return api.get(TV_ROUTES[type], { params: params });
 }
 
 /**
  * Search for tv shows by the given query
  */
 export const searchTvShows = async (query, params) => {
-  return api.get(tvRoutes.search, {
+  return api.get(TV_ROUTES.search, {
     params: { query: query, ...params }
   });
 }
@@ -59,11 +58,11 @@ export const searchTvShows = async (query, params) => {
  * Load details of tv show by its id
  */
 export const tvShowsInfo = async (id) => {
-  return api.get(`${tvRoutes.info}/${id}`);
+  return api.get(`${TV_ROUTES.info}/${id}`);
 }
 
 export const popularPeople = async (params) => {
-  return api.get(peopleRoutes.popular, {
+  return api.get(PEOPLE_ROUTES.popular, {
     params: { ...params }
   });
 }
@@ -72,7 +71,7 @@ export const popularPeople = async (params) => {
  * Search for people by the given query
  */
 export const searchPeople = async (query, params) => {
-  return api.get(peopleRoutes.search, {
+  return api.get(PEOPLE_ROUTES.search, {
     params: { query: query, ...params }
   });
 }
@@ -81,7 +80,7 @@ export const searchPeople = async (query, params) => {
  * Get profile of the person with the given id
  */
 export const peopleProfile = async (id) => {
-  return api.get(`${peopleRoutes.info}/${id}`);
+  return api.get(`${PEOPLE_ROUTES.profile}/${id}`);
 }
 
 /**
