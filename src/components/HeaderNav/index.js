@@ -1,41 +1,41 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import {
-  Nav,
-  NavItem,
-  Util
-} from 'reactstrap';
-
-import {
-  movieRoutes,
-  tvRoutes,
-  peopleRoutes
-} from '../../constants/routes';
-
-import './style.scss';
+import { NavLink } from 'react-router-dom';
+import { Nav, NavItem, Util } from 'reactstrap';
+import {active} from './style.scss';
 
 const propTypes = {
   classNames: PropTypes.string,
-  cssModule: PropTypes.object
+  cssModule: PropTypes.object,
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
+    })
+  )
+};
+
+const defaultProps = {
+  navItems: []
 };
 
 const HeaderNav = props => {
-  const classes = Util.mapToCssModules(props.className, props.cssModule);
-  const linkClasses = Util.mapToCssModules('text-white');
-  const navItems = [movieRoutes, tvRoutes, peopleRoutes];
+  let { className, cssModule, navItems } = props;
+  const classes = Util.mapToCssModules(`${className} link-active`, cssModule);
 
   return (
     <Nav styleName="nav" className={classes} navbar>
       {
         navItems.map((nav, index) => (
           <NavItem key={index} styleName="nav-item">
-            <Link
-              to={nav.home}
-              className={linkClasses}
+            <NavLink 
+              to={nav.url} 
               styleName="link"
-            >{nav.name}</Link>
+              activeClassName={active}
+            >
+              {nav.name}
+            </NavLink>
           </NavItem>
         ))
       }
@@ -44,5 +44,6 @@ const HeaderNav = props => {
 };
 
 HeaderNav.propTypes = propTypes;
+HeaderNav.defaultProps = defaultProps;
 
 export default HeaderNav;

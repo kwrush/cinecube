@@ -1,4 +1,4 @@
-@mixin underline ($state: ":hover", $bg: "#F00") {
+@mixin underline ($selector: "&:hover", $bg: $light-color) {
   
   position: relative;
 
@@ -16,7 +16,7 @@
     transition: transform 0.2s, opacity 0.18s ease-in-out; 
   }
 
-  #{$state} {
+  #{$selector} {
     &:after {
       transform: scaleX(1);
       opacity: 1;

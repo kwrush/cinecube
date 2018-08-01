@@ -1,9 +1,23 @@
-@import "./_base.scss";
-
 $media-xs: map-get($grid-breakpoints, 'xs');
 $media-sm: map-get($grid-breakpoints, 'sm');
 $media-md: map-get($grid-breakpoints, 'md');
 $media-lg: map-get($grid-breakpoints, 'lg');
 $media-xl: map-get($grid-breakpoints, 'xl');
 
-$header-bg: rgba(0, 0, 0, 0.2);
+$light-color: map-get($theme-colors, "light");
+$dark-color: map-get($theme-colors, "dark");
+$light-gray: map-get($grays, "300");
+$gray: map-get($grays, "600");
+$dark-gray: map-get($grays, "800");
+
+$font-size-xs: 0.75rem;
+$font-size-xxs: 0.5rem;
+
+$line-height-xl: 1.8rem;
+
+$border-gray: rgba(255, 255, 255, 0.5);
+$border-light-gray: rgba(255, 255, 255, 0.1);
+
+
+
+

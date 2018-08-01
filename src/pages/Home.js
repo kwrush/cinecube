@@ -1,7 +1,8 @@
 import React from 'react';
+import { Container } from 'reactstrap';
 
 const Home = props => (
-  <div>This is home</div>
+  <Container>This is home page</Container>
 );
 
 

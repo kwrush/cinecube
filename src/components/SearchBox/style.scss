@@ -1,15 +1,16 @@
 @import "../../assets/styles/_base.scss";
-@import "../../assets/styles/_mixin.scss";
+
+$primary-color: theme-color("light");
 
 .searchbox {
+  position: relative;
   flex-grow: 0.5;
 }
 
 .input-addon {
   background: none;
   border: none;
-  color: map-get($theme-colors, "light");
-
+  color: $primary-color;
   & .search-icon {
     background: none;
     color: inherit;
@@ -18,7 +19,7 @@
 }
 
 .underline {
-  @include underline(".search-input:focus + &", map-get($theme-colors, "light"));
+  @include underline(".search-input:focus + &", $primary-color);
 
   position: absolute;
   bottom: 0;
@@ -31,14 +32,12 @@ input.search-input {
   outline: none;
   border: none;
   box-shadow: none;
+  border-radius: 4px !important;
   background: none;
-  opacity: 0.7;
-  color: map-get($theme-colors, "light");
+  color: $border-gray;
 
   &::placeholder {
-    color: map-get($theme-colors, "light");
-    opacity: 0.7;
-    font-weight: 300;
+    color: $border-gray;
   }
 
   &:focus {
@@ -46,7 +45,6 @@ input.search-input {
     border: none;
     box-shadow: none;
     background: none;
-    opacity: 1;
     color: map-get($theme-colors, "light");
   }
 }

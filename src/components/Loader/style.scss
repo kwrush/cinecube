@@ -1,6 +1,7 @@
 .loader {
   margin: 0 auto;
   text-align: center;
+  display: inline-block;
 }
 
 .loader-sub {
@@ -11,10 +12,10 @@
 
 @keyframes wave {
   0%, 40%, 100% {
-    transform: scaleY(0.5)
+    transform: scaleY(0.5);
   }
 
   20% {
-    transform: scaleY(1)
+    transform: scaleY(1);
   }
 }

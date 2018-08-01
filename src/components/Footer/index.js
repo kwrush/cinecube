@@ -1,27 +1,35 @@
 import React from 'react';
 import {
   Container,
-  Row,
-  Col 
+  Nav,
+  NavItem,
+  NavLink 
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { GoMarkGithub } from 'react-icons/go';
 import Logo from '../Logo/index';
 
 import './style.scss';
 
 const Footer = props => (
-  <div styleName="footer">
-      <Container>
-        <Row>
-          <Col>
-            <Logo size={1.7} color="#333" hoverAnimation={false} />
-          </Col>
-          <Col>
-            <a href="https://kwrush.github.io/">Github</a>
-          </Col>
-        </Row>
-      </Container>
-  </div>
+  <footer styleName="footer">
+    <Container>
+      <Nav pills styleName="footer-nav">
+        <NavItem styleName="footer-nav-item">
+          <NavLink href="/">
+            <div styleName="footer-logo">
+              <Logo size={1.4} color="#FFF" hoverAnimation={false} />
+            </div>
+            CineCube
+          </NavLink>
+        </NavItem>
+        <NavItem styleName="footer-nav-item">
+          <NavLink href="https://github.com/kwrush/cinecube">
+            <GoMarkGithub />
+          </NavLink>
+        </NavItem>
+      </Nav>
+    </Container>
+  </footer>
 );
 
 export default Footer;

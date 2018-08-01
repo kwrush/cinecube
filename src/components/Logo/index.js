@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Util } from 'reactstrap';
 import './style.scss';
 
 // helper makes svg path of arc
@@ -12,7 +13,7 @@ const makeArc = (radius, angle, width, flipY, solid) => {
   const vw = 100;
   const vh = 100;
 
-  // x, y offset from arc center to the start point 
+  // x, y offset from arc center to the start point
   let dx = radius * Math.sin(angle * Math.PI / 180);
   let dy = radius * Math.cos(angle * Math.PI / 180);
   let sweep = '0 1 0';
@@ -38,14 +39,20 @@ const makeArc = (radius, angle, width, flipY, solid) => {
   if (!solid) {
     const inner = makeArc(radius - width, angle, width, true, true);
     arc.L[0] = inner.M;
-    arc.A.push(inner.A);
-    arc.L.push(inner.L);
+    arc
+      .A
+      .push(inner.A);
+    arc
+      .L
+      .push(inner.L);
   }
 
   return arc;
 };
 
 const propTypes = {
+  cssModule: PropTypes.object,
+  className: PropTypes.string,
   size: PropTypes.number,
   units: PropTypes.string,
   color: PropTypes.string,
@@ -61,49 +68,34 @@ const defaultProps = {
 
 const Logo = props => {
 
-  const logoClasses = classNames('logo', {'hover-logo': props.hoverAnimation});
-  
-  const logoStyles = {
-    width: `${props.size}${props.units}`,
-    height: `${props.size}${props.units}`,    
-  };
+  const { size, units, hoverAnimation, className, cssModule } = props;
 
-  const outer = makeArc(36, 45, 8, false, false);
-  const inner = makeArc(16, 45, 8, false, false);
+  const classes = Util.mapToCssModules(className, cssModule);
+  const logoStyles = classNames({'logo': !hoverAnimation}, {'hover-logo': hoverAnimation});
+  const width = `${size}${units}`;
+  const height = `${size}${units}`;
 
-  const fillOuter = makeArc(32, 45, 6, false, true);
-  const fillInner = makeArc(12, 45, 6, false, true);
+  const outer = makeArc(34, 45, 8, false, false);
+  const inner = makeArc(14, 45, 8, false, false);
+
+  const fillOuter = makeArc(30, 45, 6, false, true);
+  const fillInner = makeArc(10, 45, 6, false, true);
 
   return (
-
-    <div styleName={logoClasses} style={logoStyles}>
-      <svg width="100%" height="100%" viewBox="0 0 100 100">
-        <g fill="none" stroke={`${props.color}`}>
-          <path styleName="border" d="M 98 2, 2 2, 2 98" /> 
-          <path styleName="border" d="M 2 98, 98 98 98 2"  /> 
-          <path styleName="fill fill-outer" d={`
-            M ${fillOuter.M} 
-            A ${fillOuter.A[0]}`} />
-          <path styleName="fill fill-inner" d={`
-            M ${fillInner.M} 
-            A ${fillInner.A[0]}`} />
-          <path styleName="outer" d={`
-            M ${outer.M} 
-            A ${outer.A[0]}
-            L ${outer.L[0]}
-            A ${outer.A[1]}
-            L ${outer.L[1]}
-            Z`} />
-          <path styleName="inner" d={`
-            M ${inner.M} 
-            A ${inner.A[0]}
-            L ${inner.L[0]}
-            A ${inner.A[1]}
-            L ${inner.L[1]}
-            Z`} />
-        </g>
-      </svg>
-    </div>
+    <svg width={width} height={height} viewBox="0 0 100 100" styleName={logoStyles} className={classes}>
+      <g fill="none" stroke="currentColor">
+        <path styleName="border" d="M 98 2, 2 2, 2 98"/>
+        <path styleName="border" d="M 2 98, 98 98 98 2"/>
+        <path styleName="fill fill-outer" d={` M ${fillOuter.M} A ${fillOuter.A[0]}`}/>
+        <path styleName="fill fill-inner" d={` M ${fillInner.M} A ${fillInner.A[0]}`}/>
+        <path
+          styleName="outer"
+          d={` M ${outer.M} A ${outer.A[0]} L ${outer.L[0]} A ${outer.A[1]} L ${outer.L[1]} Z`}/>
+        <path
+          styleName="inner"
+          d={` M ${inner.M} A ${inner.A[0]} L ${inner.L[0]} A ${inner.A[1]} L ${inner.L[1]} Z`}/>
+      </g>
+    </svg>
   );
 };
 

@@ -5,9 +5,9 @@ import {
  } from 'react-router-dom';
 
 import {
-  movieRoutes,
-  tvRoutes,
-  peopleRoutes
+  MOVIE_ROUTES,
+  TV_ROUTES,
+  PEOPLE_ROUTES
 } from '../constants/routes';
 
 import Home from '../pages/Home';
@@ -19,9 +19,9 @@ import NotFound from '../pages/404';
 const Main = props => (
   <Switch>
     <Route exact path="/" component={Home} />
-    <Route path={movieRoutes.home} component={Movie} />
-    <Route path={tvRoutes.home} component={TV} />
-    <Route path={peopleRoutes.home} component={People} />
+    <Route path={MOVIE_ROUTES.home} component={Movie} />
+    <Route path={TV_ROUTES.home} component={TV} />
+    <Route path={PEOPLE_ROUTES.home} component={People} />
     <Route component={NotFound} />
   </Switch>
 );

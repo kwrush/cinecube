@@ -1,6 +1,38 @@
+@import "../../assets/styles/_base.scss";
+@import "../../assets/styles/_variables.scss";
+
+$primary-color: theme-color("light");
+
 .footer {
   margin: 2rem auto;
   font-size: 0.9rem;
-  color: #333;
+  color: $primary-color;
   text-align: center;
+
+  & a {
+    color: $primary-color;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
 }
+
+.footer-nav {
+  padding: 2rem 0;
+  border-top: solid 1px $border-light-gray;
+}
+
+.footer-nav-item a {
+  color: $light-gray;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.footer-logo {
+  margin-right: 3px;
+  display: inline-block;
+}
+

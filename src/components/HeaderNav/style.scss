@@ -1,8 +1,9 @@
 @import "../../assets/styles/_base.scss";
-@import "../../assets/styles/_mixin.scss";
+
+$nav-primary-color: theme-color("light");
 
 .nav {
-  font-size: 0.75rem;
+  font-size: $font-size-xs;
   font-weight: bold;
   letter-spacing: 0.1rem;
   text-align: center;
@@ -10,16 +11,22 @@
 
 .nav-item {
   margin: 0 2.25rem;
-  line-height: 1.8rem;
+  line-height: $line-height-xl;
   text-transform: uppercase;
 }
 
 .link {
   display: inline-block;
   text-decoration: none;
-  @include underline("&:hover", map-get($theme-colors, "light"));
+  color: $nav-primary-color;
+  @include underline("&:hover", $nav-primary-color);
 
   &:hover {
+    color: $nav-primary-color;
     text-decoration: none;
   }
+}
+
+.active {
+  @include underline("&", $nav-primary-color);
 }

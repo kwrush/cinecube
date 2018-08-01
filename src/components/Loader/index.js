@@ -3,39 +3,49 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Util } from 'reactstrap';
 import './style.scss';
 
 const propTypes = {
   cssModule: PropTypes.object,
-  loading: PropTypes.bool,
+  className: PropTypes.string,
   color: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
   spacing: PropTypes.number,
   units: PropTypes.string,
-  loaderNumber: PropTypes.number
+  loaderNumber: PropTypes.number,
+  isLoading: PropTypes.bool
 };
 
 const defaultProps = {
-  loading: true,
   color: '#FFFFFF',
-  width: 5,
-  height: 35,
-  spacing: 2,
+  width: 50,
+  height: 30,
+  spacing: 4,
   units: 'px',
-  loaderNumber: 6
+  loaderNumber: 5,
+  isLoading: true
 };
 
 const Loader = props => {
 
+  let { className, cssModule, spacing, units, color, width, height, loaderNumber } = props;
+  const classes = Util.mapToCssModules(className, cssModule);
+
+  let margin = spacing / 2;
+  let subW = Math.floor((width - spacing * loaderNumber) / loaderNumber);
+  let subH = height;
+
   // make rectangles
-  const subs = Array(props.loaderNumber).fill().map((s, i) => {
+  const subs = Array(loaderNumber).fill().map((s, i) => {
     let styles = {
-      margin: `${props.spacing}${props.units}`,
-      backgroundColor: props.color,
-      width: `${props.width}${props.units}`,
-      height: `${props.height}${props.units}`,
-      display: 'inline-block',
+      marginLeft: `${margin}${units}`,
+      marginRight: `${margin}${units}`,
+      backgroundColor: color,
+      width: `${subW}${units}`,
+      height: `${subH}${units}`,
+      float: 'left',
       animationDuration: '1.2s',
       animationDelay: `${i * 0.1}s`,
       animationIterationCount: 'infinite',
@@ -45,9 +55,9 @@ const Loader = props => {
     return <div key={i} style={styles} styleName="loader-sub"></div>
   });
 
-  return props.loading ? 
+  return props.isLoading ? 
     (
-      <div styleName="loader">
+      <div styleName="loader" className={classes}>
         {subs}
       </div>
     ) : null;

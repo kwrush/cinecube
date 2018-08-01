@@ -9,7 +9,7 @@ import {
   Util
 } from 'reactstrap';
 import { GoSearch } from 'react-icons/go';
-import Suggestions from '../Suggestions/index';
+import AutoComplete from '../AutoComplete/index';
 import './style.scss';
 
 class SearchBox extends React.Component {
@@ -28,8 +28,7 @@ class SearchBox extends React.Component {
     super(props);
 
     this.state = {
-      query: '',
-      results: []
+      query: ''
     };
 
     this.onKeyPress = debounce(this.onKeyPress, 300);
@@ -69,7 +68,7 @@ class SearchBox extends React.Component {
           />
           <div styleName="underline"></div>
         </InputGroup>
-        <Suggestions results={this.state.results} />
+        <AutoComplete results={{}} />
       </div>
     );
   }
