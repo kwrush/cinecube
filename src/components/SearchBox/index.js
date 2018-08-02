@@ -9,7 +9,7 @@ import {
   Util
 } from 'reactstrap';
 import { GoSearch } from 'react-icons/go';
-import AutoComplete from '../AutoComplete/index';
+import Suggestions from '../Suggestions/index';
 import './style.scss';
 
 class SearchBox extends React.Component {
@@ -17,31 +17,123 @@ class SearchBox extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     cssModule: PropTypes.object,
-    onSearch: PropTypes.func
+    onSearch: PropTypes.func,
+    searchResults: PropTypes.array
   }
 
   static defaultProps = {
-    onSearch: () => {}
-  }
+    onSearch: () => {},
+    searchResults: []
+  } 
 
   constructor (props) {
     super(props);
 
     this.state = {
-      query: ''
+      showSuggestions: false
     };
 
-    this.onKeyPress = debounce(this.onKeyPress, 300);
+    this.performSearch = debounce(this.performSearch, 300);
   }
 
   updateQuery = event => {
+    this.performSearch(event.target.value);
+
+    if (event.target.value.length === 0) {
+      this.setState({
+        showSuggestions: false
+      })
+    }
+  }
+
+  onSuggestionSelect = evnet => {
+    this.setIgnoreBlur(false);
+    this._inputRef.blur();
+  }
+
+  handInputFocus = event => {
+    if (this._ignoreFocus) {
+      this._ignoreFocus = false;
+      return;
+    }
+
     this.setState({
-      query: event.target.value
+      showSuggestions: this._inputRef.value.length > 0
     });
   }
 
-  onKeyPress = event => {
-    this.props.onSearch(this.state.query);
+  handleInputBlur = event => {
+    if (this._ignoreBlur) {
+      this._ignoreFocus = true;
+      this._inputRef.focus();
+      return;
+    }
+
+    this.setState({
+      showSuggestions: false
+    });
+  }
+
+  handleInputClick = event => {
+    if (!this.state.showSuggestions) {
+      this.setState({
+        showSuggestions: this._inputRef.value.length > 0
+      });
+    }
+  }
+
+  handleKeyDown = event => {
+
+    if (!this.state.showSuggestions) {
+      this.setState({
+        showSuggestions: this._inputRef.value.length > 0
+      });
+    }
+  }
+
+  performSearch = query => {
+    query.length > 0 && this.props.onSearch(query);
+  }
+
+  setIgnoreBlur = (ignore) => {
+    this._ignoreBlur = ignore;
+  }
+
+  renderSuggestions = () => {
+    return (
+      <Suggestions
+        results={this.props.searchResults}
+        isOpen={this.state.showSuggestions}
+        onMouseEnter={() => this.setIgnoreBlur(true)}
+        onMouseLeave={() => this.setIgnoreBlur(false)}
+        onClick={this.onSuggestionSelect}
+      />
+    );
+  }
+
+  componentWillMount () {
+    this._inputRef = null;
+    this._ignoreBlur = false;
+    this._ignoreFocus = false;
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    // if (nextState.query !== this.state.query) {
+    //   this.performSearch(nextState.query);
+    // }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+
+    // if (this.state.showSuggestions) {
+    //   this.setState({
+    //     showSuggestions: this.state.query.length > 0
+    //   });
+    // } else if (!this.state.showSuggestions && ) {
+    //   this.setState({
+    //     showSuggestions: true
+    //   });
+    // }
   }
 
   render () {
@@ -63,12 +155,16 @@ class SearchBox extends React.Component {
           <Input
             styleName="search-input"
             placeholder="Search for movies, tv shows and more"
+            innerRef={input => this._inputRef = input}
+            onKeyDown={this.handleKeyDown}
+            onClick={this.handleInputClick}
+            onFocus={this.handInputFocus}
+            onBlur={this.handleInputBlur}
             onChange={this.updateQuery}
-            onKeyPress={this.onKeyPress}
           />
           <div styleName="underline"></div>
         </InputGroup>
-        <AutoComplete results={{}} />
+        { this.state.showSuggestions && this.renderSuggestions() }
       </div>
     );
   }

@@ -42,6 +42,8 @@
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "concurrently": "^3.6.0",
     "css-loader": "^0.28.7",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "4.10.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "1.9.0",
@@ -97,6 +99,7 @@
       "/node_modules/",
       "/__mockData__/"
     ],
+    "setupTestFrameworkScriptFile": "<rootDir>/config/jest/setupTests.js",
     "testEnvironment": "node",
     "testURL": "http://localhost",
     "transform": {

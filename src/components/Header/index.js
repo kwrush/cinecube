@@ -31,7 +31,8 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      isNavOpen: false
+      isNavOpen: false,
+      results: []
     };
   }
 
@@ -62,7 +63,10 @@ class Header extends React.Component {
                 navItems={navItems}
                 styleName="header-nav"
               />
-              <SearchBox styleName="searchbox" />
+              <SearchBox 
+                styleName="searchbox" 
+                searchResults={this.state.results}
+              />
             </Collapse>
           </Navbar>
         </Container>
