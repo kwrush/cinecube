@@ -13,13 +13,13 @@ import './style.scss';
 const Footer = props => (
   <footer styleName="footer">
     <Container>
-      <Nav pills styleName="footer-nav">
+      <Nav styleName="footer-nav">
         <NavItem styleName="footer-nav-item">
           <NavLink href="/">
             <div styleName="footer-logo">
-              <Logo size={1.4} color="#FFF" hoverAnimation={false} />
+              <Logo size="1.3rem" color="#FFF" hoverAnimation={false} />
             </div>
-            CineCube
+            <span styleName="logo-text">CineCube</span>
           </NavLink>
         </NavItem>
         <NavItem styleName="footer-nav-item">

@@ -2,7 +2,9 @@ import React from 'react';
 import { Container } from 'reactstrap';
 
 const Home = props => (
-  <Container>This is home page</Container>
+  <Container>
+    This is home page
+  </Container>
 );
 
 

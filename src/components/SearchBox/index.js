@@ -33,41 +33,52 @@ class SearchBox extends React.Component {
       showSuggestions: false
     };
 
-    this.performSearch = debounce(this.performSearch, 300);
+    this.handleSearch = debounce(this.handleSearch, 300);
   }
 
-  updateQuery = event => {
-    this.performSearch(event.target.value);
+  hanldeInputChange = event => {
 
-    if (event.target.value.length === 0) {
+    const val = this.getQuery();
+    this.handleSearch(val);
+
+    if (val.length === 0) {
       this.setState({
         showSuggestions: false
-      })
+      });
+    } else if (!this.state.showSuggestions) {
+      this.setState({
+        showSuggestions: true
+      });
     }
   }
 
-  onSuggestionSelect = evnet => {
+  handleSelectItem = event => {
+
     this.setIgnoreBlur(false);
-    this._inputRef.blur();
+    this.refs.input.blur();
   }
 
   handInputFocus = event => {
+
     if (this._ignoreFocus) {
-      this._ignoreFocus = false;
+      this.setIgnoreFocus(false);
       return;
     }
 
     this.setState({
-      showSuggestions: this._inputRef.value.length > 0
+      showSuggestions: this.getQuery().length > 0
     });
   }
 
   handleInputBlur = event => {
+
     if (this._ignoreBlur) {
-      this._ignoreFocus = true;
-      this._inputRef.focus();
+      this.setIgnoreFocus(true);
+      this.refs.input.focus();
       return;
     }
+
+    this.getQuery().length === 0 && (this._clearSuggestion = true);
 
     this.setState({
       showSuggestions: false
@@ -77,7 +88,7 @@ class SearchBox extends React.Component {
   handleInputClick = event => {
     if (!this.state.showSuggestions) {
       this.setState({
-        showSuggestions: this._inputRef.value.length > 0
+        showSuggestions: this.getQuery().length > 0
       });
     }
   }
@@ -86,17 +97,25 @@ class SearchBox extends React.Component {
 
     if (!this.state.showSuggestions) {
       this.setState({
-        showSuggestions: this._inputRef.value.length > 0
+        showSuggestions: this.getQuery().length > 0
       });
     }
   }
 
-  performSearch = query => {
+  handleSearch = query => {
     query.length > 0 && this.props.onSearch(query);
   }
 
   setIgnoreBlur = (ignore) => {
     this._ignoreBlur = ignore;
+  }
+
+  setIgnoreFocus = (ignore) => {
+    this._ignoreFocus = ignore;
+  }
+
+  getQuery = () => {
+    return this.refs.input ? this.refs.input.value : '';
   }
 
   renderSuggestions = () => {
@@ -106,34 +125,15 @@ class SearchBox extends React.Component {
         isOpen={this.state.showSuggestions}
         onMouseEnter={() => this.setIgnoreBlur(true)}
         onMouseLeave={() => this.setIgnoreBlur(false)}
-        onClick={this.onSuggestionSelect}
+        onClick={this.handleSelectItem}
       />
     );
   }
 
   componentWillMount () {
-    this._inputRef = null;
+    this.refs = {};
     this._ignoreBlur = false;
     this._ignoreFocus = false;
-  }
-
-  componentWillUpdate (nextProps, nextState) {
-    // if (nextState.query !== this.state.query) {
-    //   this.performSearch(nextState.query);
-    // }
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-
-    // if (this.state.showSuggestions) {
-    //   this.setState({
-    //     showSuggestions: this.state.query.length > 0
-    //   });
-    // } else if (!this.state.showSuggestions && ) {
-    //   this.setState({
-    //     showSuggestions: true
-    //   });
-    // }
   }
 
   render () {
@@ -155,16 +155,18 @@ class SearchBox extends React.Component {
           <Input
             styleName="search-input"
             placeholder="Search for movies, tv shows and more"
-            innerRef={input => this._inputRef = input}
+            innerRef={el => this.refs.input = el}
             onKeyDown={this.handleKeyDown}
             onClick={this.handleInputClick}
             onFocus={this.handInputFocus}
             onBlur={this.handleInputBlur}
-            onChange={this.updateQuery}
+            onChange={this.hanldeInputChange}
           />
           <div styleName="underline"></div>
         </InputGroup>
-        { this.state.showSuggestions && this.renderSuggestions() }
+        {
+          this.state.showSuggestions && this.renderSuggestions()
+        }
       </div>
     );
   }

@@ -53,27 +53,25 @@ const makeArc = (radius, angle, width, flipY, solid) => {
 const propTypes = {
   cssModule: PropTypes.object,
   className: PropTypes.string,
-  size: PropTypes.number,
-  units: PropTypes.string,
+  size: PropTypes.string,
   color: PropTypes.string,
   hoverAnimation: PropTypes.bool
 };
 
 const defaultProps = {
   size: 3,
-  units: 'rem',
   color: '#FFFFFF',
   hoverAnimation: true
 };
 
 const Logo = props => {
 
-  const { size, units, hoverAnimation, className, cssModule } = props;
+  const { size, hoverAnimation, className, cssModule } = props;
 
   const classes = Util.mapToCssModules(className, cssModule);
   const logoStyles = classNames({'logo': !hoverAnimation}, {'hover-logo': hoverAnimation});
-  const width = `${size}${units}`;
-  const height = `${size}${units}`;
+  const width = `${size}`;
+  const height = `${size}`;
 
   const outer = makeArc(34, 45, 8, false, false);
   const inner = makeArc(14, 45, 8, false, false);

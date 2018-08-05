@@ -27,8 +27,8 @@ describe('Test <Suggestions />', () => {
         items: [
           {
             title: 'movie1', 
-            'url': '/', 
-            'imgUrl': '/'
+            url: '/', 
+            imgUrl: '/'
           }
         ]
       },
@@ -37,13 +37,13 @@ describe('Test <Suggestions />', () => {
         items: [
           {
             title: 'tv1', 
-            'url': '/', 
-            'imgUrl': '/'
+            url: '/', 
+            imgUrl: '/'
           },
           {
             title: 'tv2', 
-            'url': '/', 
-            'imgUrl': '/'
+            url: '/', 
+            imgUrl: '/'
           }
         ]
       }

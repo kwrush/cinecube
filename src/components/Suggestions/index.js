@@ -111,7 +111,7 @@ class Suggestions extends React.Component {
 
     return (
       <div 
-        styleName="autocomplete"
+        styleName="suggestions"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >

@@ -1,0 +1,18 @@
+@import "../../assets/styles/_base.scss"; 
+
+.poster {
+  margin: 5px;
+  padding: 0;
+  text-align: center;
+  background: none;
+  @include section-shadow;
+}
+
+.poster-link {
+  display: block;
+}
+
+.poster-img {
+  width: 100%;
+  height: 100%;
+}

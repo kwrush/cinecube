@@ -13,8 +13,8 @@ import {
   TV_ROUTES,
   PEOPLE_ROUTES
 } from '../../constants/routes';
-import HeaderNav from '../HeaderNav/index';
-import SearchBox from '../SearchBox/index';
+import HeaderNav from '../HeaderNav';
+import SearchBox from '../SearchBox';
 import Logo from '../Logo';
 import './style.scss';
 
@@ -55,7 +55,7 @@ class Header extends React.Component {
         <Container>
           <Navbar expand="md" className="mr-auto" dark>
             <NavbarBrand href="/" styleName="nav-logo">
-              <Logo size={2.5} />
+              <Logo size="2.5rem" />
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isNavOpen} navbar>

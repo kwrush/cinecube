@@ -5,7 +5,7 @@ $primary-color: theme-color("light");
 
 .footer {
   margin: 2rem auto;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: $primary-color;
   text-align: center;
 
@@ -21,6 +21,8 @@ $primary-color: theme-color("light");
 .footer-nav {
   padding: 2rem 0;
   border-top: solid 1px $border-light-gray;
+  display: flex;
+  justify-content: center;
 }
 
 .footer-nav-item a {
@@ -36,3 +38,6 @@ $primary-color: theme-color("light");
   display: inline-block;
 }
 
+.logo-text {
+  font-size: $font-size-sm;
+}
