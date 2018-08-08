@@ -1,15 +1,7 @@
-@import "../../assets/styles/_base.scss"; 
-
 .poster {
-  margin: 5px;
-  padding: 0;
   text-align: center;
   background: none;
-  @include section-shadow;
-}
-
-.poster-link {
-  display: block;
+  display: inline-block;
 }
 
 .poster-img {

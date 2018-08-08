@@ -1,0 +1,36 @@
+@import "../../assets/styles/_base.scss";
+
+.rating {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.circle-background {
+  fill: rgba(0, 0, 0, 0.6);
+}
+
+.circle-border,
+.circle-rating {
+  fill: none;
+  stroke: currentColor;
+}
+
+.circle-border {
+  opacity: 0.4;
+}
+
+.circle-rating {
+  stroke-linecap: round;
+  transition: all 0.5s ease-in-out;
+}
+
+.circle-text {
+  font-weight: bold;
+  fill: $light;
+  dominant-baseline: central;
+}
+
+

@@ -12,7 +12,7 @@ import { GoSearch } from 'react-icons/go';
 import Suggestions from '../Suggestions/index';
 import './style.scss';
 
-class SearchBox extends React.Component {
+class SearchBox extends React.PureComponent {
 
   static propTypes = {
     className: PropTypes.string,

@@ -60,13 +60,13 @@ const propTypes = {
 
 const defaultProps = {
   size: 3,
-  color: '#FFFFFF',
+  color: 'currentColor',
   hoverAnimation: true
 };
 
 const Logo = props => {
 
-  const { size, hoverAnimation, className, cssModule } = props;
+  const { size, hoverAnimation, color, className, cssModule } = props;
 
   const classes = Util.mapToCssModules(className, cssModule);
   const logoStyles = classNames({'logo': !hoverAnimation}, {'hover-logo': hoverAnimation});
@@ -81,7 +81,7 @@ const Logo = props => {
 
   return (
     <svg width={width} height={height} viewBox="0 0 100 100" styleName={logoStyles} className={classes}>
-      <g fill="none" stroke="currentColor">
+      <g fill="none" stroke={`${color}`}>
         <path styleName="border" d="M 98 2, 2 2, 2 98"/>
         <path styleName="border" d="M 2 98, 98 98 98 2"/>
         <path styleName="fill fill-outer" d={` M ${fillOuter.M} A ${fillOuter.A[0]}`}/>

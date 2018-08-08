@@ -17,7 +17,7 @@ const Footer = props => (
         <NavItem styleName="footer-nav-item">
           <NavLink href="/">
             <div styleName="footer-logo">
-              <Logo size="1.3rem" color="#FFF" hoverAnimation={false} />
+              <Logo size="1.3rem" hoverAnimation={false} />
             </div>
             <span styleName="logo-text">CineCube</span>
           </NavLink>

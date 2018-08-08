@@ -22,7 +22,7 @@ const defaultProps = {
 
 const HeaderNav = props => {
   let { className, cssModule, navItems } = props;
-  const classes = Util.mapToCssModules(`${className} link-active`, cssModule);
+  const classes = Util.mapToCssModules(className, cssModule);
 
   return (
     <Nav styleName="nav" className={classes} navbar>

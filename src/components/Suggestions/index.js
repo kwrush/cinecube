@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { GoIssueOpened } from 'react-icons/go';
 import './style.scss'
 
-class Suggestions extends React.Component {
+class Suggestions extends React.PureComponent {
 
   static propTypes = {
     results: PropTypes.arrayOf(

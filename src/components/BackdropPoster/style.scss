@@ -1,0 +1,23 @@
+%poster-enter {
+  opacity: 0.05;
+  transform: translateY(-3rem);
+}
+
+%poster {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.poster-enter {
+  @extend %poster-enter;
+}
+
+.poster-enter-active {
+  @extend %poster;
+  transition: all 0.3s ease-in-out;
+}
+
+.poster-enter-done,
+.poster-exit-active {
+  @extend %poster;
+}
