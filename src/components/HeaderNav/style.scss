@@ -19,6 +19,7 @@ $nav-primary-color: theme-color("light");
   display: inline-block;
   text-decoration: none;
   color: $nav-primary-color;
+  font-size: inherit;
   @include underline("&:hover", $nav-primary-color);
 
   &:hover {
@@ -29,4 +30,10 @@ $nav-primary-color: theme-color("light");
 
 .active {
   @include underline("&", $nav-primary-color);
+}
+
+@media (max-width: $media-lg) {
+  .nav-item {
+    font-size: 0.7rem;
+  }
 }

@@ -15,7 +15,6 @@
 .circle-border,
 .circle-rating {
   fill: none;
-  stroke: currentColor;
 }
 
 .circle-border {
@@ -24,7 +23,6 @@
 
 .circle-rating {
   stroke-linecap: round;
-  transition: all 0.5s ease-in-out;
 }
 
 .circle-text {

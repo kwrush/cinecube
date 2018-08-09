@@ -1,43 +1,59 @@
 import React from 'react';
 import { Container } from 'reactstrap';
-import Backdrop from '../components/Backdrop';
+import BackdropCarousel from '../components/BackdropCarousel';
 
-const mockData = {
-  "id": 335984,
-  "video": false,
-  "rating": 7.3,
-  "title": "Blade Runner 2049",
-  "posterUrl": "https://image.tmdb.org/t/p/w220_and_h330_bestv2/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
-  "backdropUrl": "https://image.tmdb.org/t/p/original/mVr0UiqyltcfqxbAUcLl9zWL8ah.jpg",
-  "genre_ids": [
-    9648,
-    878,
-    53
-  ],
-  "overview": "Thirty years after the events of the first film, a new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what's left of society into chaos. K's discovery leads him on a quest to find Rick Deckard, a former LAPD blade runner who has been missing for 30 years.",
-  "releaseDate": "2017-10-04"
-};
+const mockData = [
+  {
+    "id": 383498,
+    "mediaType": "movie",
+    "rating": 7.6,
+    "title": "Deadpool 2",
+    "posterUrl": "https://image.tmdb.org/t/p/w220_and_h330_bestv2/to0spRl1CMDvyUbOnbb4fTk3VAd.jpg",
+    "backdropUrl": "https://image.tmdb.org/t/p/original/9lttPLlmZ8l7arZm7AXgKHhl7nv.jpg",
+    "genreIds": [
+      28,
+      35,
+      878
+    ],
+    "releaseDate": "2018-5-18"
+  },
+  {
+    "id": 335984,
+    "mediaType": "movie",
+    "rating": 6.2,
+    "title": "Blade Runner 2049",
+    "posterUrl": "https://image.tmdb.org/t/p/w220_and_h330_bestv2/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+    "backdropUrl": "https://image.tmdb.org/t/p/original/mVr0UiqyltcfqxbAUcLl9zWL8ah.jpg",
+    "genreIds": [
+      9648,
+      878,
+      53
+    ],
+    "releaseDate": "2017-10-5"
+  },
+  {
+    "id": 353081,
+    "mediaType": "movie",
+    "rating": 4.4,
+    "title": "Mission: Impossible - Fallout",
+    "posterUrl": "https://image.tmdb.org/t/p/w220_and_h330_bestv2/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg",
+    "backdropUrl": "https://image.tmdb.org/t/p/original/5qxePyMYDisLe8rJiBYX8HKEyv2.jpg",
+    "genreIds": [
+      12,
+      28,
+      53
+    ],
+    "releaseDate": "2018-7-12"
+  }
+];
 
 class Home extends React.Component {
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      isActive: false
-    };
-  }
-  active = () => {
-    this.setState({
-      isActive: !this.state.isActive
-    })
-  }
 
   render () {
-    let { isActive } = this.state;
     return (
-      <Container onMouseDown={this.active}>
+      <Container>
         <div>This is home page</div>
-        <Backdrop active={isActive} {...mockData}/>
+        <BackdropCarousel backdrops={mockData} />
       </Container>
     );
   }

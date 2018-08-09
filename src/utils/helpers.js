@@ -21,3 +21,7 @@ export const ascendComparator = (v1, v2) => {
   if (v1 > v2) return 1;
   if (v1 === v2) return 0;
 };
+
+export const getFullYear = (dateStr) => {
+  return new Date(dateStr).getFullYear();
+}

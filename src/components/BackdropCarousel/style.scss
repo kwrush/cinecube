@@ -1,1 +1,54 @@
-.indicators {}
+@import "../../assets/styles/_base.scss"; 
+
+ol.indicators {
+  & li {
+    margin: 0 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+  }
+
+  & li.active {
+    transform: scale(1.2);
+  }
+}
+
+.backdrop-view {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+}
+
+.backdrop {
+  margin: 0 auto;
+  overflow: hidden;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    transform: scale(1.05);
+    filter: blur(3px);
+  }
+}
+
+.backdrop-group {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.poster {
+  margin-right: 3rem;
+  align-self: flex-end;
+  @include card;
+}
+
+.info-group {
+  color: $light;
+  align-self: center;
+}

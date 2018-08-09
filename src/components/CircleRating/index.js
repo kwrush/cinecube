@@ -16,12 +16,27 @@ const propTypes = {
 const defaultProps = {
   active: true,
   value: 0,
-  max: 10,
-  delay: 0
+  max: 10
+};
+
+const getCircleColor = (value, max) => {
+  const ratio = value / max;
+
+  if (ratio > 0.8) {
+    return '#03a63c';
+  } else if (ratio > 0.7) {
+    return '#3cb371';
+  } else if (ratio > 0.6) {
+    return '#ffc107';
+  } else if (ratio > 0.5) {
+    return '#fd7e14';
+  } else {
+    return '#d21404';
+  }
 };
 
 const CircleRating = props => {
-  const { active, value, max, delay, className, cssModule } = props;
+  const { active, value, max, className, cssModule } = props;
 
   const size = 100;
   const skWidth = 10;
@@ -37,13 +52,20 @@ const CircleRating = props => {
 
   const classes = Util.mapToCssModules(className, cssModule);
 
-  const ratingStyle = { strokeDasharray: dashArray };
+  const ratingStyle = { 
+    strokeDasharray: dashArray,
+    strokeDashoffset: Math.floor(dashArray),
+  };
 
-  const transitionStyle = {
-    entering: { strokeDashoffset: Math.floor(dashArray) },
-    entered:  { strokeDashoffset: dashOffset },
-    exiting:  { strokeDashoffset: dashOffset },
-    exited:   { strokeDashoffset: dashOffset }
+  const enterStyle = {
+    strokeDashoffset: dashOffset,
+    transition: 'all 0.5s ease-in-out'
+  }
+
+  const transitionStyles = {
+    entering: { ...enterStyle },
+    entered:  { ...enterStyle },
+    exiting:  { ...enterStyle }
   };
 
   return (
@@ -55,6 +77,7 @@ const CircleRating = props => {
           r={size / 2}
           strokeWidth={`${skWidth}px`}
         />
+        <g stroke={getCircleColor(value, max)}>
         <circle
           styleName="circle-border"
           {...origin}
@@ -63,12 +86,12 @@ const CircleRating = props => {
         />
         <Transition
           in={active}
-          appear={active}
-          timeout={100 + delay}
-          unmountOnExit
+          appear={true}
+          timeout={500}
+          exit={false}
         >
           {
-            status => (
+            state => (
               <circle
                 styleName="circle-rating"
                 {...origin}
@@ -77,12 +100,13 @@ const CircleRating = props => {
                 transform={`rotate(-90, ${origin.cx} ${origin.cy})`}
                 style={{
                   ...ratingStyle,
-                  ...transitionStyle[status]
+                  ...transitionStyles[state]
                 }}
               />
             )
           }
         </Transition>
+        </g>
         <text
           styleName="circle-text"
           x="50%"

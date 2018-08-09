@@ -1,49 +1,75 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition } from 'react-transition-group';
+import { Transition } from 'react-transition-group';
 import { Util } from 'reactstrap';
 import Poster from '../Poster'
-import style from './style.scss'
+import './style.scss'
 
 const propTypes = {
   posterUrl: PropTypes.string,
   title: PropTypes.string,
+  active: PropTypes.bool,
+  onEntered: PropTypes.func,
   className: PropTypes.string,
   cssModule: PropTypes.object
 };
 
 const defaultProps = {
   posterUrl: '',
-  title: ''
+  title: '',
+  active: false,
+  onEntered: () => {}
 };
+
+const posterStyle
+ = {
+  opacity: 0, 
+  transform: 'translateY(-2rem)'
+};
+
+const enterStyle = {
+  opacity: 1,
+  transform: 'translateY(0)',
+  transition: 'transform 0.6s, opacity 0.3s ease-in-out'
+};
+
+const transitionStyles = {
+  entering: { ...enterStyle },
+  entered: { ...enterStyle },
+}
 
 const BackdropPoster = (props) => {
 
-  const { active, posterUrl, title, cssModule, className } = props;
-
-  const backdropClasses = {
-    enter: style['poster-enter'],
-    enterActive: style['poster-enter-active'],
-    enterDone: style['poster-enter-done'],
-    exitActive: style['poster-exit-active']
-  };
+  const { active, posterUrl, title, cssModule, className, onEntered } = props;
 
   const classes = Util.mapToCssModules(className, cssModule);
 
   return (
-    <CSSTransition
+    <Transition
       in={active}
-      timeout={300}
-      classNames={backdropClasses}
-      { ...props }
-      unmountOnExit
+      timeout={600}
+      appear={true}
+      onEntered={onEntered}
+      exit={false}
     >
-      <Poster 
-        className={classes}
-        imageUrl={posterUrl} 
-        title={title} 
-      />
-    </CSSTransition>
+      {
+        (state) => (
+          <div
+            className={classes}
+            style={{
+              ...posterStyle,
+              ...transitionStyles[state]
+            }}
+          >
+            <Poster
+              styleName="card"
+              imageUrl={posterUrl}
+              title={title}
+            />
+          </div>
+        )
+      }
+    </Transition>
   );
 };
 

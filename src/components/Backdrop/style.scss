@@ -3,13 +3,24 @@
 .backdrop-view {
   position: relative;
   text-align: center;
-  display: inline-block;
 }
 
 .backdrop {
+  position: relative;
   margin: 0 auto;
-  max-width: 1100px;
   overflow: hidden;
+
+  &:after {
+    @include gradient-bg();
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    //background: $dark;
+    opacity: 0.4;
+  }
 
   & img {
     width: 100%;
@@ -20,53 +31,21 @@
 }
 
 .backdrop-group {
+  margin: 3.5rem;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 2rem;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-end;
 }
 
-.poster {
-  margin-right: 3rem;
-  align-self: flex-end;
-  @include card;
+.poster-info {
+  position: absolute;
+  left: 0;
 }
-
-.title {
-  color: $light;
-  align-self: center;
-}
-
-%info-group-enter {
-  opacity: 0;
-  transform: translateX(3rem);
-}
-
-%info-group {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.info-group-enter {
-  @extend %info-group-enter;
-}
-
-.info-group-enter-active {
-  @extend %info-group;
-  transition: all 0.3s ease-in-out;
-}
-
-.info-group-enter-done,
-.info-group-exit,
-.info-group-exit-active {
-  @extend %info-group;
-  transition-delay: 0;
-}
-
 
 
 

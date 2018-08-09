@@ -1,3 +1,55 @@
+@import "../../assets/styles/_base.scss"; 
+
 .backdrop-info {
-  
+  margin: 2rem;
+  color: $light;
+  display: inline-block;
+}
+
+.summary {
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.rating {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+
+.genres {
+  margin-left: 1.25rem;
+  display: flex;
+  align-self: center;
+
+  & span {
+    margin: 0.2rem;
+    font-weight: normal;
+  }
+}
+
+.title {
+  max-width: 30rem;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  font-weight:bold;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  font-size: $font-size-xl;
+}
+
+.info-button {
+  padding: 0;
+  width: 10rem;
+  outline: none;
+}
+
+.info-link {
+  color: inherit;
+  display: block;
+  line-height: $line-height-xl;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 }
