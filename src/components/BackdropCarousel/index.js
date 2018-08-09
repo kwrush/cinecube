@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {
   Carousel,
@@ -35,8 +36,27 @@ class BackdropCarousel extends React.PureComponent {
     super(props);
 
     this.state = {
-      activeIndex: 0
+      activeIndex: 0,
+      innerCarouselHeight: 0
     }
+  }
+
+  componentWillMount () {
+    this._innerCarouselNode = null;
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    const newHeight = `${nextState.innerCarouselHeight}px`;
+    this._innerCarouselNode.style.height = newHeight;
+  }
+
+  handleWindowResize = (event) => {
+    // if window is resized, the height has to be recalculated
+    this.updateInnerCarouselHeight();
   }
 
   next = () => {
@@ -72,10 +92,32 @@ class BackdropCarousel extends React.PureComponent {
 
   handleEntering = () => {
     this._animating = true;
+
+    /* Dirty fix for blink issue in reacstap carousel 
+    based on https://github.com/reactstrap/reactstrap/issues/677#issuecomment-375242805,
+    It seeems that to set height of carousel-inner can fix the issue */
+    if (this._innerCarouselNode === null) {
+      const _carouselNode = ReactDOM.findDOMNode(this._carousel)
+      this._innerCarouselNode = _carouselNode.querySelector('div[role="listbox"]');
+    } 
   }
 
   handleAllEntered = () => {
     this._animating = false;
+    this.updateInnerCarouselHeight();
+  }
+
+  updateInnerCarouselHeight = () => {
+    const _activeItemNode = this._innerCarouselNode.querySelector('div[class*="active"]');
+
+    if (_activeItemNode
+      && _activeItemNode.offsetHeight !== this.state.innerCarouselHeight) {
+
+      console.log('will update height...');
+      this.setState({
+        innerCarouselHeight: _activeItemNode.offsetHeight
+      });
+    }
   }
 
   renderBackdropItems = (items) => {
@@ -85,12 +127,13 @@ class BackdropCarousel extends React.PureComponent {
       const active = index === this.state.activeIndex; 
 
       return (
-        <Backdrop 
+        <Backdrop
           key={id}
           id={id}
+          index={index}
           active={active}
           onEntering={this.handleEntering}
-          onAllEntered={this.handleAllEntered}
+          onChildrenEntered={this.handleAllEntered}
           { ...backdropProps }
         />
       );
@@ -109,6 +152,7 @@ class BackdropCarousel extends React.PureComponent {
 
     return (
       <Carousel
+        ref={ el => this._carousel = el }
         activeIndex={activeIndex}
         next={this.next}
         previous={this.previous}

@@ -20,6 +20,6 @@ describe('Test <BackdropPoster />', () => {
     
     jest.runAllTimers();
 
-    expect(fn).toBeCalled();
+    expect(fn).toHaveBeenCalled();
   });
 });

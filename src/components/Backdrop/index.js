@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CarouselItem, Util } from 'reactstrap';
+import classNames from 'classnames';
 import BackdropPoster from '../BackdropPoster';
 import BackdropInfo from '../BackdropInfo';
 import './style.scss';
@@ -10,6 +11,7 @@ class Backdrop extends React.PureComponent {
   static propTypes = {
     id: PropTypes.number.isRequired,
     mediaType: PropTypes.oneOf(['movie', 'tv']).isRequired,
+    index: PropTypes.number,
     backdropUrl: PropTypes.string.isRequired,
     posterUrl: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -17,8 +19,8 @@ class Backdrop extends React.PureComponent {
     genreIds: PropTypes.array,
     releaseDate: PropTypes.string,
     active: PropTypes.bool,
-    onAllEntered: PropTypes.func,
     onEntering: PropTypes.func,
+    onChildrenEntered: PropTypes.func,
     className: PropTypes.string,
     cssModule: PropTypes.object
   }
@@ -28,8 +30,9 @@ class Backdrop extends React.PureComponent {
     genreIds: [],
     releasedDate: '',
     active: false,
+    index: 0,
     onEntering: () => {},
-    onAllEntered: () => {}
+    onChildrenEntered: () => {}
   }
 
   constructor (props) {
@@ -41,10 +44,16 @@ class Backdrop extends React.PureComponent {
     };
   }
 
+  componentWillMount () {
+    this._isAppearing = true;
+  }
+
   showPoster = () => {
     this.setState({
       showPoster: true
     });
+
+    if (this._isAppearing) this._isAppearing = false;
   }
 
   showBackdropInfo = () => {
@@ -78,7 +87,7 @@ class Backdrop extends React.PureComponent {
 
   renderInfo = () => {
 
-    const { id, mediaType, title, releaseDate, genreIds, rating, onAllEntered } = this.props;
+    const { id, mediaType, title, releaseDate, genreIds, rating, onChildrenEntered } = this.props;
     const { showBackdropInfo } = this.state;
 
     return (
@@ -90,33 +99,38 @@ class Backdrop extends React.PureComponent {
         genresIds={genreIds}
         rating={rating}
         active={showBackdropInfo}
-        onEntered={onAllEntered}
+        onEntered={onChildrenEntered}
       />
     );
   }
 
+
   render() {
 
-    const { backdropUrl, active, className, cssModule, onEntering } = this.props;
-
+    const { backdropUrl, active, className, cssModule, index, onEntering } = this.props;
     const classes = Util.mapToCssModules(className, cssModule);
 
+    // Disable transition by css when the first backdrop slide appear,
+    // but we still want to fire those transition functions in order to trigger transitions of children
+    const firstItemClass =  classNames('carousel-inner', {'first-backdrop': index === 0 && this._isAppearing}); 
+
     return (
-      <CarouselItem 
+      <CarouselItem
+        styleName={firstItemClass}
         className={classes}
         in={active}
-        appear={true}
+        appear={index === 0}
         onEntering={onEntering}
         onEntered={this.showPoster}
         onExited={this.handleExited}
       >
         <div styleName="backdrop-view">
           <div styleName="backdrop">
-            <img src={backdropUrl} alt=""/>
+            <img src={backdropUrl} alt="" />
           </div>
           <div styleName="backdrop-group">
-            { this.renderPoster() }
-            { this.renderInfo() }
+            {this.renderPoster()}
+            {this.renderInfo()}
           </div>
         </div>
       </CarouselItem>

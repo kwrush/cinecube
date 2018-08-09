@@ -1,5 +1,9 @@
 @import "../../assets/styles/_base.scss"; 
 
+.first-backdrop {
+  transition: none !important;
+}
+
 .backdrop-view {
   position: relative;
   text-align: center;
