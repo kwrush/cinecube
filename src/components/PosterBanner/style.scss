@@ -1,0 +1,43 @@
+@import "../../assets/styles/_base.scss";
+
+.poster-banner {
+  margin: 2.25rem auto;
+  text-align: center;
+  background: transparent;
+  color: $light;
+}
+
+.poster-banner-header {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 2px;
+    display: block;
+    background: $light;
+  }
+}
+
+.banner-title {
+  margin: 0;
+  font-size: $font-size-lg;
+}
+
+.request-link {
+  display: block;
+  align-self: center;
+}
+
+.poster-entity {
+  margin-bottom: 1rem;
+}

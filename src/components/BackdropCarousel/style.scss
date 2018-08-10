@@ -13,11 +13,6 @@ ol.indicators {
   }
 }
 
-// In an effort to fix blink problem in reacstap carousel 
-div[class^="carousel-inner"][role="listbox"] {
-  height: 625px;
-}
-
 .backdrop-view {
   //position: relative;
   text-align: center;

@@ -95,7 +95,7 @@ class BackdropCarousel extends React.PureComponent {
 
     /* Dirty fix for blink issue in reacstap carousel 
     based on https://github.com/reactstrap/reactstrap/issues/677#issuecomment-375242805,
-    It seeems that to set height of carousel-inner can fix the issue */
+    It seeems that set height of carousel-inner can fix the issue */
     if (this._innerCarouselNode === null) {
       const _carouselNode = ReactDOM.findDOMNode(this._carousel)
       this._innerCarouselNode = _carouselNode.querySelector('div[role="listbox"]');
@@ -113,7 +113,6 @@ class BackdropCarousel extends React.PureComponent {
     if (_activeItemNode
       && _activeItemNode.offsetHeight !== this.state.innerCarouselHeight) {
 
-      console.log('will update height...');
       this.setState({
         innerCarouselHeight: _activeItemNode.offsetHeight
       });

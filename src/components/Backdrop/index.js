@@ -110,9 +110,9 @@ class Backdrop extends React.PureComponent {
     const { backdropUrl, active, className, cssModule, index, onEntering } = this.props;
     const classes = Util.mapToCssModules(className, cssModule);
 
-    // Disable transition by css when the first backdrop slide appear,
+    // Disable transition by css when the first backdrop slide appears,
     // but we still want to fire those transition functions in order to trigger transitions of children
-    const firstItemClass =  classNames('carousel-inner', {'first-backdrop': index === 0 && this._isAppearing}); 
+    const firstItemClass =  classNames({'first-backdrop': index === 0 && this._isAppearing}); 
 
     return (
       <CarouselItem
