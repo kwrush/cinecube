@@ -126,7 +126,7 @@ class BackdropInfo extends React.PureComponent {
                 </div>
               </div>
               <Button outline color="info" styleName="info-button">
-                <Link to={mediaLink} styleName="info-link">More</Link>
+                <Link to={mediaLink} styleName="info-link">View More</Link>
               </Button>
             </div>
           )
