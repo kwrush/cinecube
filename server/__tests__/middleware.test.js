@@ -36,128 +36,35 @@ describe('middleware tests', () => {
     expect(actorProps[0]).toBe('name');
     expect(actorProps[1]).toBe('dateOfBirth');
   });
-  
-  it('should complete image urls by adding prefix', () => {
-    const results = [
-      {
-        posterPath: 'poster0.jpeg',
-        backdropPath: 'backdrop0.jpeg'
-      },
-      {
-        posterPath: 'poster1.jpeg',
-        backdropPath: 'backdrop1.jpeg'
-      },
-      {
-        posterPath: 'poster2.jpeg',
-        backdropPath: 'backdrop2.jpeg'
-      }
-    ];
-    
-    const posterPrefix = {
-      s: 'poster/s/',
-      m: 'poster/m/',
-      l: 'poster/l/',
-      orig: 'poster/original/'
-    };
-    
-    const backdropPrefix = {
-      s: 'backdrop/s/',
-      m: 'backdrop/m/',
-      l: 'backdrop/l/',
-      orig: 'backdrop/original/'
-    };
-    
-    const tmdbPosters = require('../middlewares/tmdbPosters');
-    
-    const newResults = tmdbPosters({
-      root: results,
-      posterUrlPrefix: posterPrefix,
-      backdropUrlPrefix: backdropPrefix
-    });
-    
-    expect(newResults[0].posterPath).toHaveProperty('s', 'poster/s/poster0.jpeg');
-    expect(newResults[0].posterPath).toHaveProperty('m', 'poster/m/poster0.jpeg');
-    expect(newResults[0].backdropPath).toHaveProperty('l', 'backdrop/l/backdrop0.jpeg')
-    expect(newResults[0].backdropPath).toHaveProperty('orig', 'backdrop/original/backdrop0.jpeg');
-    expect(newResults[2].posterPath).toHaveProperty('s', 'poster/s/poster2.jpeg');
-    expect(newResults[2].posterPath).toHaveProperty('m', 'poster/m/poster2.jpeg');
-    expect(newResults[2].backdropPath).toHaveProperty('l', 'backdrop/l/backdrop2.jpeg')
-    expect(newResults[2].backdropPath).toHaveProperty('orig', 'backdrop/original/backdrop2.jpeg');
-  });
 
-  it('should format credits list and complete profile url', () => {
-    const res = require('./__mockData__/creditsResponse.json');
-    const tmdbCredits = require('../middlewares/tmdbCredits');
-    const tmdbProfiles = require('../middlewares/tmdbProfiles');
-    const profilePrefix = {
-      s: 'images/s',
-      m: 'images/m',
-      l: 'images/l'
+  it('should sort crew by their department', () => {
+    const res = {
+      entities: {
+        cast: {
+          1: { name: 'Actor1' },
+          2: { name: 'Actor2'  }
+        },
+        crew: {
+          3: { name: 'Crew1', department: 'a'},
+          4: { name: 'Crew1', department: 'b'},
+          5: { name: 'Crew1', department: 'a'},
+          6: { name: 'Crew1', department: 'b'},
+          7: { name: 'Crew1', department: 'c'} 
+        }
+      },
+      result: {
+        id: 111,
+        cast: [1, 2],
+        crew: [3, 4, 5, 6, 7]
+      }
     };
-    const credits = tmdbProfiles({
-      root: tmdbCredits(res),
-      profileUrlPrefix: profilePrefix
-    });
-    
-    expect(credits).toHaveProperty('directors');
-    expect(credits.cast).toBeInstanceOf(Array);
-    expect(credits.directors).toBeInstanceOf(Array);
-    expect(credits.directors[0].profilePath).toHaveProperty('s', 'images/s/mDLDvsx8PaZoEThkBdyaG1JxPdf.jpg');
-  });
-  
-  it('should complete url of screenshots', () => {
-    const res = require('./__mockData__/imageResponse.json');
-    const tmdbScreenshots = require('../middlewares/tmdbScreenshots');
-    const imgPrefix = {
-      s: 'images/s',
-      m: 'images/m',
-      l: 'images/l'
-    };
-    
-    const img = tmdbScreenshots({ root: res, screenshotUrlPrefix: imgPrefix });
-    expect(img).toBeInstanceOf(Array);
-    expect(img[0].iso6391).toBeNull();
-    expect(img[0]).toHaveProperty('filePath');
-    expect(img[0].filePath).toHaveProperty('m', 'images/m/c4zJK1mowcps3wvdrm31knxhur2.jpg');
-  });
-  
-  it('should categorize search results and complete image urls', () => {
-    
-    const camelCase = require('../middlewares/camelCaseKey');
-    const tmdbMultiSearch = require('../middlewares/tmdbMultiSearch');
-    
-    const res = camelCase(
-      require('./__mockData__/multiSearchResponse.json'));
-    
-    const urlPrefix = {
-      s: 'images/s',
-      m: 'images/m',
-      l: 'images/l'
-    };
-    
-    res.results = 
-      tmdbMultiSearch({
-        root: res.results,
-        posterUrlPrefix: urlPrefix,
-        backdropUrlPrefix: urlPrefix,
-        profileUrlPrefix: urlPrefix
-      });
-    
-    expect(res.results).toBeInstanceOf(Object);
-    expect(res.results).toHaveProperty('movie');
-    expect(res.results).toHaveProperty('tv');
-    expect(res.results).toHaveProperty('people');
-    
-    expect(res.results.people).toHaveLength(1);
-    expect(res.results.movie).toHaveLength(2);
-    expect(res.results.tv).toHaveLength(0);
-    
-    expect(res.results.movie[0].posterPath).toHaveProperty(
-      's', 
-      'images/s/hdYpb9PhIms17OPL6Yz2C0ruxJ1.jpg');
-      
-    expect(res.results.people[0].profilePath).toHaveProperty(
-      's', 
-      'images/s/pQFoyx7rp09CJTAb932F2g8Nlho.jpg');
+
+    const tmdbSort = require('../middlewares/tmdbSortCrew');
+    const rs = tmdbSort(res);
+
+    expect(Object.keys(rs.result).sort()).toEqual(['id', 'cast', 'a', 'b', 'c'].sort());
+    expect(rs.result.a).toEqual([3, 5]);
+    expect(rs.result.b).toEqual([4, 6]);
+    expect(rs.result.c).toEqual([7]);
   });
 });

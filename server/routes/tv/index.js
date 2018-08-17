@@ -1,4 +1,5 @@
 /**
+ * Routes of tv
  * .../api/tv
  */
 
@@ -6,190 +7,85 @@
 
 const router = require('express').Router();
 
-const camelCaseKey    = require('../../middlewares/camelCaseKey');
-const tmdbPosters     = require('../../middlewares/tmdbPosters');
-const tmdbCredits     = require('../../middlewares/tmdbCredits');
-const tmdbProfiles    = require('../../middlewares/tmdbProfiles');
-const tmdbScreenshots = require('../../middlewares/tmdbScreenshots');
+const { normalize } = require('normalizr');
 
-router.get('/discover', (req, res) => {
+const camelCaseKey = require('../../middlewares/camelCaseKey');
+const tmdbSortCrew = require('../../middlewares/tmdbSortCrew');
+const schemas = require('../../utils/schema');
+const { fetchMediaList, infoHandler } = require('../../utils/fetchHandlers');
+
+/**
+ * Fetchs list of popular movies
+ */
+router.get('/popular', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-
-  tmdb
-    .discoverTv({
-        page: req.query.page ? req.query.page : 1
-      }, (err, tmdbRes) => {
-      if (err)
-        return res.status(err.status).send(err.response);
-
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
-
-      res.json(tmdbRes);
-    });
+  fetchMediaList(req, res, next, tmdb.miscPopularTvs.bind(tmdb));
 });
 
-router.get('/popular', (req, res) => {
+router.get('/discover', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-  tmdb
-    .miscPopularTvs({
-        page: req.query.page ? req.query.page : 1
-      }, (err, tmdbRes) => {
-      if (err)
-        return res.status(err.status).send(err.response);
-
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
-
-      res.json(tmdbRes);
-    });
+  fetchMediaList(req, res, next, tmdb.discoverTv.bind(tmdb));
 });
 
-router.get('/top_rated', (req, res) => {
+router.get('/top_rated', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-  tmdb
-    .miscTopRatedTvs({
-        page: req.query.page ? req.query.page : 1
-      }, (err, tmdbRes) => {
-      if (err)
-        return res.status(err.status).send(err.response);
-      
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
-
-      res.json(tmdbRes);
-    });
+  fetchMediaList(req, res, next, tmdb.miscTopRatedTvs.bind(tmdb));
 });
 
-router.get('/on_air', (req, res) => {
+router.get('/on_air', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-  tmdb
-    .tvOnTheAir((err, tmdbRes) => {
-      if (err)
-        return res.status(err.status).send(err.response);
-      
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
-
-      res.json(tmdbRes);
-    });
+  fetchMediaList(req, res, next, tmdb.tvOnTheAir.bind(tmdb));
 });
 
-router.get('/:id(\\d+)/', (req, res) => {
+router.get('/:id(\\d+)/', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-  const tvId = req.params.id;
-
-  /**
-   * Get overview
-   */
-  const getTvInfo = new Promise((resolve, reject) => {
-    tmdb
-      .tvInfo({ id: tvId }, (err, tmdbRes) => {
-        if (err) reject(err);
-        else resolve(camelCaseKey(tmdbRes));
-      });
+  infoHandler(req, res, next, tmdb.tvInfo.bind(tmdb), (tmdbRes) => {
+    return camelCaseKey(tmdbRes);
   });
+});
 
-  /**
-   * Get credits
-   */
-  const getTvCredits = new Promise((resolve, reject) => {
-    tmdb
-      .tvCredits({ id: tvId }, (err, tmdbRes) => {
-        if (err) reject(err);
-        else resolve(camelCaseKey(tmdbRes));
-      });
+router.get('/:id(\\d+)/credits/', (req, res, next) => {
+  const tmdb = req.app.locals.tmdb;
+
+  infoHandler(req, res, next, tmdb.tvCredits.bind(tmdb), (tmdbRes) => {
+    let tmpRes = camelCaseKey(tmdbRes);
+    tmpRes = normalize(tmpRes, schemas.mediaCredits);
+    return tmdbSortCrew(tmpRes);
   });
+});
 
-  /**
-   * Get all images and screeshots
-   */
-  const getTvImages = new Promise((resolve, reject) => {
-    tmdb
-      .tvImages({ id: tvId }, (err, tmdbRes) => {
-        if (err) reject(err);
-        else resolve(camelCaseKey(tmdbRes));
-      });
+router.get('/:id(\\d+)/images/', (req, res, next) => {
+  const tmdb = req.app.locals.tmdb;
+
+  infoHandler(req, res, next, tmdb.tvImages.bind(tmdb), (tmdbRes) => {
+    return camelCaseKey(tmdbRes);
   });
+});
 
-  Promise.all(
-    [
-      getTvInfo, 
-      getTvCredits,
-      getTvImages
-    ].map(promise => promise.catch(err => err))
-  )
-  .then(tmdbRes => {
-    res.json(Object.assign(
-      {},
-      tmdbPosters({
-        root: tmdbRes[0],
-        posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-        backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-      }),
-      {
-        credits: tmdbProfiles({
-          root: tmdbCredits(tmdbRes[1]),
-          profileUrlPrefix: req.app.locals.tmdbProfileUrl
-        })
-      },
-      {
-        screenshots: tmdbScreenshots({
-          root: tmdbRes[2],
-          screenshotUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      }
-    ));
-  })
-  .catch(err => res.status(err.status).send(err.response));
+router.get('/:id(\\d+)/similar/', (req, res, next) => {
+  const tmdb = req.app.locals.tmdb;
+
+  infoHandler(req, res, next, tmdb.tvSimilar.bind(tmdb), (tmdbRes) => {
+    let tmpRes = camelCaseKey(tmdbRes);
+    return normalize(tmpRes, schemas.mediaResults);
+  });
 });
 
 router.use('/search', require('../../middlewares/encodeQuery'));
 
-router.get('/search', (req, res) => {
+router.get('/search', (req, res, next) => {
   const tmdb = req.app.locals.tmdb;
-  
+
   tmdb
     .searchTv({
       query: req.query.query,
       page: req.query.page ? req.query.page : 1
     }, (err, tmdbRes) => {
       if (err)
-        return res.status(err.status).send(err.response);
-      
-      tmdbRes = camelCasekey(tmdbRes);
-      tmdbRes = Object.assign({}, tmdbRes, {
-        results: tmdbPosters({
-          root: tmdbRes.results,
-          posterUrlPrefix: req.app.locals.tmdbPosterUrl,
-          backdropUrlPrefix: req.app.locals.tmdbBackdropUrl
-        })
-      });
-      
+      return next(err);
+
+      tmdbRes = camelCaseKey(tmdbRes);
+      tmdbRes = normalize(tmdbRes, schemas.results);
       res.json(tmdbRes);
     });
 });
