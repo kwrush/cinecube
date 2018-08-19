@@ -38,9 +38,22 @@ export const overview = {
   posterPath: 'image/poster1.jpeg'
 }
 
-export const searchResults = {
-  page: 1,
-  results: popularFirstPage.results 
+export const credtis = {
+  id: 1,
+  title: 'Breaking Bad',
+  credits: {
+    cast: [
+      {name: 'A', id: 1},
+      {name: 'B', id: 2}
+    ],
+    directing: [
+      {name: 'D1', id: 3},
+      {name: 'D2', id: 4}
+    ],
+    writing: [
+      {name: 'W', id: 5},
+    ]
+  }
 }
 
 export const multiResults = {
@@ -51,7 +64,7 @@ export const multiResults = {
     person: [{
       name: 'Tom Hanks'
     }, {
-      name: 'Tommy'
+      name: 'Tom Cruise'
     }]
   }
 }

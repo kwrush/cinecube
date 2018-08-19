@@ -19,7 +19,7 @@ export const MOVIE_ROUTES = {
   upcoming: `${movie}/upcoming`,
   inTheatre: `${movie}/in_theatre`,
   search: `${movie}/search`,
-  info: `${movie}/:id`
+  info: `${movie}/:id(\d+)`
 };
 
 export const TV_ROUTES = {
@@ -29,7 +29,7 @@ export const TV_ROUTES = {
   topRated: `${tv}/top_rated`,
   onAir: `${tv}/on_air`,
   search: `${tv}/search`,
-  info: `${tv}/:id`
+  info: `${tv}/:id(\d+)`
 };
 
 export const PEOPLE_ROUTES = {
@@ -37,6 +37,6 @@ export const PEOPLE_ROUTES = {
   home: `${people}`,
   popular: `${people}/popular`,
   search: `${people}/search`,
-  info: `${people}/:id`
+  info: `${people}/:id(\d+)`
 };
 
