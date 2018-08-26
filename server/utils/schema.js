@@ -7,8 +7,8 @@ const results = new schema.Entity('results');
 const movie = new schema.Entity('movie');
 const tv = new schema.Entity('tv');
 
-const cast = new schema.Entity('cast');
-const crew = new schema.Entity('crew');
+const cast = new schema.Entity('cast', {}, { idAttribute: 'creditId' });
+const crew = new schema.Entity('crew', {}, { idAttribute: 'creditId' });
 
 const mediaType = new schema.Union({
   movie: movie,

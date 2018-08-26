@@ -71,23 +71,4 @@ router.get('/:id(\\d+)/similar/', (req, res, next) => {
   });
 });
 
-router.use('/search', require('../../middlewares/encodeQuery'));
-
-router.get('/search', (req, res, next) => {
-  const tmdb = req.app.locals.tmdb;
-
-  tmdb
-    .searchTv({
-      query: req.query.query,
-      page: req.query.page ? req.query.page : 1
-    }, (err, tmdbRes) => {
-      if (err)
-      return next(err);
-
-      tmdbRes = camelCaseKey(tmdbRes);
-      tmdbRes = normalize(tmdbRes, schemas.results);
-      res.json(tmdbRes);
-    });
-});
-
 module.exports = router;

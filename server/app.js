@@ -14,11 +14,11 @@ const app = express();
 
 // Use your own api key which is free to get from 
 // https://www.themoviedb.org/documentation/api.
-app.locals.apiKey          = config.apiKey;
-app.locals.tmdb            = require('moviedb')(app.locals.apiKey);
+app.locals.apiKey = config.apiKey;
+app.locals.tmdb   = require('moviedb')(app.locals.apiKey);
 
 if (app.get('env') !== 'test') {
-  const morgan  = require('morgan');
+  const morgan = require('morgan');
   app.use(morgan(require('./config.json').morgan.logType));
 }
 

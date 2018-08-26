@@ -77,11 +77,4 @@ router.get('/:id(\\d+)/similar/', (req, res, next) => {
   });
 });
 
-router.use('/search', require('../../middlewares/encodeQuery'));
-
-router.get('/search', (req, res, next) => {
-  const tmdb = req.app.locals.tmdb;
-  fetchMediaList(req, res, next, tmdb.searchMovie.bind(tmdb));
-});
-
 module.exports = router;

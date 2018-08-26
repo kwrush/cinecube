@@ -40,11 +40,4 @@ router.get('/:id(\\d+)/images', (req, res, next) => {
   });
 });
 
-router.use('/search', require('../../middlewares/encodeQuery'));
-
-router.get('/search', (req, res, next) => {
-  const tmdb = req.app.locals.tmdb;
-  fetchPeopleList(req, res, next, tmdb.searchPerson.bind(tmdb));
-});
-
 module.exports = router;
