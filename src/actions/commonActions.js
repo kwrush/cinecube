@@ -1,25 +1,59 @@
-import { commonActionTypes as actionTypes } from 'constants/actionTypes';
+import { merge } from 'lodash';
+import { 
+  setFetching, 
+  setListResults, 
+  setError, 
+  setInfoResult 
+} from '../utils/actionUtils';
 
-export const fetchRequest = () => ({
-  type: actionTypes.FETCH_REQUEST,
-  payload: {
-    isFetching: true
-  }
+const getActionType = (mediaType, fetchType, actionType) => (
+  `FETCH_${mediaType.toUpperCase()}_${fetchType.toUpperCase()}_${actionType.toUpperCase()}`
+);
+
+export const fetchRequest = (mediaType, fetchType, topic) => ({
+  type: getActionType(mediaType, fetchType, 'request'),
+  payload: setFetching(topic, true)
 });
 
-export const fetchSuccess = () => ({
-  type: actionTypes.FETCH_REQUEST_SUCCESS,
-  payload: { 
-    isFetching: false,
-    updatedAt: Date.now()
-  }
-});
+export const fetchSuccess = (mediaType, fetchType, topic, result) => {
 
-export const fetchFailure = (error) => ({
-  type: actionTypes.FETCH_REQUEST_FAIL,
+  const data = fetchType.toLowerCase() === 'info'
+    ? setInfoResult(result)
+    : setListResults(topic, result);
+
+  const fetching =  setFetching(topic, false);
+  const error = setError(topic, null);
+
+  return {
+    type: getActionType(mediaType, fetchType, 'success'),
+    payload: {
+      [`${topic}`]: {
+        ...data[`${topic}`],
+        ...fetching[`${topic}`],
+        ...error[`${topic}`]
+      }
+    }
+  };
+};
+
+export const fetchFailure = (mediaType, fetchType, topic, error) => {
+  const fetching = setFetching(topic, false);
+  const errorData = setError(topic, error);
+
+  return {
+    type: getActionType(mediaType, fetchType, 'failure'),
+    payload: {
+      [`${topic}`]: {
+        ...fetching[`${topic}`],
+        ...errorData[`${topic}`]
+      }
+    }
+  };
+};
+
+export const promptError = (errorMessage) => ({
+  type: actionTypes.PROMPT_ERROR,
   payload: {
-    isFetching: false,
-    error: error,
-    errorMessage: 'Failed to load content.'
+    message: errorMessage
   }
 });

@@ -1,16 +1,17 @@
 import { get } from 'lodash';
 
-export const getDataEntities =
-  (state, mediaType) => get(state, [mediaType, 'entities']);
+export const getEntities = (state, mediaType) => get(state, ['entities', mediaType]);
 
-export const getEntityUpdateTime = 
-  (state, mediaType, entityName) => get(state, [mediaType, entityName, 'updatedAt']);
-  
-export const getEntityResult = 
-  (state, mediaType, entityName) => get(state, [mediaType, entityName, 'result']);
+export const getEntityIds = (state, mediaType, indexType) => get(state, [mediaType, indexType , 'items']);
 
-export const getCurrentPage = 
-  (state, mediaType, entityName) => get(state, [mediaType, entityName, 'pageIndex']);
+export const getInfoId = (state, mediaType) => get(state, [mediaType, 'info', 'target', 'id']);
 
-export const getTotalPages = 
-  (state, mediaType, entityName) => get(state, [mediaType, entityName, 'totalPages']);
+export const getUpdatedTime = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'updatedAt']);
+
+export const getPageNumber = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'page']);
+
+export const getFetchingStatus = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'isFetching']);
+
+export const getError = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'error']);
+
+export const getTotalPages = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'totalPages']);

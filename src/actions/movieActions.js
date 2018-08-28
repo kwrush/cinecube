@@ -1,133 +1,128 @@
-import { normalize } from 'normalizr';
 import { movieActionTypes as actionTypes } from '../constants/actionTypes';
-import { loadMovies, movieInfo, searchMovies } from 'utils/api';
-import { movieResultSchema, movieInfoSchema } from 'constants/schema';
-import { getEntityResult, getEntityUpdateTime, getCurrentPage } from 'selectors/commonSelectors';
-import { fetchRequest, fetchSuccess, fetchFailure } from './commonActions';
-import { differenceInDays } from 'utils/helpers';
+import * as callApi from '../services/movieApi';
+import { fetchRequest, promptError } from './commonActions';
+import { mergeEntites } from './entitiesActions';
 
+const fetchMovieRequest = (topic) => fetchRequest('movie', 'list', topic);
 
-const performMovieFetch = (type, params, fetchSuccessAction) => async (dispatch) => {
-  try {
-    const { data } = await loadMovies(type, params); 
-    const normalized = normalize(data.results, movieResultSchema);
-    const payload = {
-      pageIndex: data.page,
-      totalPages: data.totalPages,
-      entities: { ...normalized.entities.movie },
-      result: normalized.result
-    };
-    dispatch(fetchSuccess(payload, fetchSuccessAction));
-  } catch (err) {
-    dispatch(fetchFailure(err));
-    // for debug
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(err);
-    }
+const fetchMovieSuccess = (topic, result) => fetchSuccess('movie', 'list', topic, result);
+
+const fetchMovieFailure = (topic, error) => fetchFailure('movie', 'list', error);
+
+const getApi = (topic) => {
+  switch (topic.toLowerCase()) {
+    case 'discover':
+      return callApi['discoverMovies'];
+    case 'popular':
+      return callApi['fetchPopularMovies'];
+    case 'toprated':
+      return callApi['fetchTopRatedMovies'];
+    case 'intheatre':
+      return callApi['fetchInTheatreMovies'];
+    case 'upcoming':
+      return callApi['fetchUpcomingMovies'];
+    default:
+      return null;
   }
 };
 
-const discoverMovie = (params) => performMovieFetch('discover', params, actionTypes.DISCOVER_MOVIE_SUCCESS, );
+const fetchMovieList = (topic, params) => async (dispatch) => {
 
-const fetchPopularMovie = (params) => performMovieFetch('popular', params, actionTypes.FETCH_POPULAR_MOVIE_SUCCESS);
+  const fetchApi = getApi(topic);
 
-const fetchInTheatreMovie = (params) => performMovieFetch('inTheatre', params, actionTypes.FETCH_IN_THEATRE_MOVIE_SUCCESS);
+  try {
+    if (topic === 'info' || api === null) {
+      throw new Error('The information requested is not available.');
+    }
 
-const fetchTopRatedMovie = (params) => performMovieFetch('topRated', params, actionTypes.FETCH_TOP_RATED_MOVIE_SUCCESS);
+    dispatch(fetchMovieRequest(topic));
 
-const fetchUpcomingMovie = (params) => performMovieFetch('upcoming', params, actionTypes.FETCH_UPCOMING_MOVIE_SUCCESS);
+    const data = await fetchApi(params);
+
+    dispatch(mergeEntites({
+      movie: data.entities.results 
+    }));
+    
+    dispatch(fetchMovieSuccess(topic, data.result));
+    
+  } catch (e) {
+    dispatch(fetchMovieFailure(topic, e));
+    dispatch(promptError('Error occured during requesting resources.'));
+
+    if  (process.env.NODE_ENV !== 'production') {
+      console.error(e);
+    }
+  }
+};
 
 const fetchMovieInfo = (id) => async (dispatch) => {
   try {
-    const { data } = await movieInfo(id);
-    const normalized = normalize(data, movieInfoSchema);
-    const payload = {
-      entities: normalized.entities,
-      result: normalized.result
-    };
-    dispatch(fetchSuccess(payload, actionTypes.FETCH_MOVIE_INFO_SUCCESS));
-  } catch (err) {
-    dispatch(fetchFailure(err));
-    // for debug
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(err);
+
+    dispatch(fetchMovieRequest('info'));
+
+    // If error occurs, api calling fails anyway
+    const [info, credits, images, similarMovies ] = Promise.all([
+      callApi.fetchMovieInfo(id),
+      callApi.fetchMovieCredits(id),
+      callApi.fetchMovieImages(id),
+      callApi.fetchSimilarMovies(id) 
+    ]);
+
+    dispatch(mergeEntites({
+      credits: { ...credits.entities.cast, ...credits.entities.crew }
+    }));
+
+    dispatch(mergeEntites({
+      movie: similarMovies.entitis.results
+    }));
+
+    dispatch(mergeEntites({
+      movie: { 
+        [`${info.id}`]: {
+          ...info,
+          ...images,
+          credits: { ...credits.result },
+          similar: similarMovies.resut.results
+        }
+      }
+    }));
+
+  } catch (e) {
+    dispatch(fetchMovieFailure('info', e));
+    dispatch(promptError('Error occured during requesting resources.'));
+
+    if  (process.env.NODE_ENV !== 'production') {
+      console.error(e);
     }
   }
 };
 
-const performMovieSearch = (query, params) => async (dispatch) => {
-  try {
-    const { data } = await searchMovies(query, params);
-    const normalized = normalize(data.results, movieResultSchema);
-    const payload = {
-      pageIndex: data.page,
-      totalPages: data.totalPages,
-      entities: { ...normalized.entities.movie },
-      result: normalized.result
-    };
-    dispatch(fetchSuccess(payload, actionTypes.SEARCH_MOVIE_SUCCESS));
-  } catch (err) {
-    dispatch(fetchFailure(err));
-    // for debug
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(err);
-    }
-  }
+const shouldFetchMovieList = (state, topic) => {
+  //TODO: check if needed to update
+  return true;
 };
 
-const shouldFetchMovie = (state, entityType, params = {}) => {
-  
-  const result = getEntityResult(state, 'movie', entityType);
-  const updatedAt = getEntityUpdateTime(state, 'movie', entityType);
-  const currentPage = getCurrentPage(state, 'movie', entityType);
-  const page = params.page ? params.page : 1;
+const shouldFetchMovieList = (state, id) => {
+  return true;
+}
 
-  return currentPage !== page || !result || result.size === 0 || 
-    updatedAt === null || differenceInDays(Date.now() - updatedAt) > 1;
+export const fetchMovieListIfNeeded = (topic) => (dispatch, getState) => {
+
+  const state = getState();
+
+  if (!shouldFetchMovieList(state, topic)) return;
+
+  const currentPage = getCurrentPage(state, 'movie', topic);
+
+  return dispatch(fetchMovieList(topic, {
+    page: currentPage ? 1 : currentPage + 1
+  }));
 };
 
-export const fetchMoviesIfNeeded = (requestType, params) => (dispatch, getState) => {
+export const fetchMovieInfoAction = (id) => async (dispatch, getState) => {
   
-  let entityType = null;
-  let action = null;
+  if (!shouldFetchMovieInfo(getState(), id)) return;
 
-  switch (requestType) {
-    case actionTypes.DISCOVER_MOVIE_REQUEST:
-      entityType = 'discover';
-      action = discoverMovie;
-      break;
-    case actionTypes.FETCH_POPULAR_MOVIE_REQUEST:
-      entityType = 'popular';
-      action = fetchPopularMovie;
-      break;
-    case actionTypes.FETCH_UPCOMING_MOVIE_REQUEST:
-      entityType = 'upcoming';
-      action = fetchUpcomingMovie;
-      break;
-    case actionTypes.FETCH_IN_THEATRE_MOVIE_REQUEST:
-      entityType = 'inTheatre';
-      action = fetchInTheatreMovie;
-      break;
-    case actionTypes.FETCH_TOP_RATED_MOVIE_REQUEST:
-      entityType = 'topRated';
-      action = fetchTopRatedMovie;
-      break;
-    case actionTypes.FETCH_MOVIE_INFO_REQUEST:
-      entityType = 'info';
-      action = fetchMovieInfo;
-      break;
-    default:
-      break;
-  }
-  
-  if (action && shouldFetchMovie(getState(), entityType, params)) {
-    dispatch(fetchRequest(requestType));
-    dispatch(action(params));
-  }
+  return dispatch(fetchMovieInfo(id));
 };
 
-export const movieSearch = (params) => (dispatch) => {
-  const { query, ...options } = params;
-  dispatch(fetchRequest(actionTypes.SEARCH_MOVIE_REQUEST));
-  dispatch(performMovieSearch(query, options));
-}; 
