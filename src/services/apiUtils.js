@@ -43,8 +43,6 @@ export const fetchMediaInfo = async (mediaType, mediaId, infoType) => {
 
   apiUrl += (`/${mediaId}` + (infoType ? `/${infoType}` : ''));
 
-  console.log(apiUrl);
-
   return api.get(apiUrl);
 }
 

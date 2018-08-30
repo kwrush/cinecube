@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Row, Col, Util } from 'reactstrap';
 import PosterBox from '../PosterBox';
+import { getPosterUrl } from '../../utils/imageUtils';
 import './style.scss';
 
 const propTypes = {
@@ -33,7 +34,7 @@ const PosterBanner = (props) => {
         {
           items.map((item, index) => {
 
-            const { title, posterUrl, id, mediaType } = item;
+            const { title, posterPath, id, mediaType } = item;
 
             return (
               <Col 
@@ -46,7 +47,7 @@ const PosterBanner = (props) => {
               >
                 <PosterBox 
                   title={title} 
-                  posterUrl={posterUrl}
+                  posterUrl={getPosterUrl(posterPath, 'm')}
                   linkUrl={`/${mediaType}/${id}`}
                 />
               </Col>

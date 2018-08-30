@@ -4,6 +4,7 @@ import { CarouselItem, Util } from 'reactstrap';
 import classNames from 'classnames';
 import BackdropPoster from '../BackdropPoster';
 import BackdropInfo from '../BackdropInfo';
+import { getPosterUrl, getBackdropUrl } from '../../utils/imageUtils';
 import './style.scss';
 
 class Backdrop extends React.PureComponent {
@@ -71,13 +72,13 @@ class Backdrop extends React.PureComponent {
 
   renderPoster = () => {
 
-    const { posterUrl, title } = this.props;
+    const { posterPath, title } = this.props;
     const { showPoster } = this.state;
 
     return (
       <BackdropPoster
         styleName="poster-info"
-        posterUrl={posterUrl}
+        posterUrl={getPosterUrl(posterPath, 's')}
         title={title}
         active={showPoster}
         onEntered={this.showBackdropInfo}
@@ -87,7 +88,7 @@ class Backdrop extends React.PureComponent {
 
   renderInfo = () => {
 
-    const { id, mediaType, title, releaseDate, genreIds, rating, onChildrenEntered } = this.props;
+    const { id, mediaType, title, releaseDate, genreIds, voteAverage, onChildrenEntered } = this.props;
     const { showBackdropInfo } = this.state;
 
     return (
@@ -97,7 +98,7 @@ class Backdrop extends React.PureComponent {
         title={title}
         releaseDate={releaseDate}
         genresIds={genreIds}
-        rating={rating}
+        rating={voteAverage}
         active={showBackdropInfo}
         onEntered={onChildrenEntered}
       />
@@ -107,7 +108,7 @@ class Backdrop extends React.PureComponent {
 
   render() {
 
-    const { backdropUrl, active, className, cssModule, index, onEntering } = this.props;
+    const { backdropPath, active, className, cssModule, index, onEntering } = this.props;
     const classes = Util.mapToCssModules(className, cssModule);
 
     // Disable transition by css when the first backdrop slide appears,
@@ -126,7 +127,7 @@ class Backdrop extends React.PureComponent {
       >
         <div styleName="backdrop-view">
           <div styleName="backdrop">
-            <img src={backdropUrl} alt="" />
+            <img src={getBackdropUrl(backdropPath, 'lg')} alt="" />
           </div>
           <div styleName="backdrop-group">
             {this.renderPoster()}

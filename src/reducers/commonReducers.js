@@ -1,4 +1,20 @@
-import { commonActionTypes } from '../constants/stateModels';
+import { commonActionTypes } from '../constants/actionTypes';
+
+const initialState = {
+  errorPrompt: null
+};
+
+const errorPromptReducer = (state = initialState, action) => {
+  const { type, payload } = action;
+
+  if (type === commonActionTypes.PROMPT_ERROR) {
+    return { ...state,  ...{ gobal: { errorPrompt: payload.message } }};
+  } else {
+    return state;
+  }
+};
+
+export default errorPromptReducer;
 
 export const fetchingReducer = (state = {}, action) => {
   const { type, payload } = action;
@@ -22,7 +38,7 @@ export const fetchingErrorReducer = (state = {}, action) => {
 export const mediaInfoReducer = (state = {}, action) => {
   const { type, payload } = action;
 
-  if (type === commonAtionTypes.SET_MEDIA_INFO) {   
+  if (type === commonActionTypes.SET_MEDIA_INFO) {   
     return { ...state, 
       mediaId: payload.id,
       mediaType: payload.mediaType

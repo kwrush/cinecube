@@ -1,14 +1,25 @@
 import { tvActionTypes as actionTypes } from '../constants/actionTypes';
 
-const initialState = {};
+const initialState = {
+  popular: {},
+  discover: {},
+  onAir: {},
+  topRated: {},
+  info: {}
+};
 
 const tvReducers = (state = initialState, action) => {
-  switch (action) {
-    case actionTypes.FETCH_POPULAR_TV_REQUEST:
-    case actionTypes.FETCH_TOP_RATED_TV_REQUST:
-    case actionTypes.FETCH_ON_AIR_TV_REQUEST:
+
+  const { type, payload } = action;
+
+  switch (type) {
+    case actionTypes.FETCH_TV_LIST_REQUEST:
     case actionTypes.FETCH_TV_INFO_REQUEST:
-    case actionTypes.SEARCH_TV_REQUEST:
+    case actionTypes.FETCH_TV_LIST_FAILURE:
+    case actionTypes.FETCH_TV_INFO_FAILURE:
+    case actionTypes.FETCH_TV_LIST_SUCCESS:
+    case actionTypes.FETCH_TV_INFO_SUCCESS:
+      return { ...state, ...payload }
     default:
       return state;
   }

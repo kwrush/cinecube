@@ -6,6 +6,7 @@
 const PORT = 3000;
 export const API_URL = `http://localhost:${PORT}/api`;
 
+export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
 
 const movie = '/movie';
 const tv = '/tv';

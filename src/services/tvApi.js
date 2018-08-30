@@ -10,7 +10,7 @@ export const fetchPopularTvs = (params) => fetchMediaList('tv', 'popular', param
 
 export const fetchTopRatedTvs = (params) => fetchMediaList('tv', 'topRated', params);
 
-export const fetchUpcomingTvs = (params) => fetchMediaList('tv', 'onAir', params);
+export const fetchOnAirTvs = (params) => fetchMediaList('tv', 'onAir', params);
 
 export const fetchTvInfo = (id) => fetchMediaInfo('tv', id);
 

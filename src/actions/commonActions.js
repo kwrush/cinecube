@@ -1,10 +1,10 @@
-import { merge } from 'lodash';
 import { 
   setFetching, 
   setListResults, 
   setError, 
   setInfoResult 
 } from '../utils/actionUtils';
+import { commonActionTypes } from '../constants/actionTypes';
 
 const getActionType = (mediaType, fetchType, actionType) => (
   `FETCH_${mediaType.toUpperCase()}_${fetchType.toUpperCase()}_${actionType.toUpperCase()}`
@@ -52,7 +52,7 @@ export const fetchFailure = (mediaType, fetchType, topic, error) => {
 };
 
 export const promptError = (errorMessage) => ({
-  type: actionTypes.PROMPT_ERROR,
+  type: commonActionTypes.PROMPT_ERROR,
   payload: {
     message: errorMessage
   }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import { Util } from 'reactstrap';
 import Poster from '../Poster'
+import { getPosterUrl } from '../../utils/imageUtils';
 import './style.scss'
 
 const propTypes = {

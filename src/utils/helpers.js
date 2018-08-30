@@ -36,7 +36,7 @@ export const differenceInTime = (d1, d2, format) => {
   const date1 = new Date(d1);
   const date2 = new Date(d2);
 
-  format = foramt || 'seconds';
+  format = format || 'seconds';
   let factor = 1;
 
   switch (format) {

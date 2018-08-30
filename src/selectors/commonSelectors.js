@@ -4,7 +4,7 @@ export const getEntities = (state, mediaType) => get(state, ['entities', mediaTy
 
 export const getEntityIds = (state, mediaType, indexType) => get(state, [mediaType, indexType , 'items']);
 
-export const getInfoId = (state, mediaType) => get(state, [mediaType, 'info', 'target', 'id']);
+export const getInfoId = (state, mediaType) => get(state, [mediaType, 'info', 'target']);
 
 export const getUpdatedTime = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'updatedAt']);
 

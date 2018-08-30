@@ -51,7 +51,7 @@ class BackdropCarousel extends React.PureComponent {
 
   componentWillUpdate (nextProps, nextState) {
     const newHeight = `${nextState.innerCarouselHeight}px`;
-    this._innerCarouselNode.style.height = newHeight;
+    //this._innerCarouselNode.style.height = newHeight;
   }
 
   handleWindowResize = (event) => {

@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { getEntityIds, getEntities, getInfoId } from "./commonSelectors";
 
-const getMovies = (ids, entities) => ids.map(id => entities[`${id}`]);
+const getMovies = (ids, entities) => ids && ids.length && ids.map(id => entities[`${id}`]);
 
 const getMovieEntities = state => getEntities(state, 'movie');
 const getPopularMovieIds = state => getEntityIds(state, 'movie', 'popular');
@@ -11,15 +11,14 @@ const getUpcomingMovieIds = state => getEntityIds(state, 'movie', 'upcoming');
 const getInTheatreMovieIds = state => getEntityIds(state, 'movie', 'inTheatre');
 const getMovieInfoId = state => getInfoId(state, 'movie');
 
-export const getPopuluarMovies = createSelector(
+export const getPopularMovies = createSelector(
   getPopularMovieIds,
   getMovieEntities,
   getMovies
 );
 
 export const getDiscoveredMovies = createSelector(
-  getDiscoveredMovieIds,
-  getMovieEntities,
+  [getDiscoveredMovieIds, getMovieEntities],
   getMovies
 );
 
@@ -41,7 +40,7 @@ export const getInTheatreMovies = createSelector(
   getMovies
 );
 
-const getMovieDetail = createSelector(
+export const getMovieDetail = createSelector(
   getMovieInfoId,
   getMovieEntities,
   (id, entities) => entities[`${id}`]

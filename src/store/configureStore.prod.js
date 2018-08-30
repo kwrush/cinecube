@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
 import { Map } from 'immutable';
-import thunkMiddleware from 'redux-thunk';
-import appReducer from 'reducers/index';
+import thunk from 'redux-thunk';
+import rootReducer from '../reducers';
 
-export default (initialState = Map()) => {
+export default (initialState = {}) => {
   return createStore(
-    appReducer, 
+    rootReducer, 
     initialState, 
-    applyMiddleware(thunkMiddleware)
+    applyMiddleware(thunk)
   );
 };
