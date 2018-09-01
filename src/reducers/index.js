@@ -1,18 +1,14 @@
 import { combineReducers } from 'redux';
-import searchReducers from './searchReducers';
-import movieReducers from './movieReducers';
-import tvReducers from './tvReducers';
-import peopleReducers from './peopleReducers';
-import commonReducers from './commonReducers';
-import entitiesReducers from './entitiesReducers';
+import entities from './entitiesReducer';
+import pagination from './paginationReducer';
+import global from './globalReducers';
+import mediaInfo from './mediaInfoReducer';
+import search from './searchReducer';
 
-const rootReducers = combineReducers({
-  movie: movieReducers,
-  tv: tvReducers,
-  people: peopleReducers,
-  search: searchReducers,
-  entities: entitiesReducers,
-  global: commonReducers
+export default combineReducers({
+  entities,
+  pagination,
+  mediaInfo,
+  global,
+  search
 });
-
-export default rootReducers;

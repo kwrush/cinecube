@@ -1,15 +1,15 @@
 import * as movieApi from '../services/movieApi';
-import { fetchRequest, fetchSuccess, fetchFailure, promptError } from './commonActions';
 import { mergeEntites } from './entitiesActions';
+import { promptError } from './globalActions';
 import { fetchMediaList } from '../utils/actionUtils';
-import { getPageNumber } from '../selectors/commonSelectors';
+import actionCreatorFactory from '../utils/actionCreatorFactory';
 
 const fetchMovieList = (topic, params) => fetchMediaList('movie', topic, params);
 
 const fetchMovieInfo = (id) => async (dispatch) => {
   try {
 
-    dispatch(fetchRequest('movie', 'info', 'info'));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('request', 'movie')(id));
 
     // If error occurs, calling api fails anyway
     const [ info, credits, images, similarMovies ] = await Promise.all([
@@ -20,38 +20,34 @@ const fetchMovieInfo = (id) => async (dispatch) => {
     ]);
 
     dispatch(mergeEntites({
-      credits: { ...credits.entities.cast, ...credits.entities.crew }
+      credits: { ...credits.data.entities.cast, ...credits.data.entities.crew }
     }));
 
     dispatch(mergeEntites({
-      movie: similarMovies.entitis.results
+      movie: similarMovies.data.entitis.results
     }));
+
 
     dispatch(mergeEntites({
       movie: { 
-        [`${info.id}`]: {
-          ...info,
-          ...images,
-          credits: { ...credits.result },
-          similar: similarMovies.resut.results
+        [`${info.data.id}`]: {
+          ...info.data,
+          ...images.data,
+          credits: { ...credits.data.result },
+          similar: similarMovies.data.result.results
         }
       }
     }));
 
-    dispatch(fetchSuccess('movie', 'info', 'info', info));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('success', 'movie')(id));
 
   } catch (e) {
-    dispatch(fetchFailure('movie', 'info', e));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('success', 'movie')(e));
     dispatch(promptError('Error occured during requesting resources.'));
-
-    if  (process.env.NODE_ENV !== 'production') {
-      console.error(e);
-    }
   }
 };
 
 const shouldFetchMovieList = (state, topic) => {
-  //TODO: check if needed to update
   return true;
 };
 
@@ -59,17 +55,13 @@ const shouldFetchMovieInfo = (state, id) => {
   return true;
 }
 
-export const fetchMovieListIfNeeded = (topic) => (dispatch, getState) => {
+export const fetchMovieListIfNeeded = (topic, page) => (dispatch, getState) => {
 
   const state = getState();
 
   if (!shouldFetchMovieList(state, topic)) return;
 
-  const currentPage = getPageNumber(state, 'movie', topic);
-
-  dispatch(fetchMovieList(topic, {
-    page: currentPage ? currentPage : 1
-  }));
+  dispatch(fetchMovieList(topic, { page }));
 };
 
 export const fetchMovieInfoAction = (id) => async (dispatch, getState) => {

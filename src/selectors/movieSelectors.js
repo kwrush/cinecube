@@ -1,24 +1,25 @@
 import { createSelector } from "reselect";
-import { getEntityIds, getEntities, getInfoId } from "./commonSelectors";
+import { getEntitiesByType, getTopicItemsByPage, getActiveInfoByType, getFetchedInfoByType } from "./commonSelectors";
 
-const getMovies = (ids, entities) => ids && ids.length && ids.map(id => entities[`${id}`]);
+const getMovies = (ids, entities) => 
+  typeof ids === 'array' ? ids.map(id => entities[`${id}`]) : [];
 
-const getMovieEntities = state => getEntities(state, 'movie');
-const getPopularMovieIds = state => getEntityIds(state, 'movie', 'popular');
-const getDiscoveredMovieIds = state => getEntityIds(state, 'movie', 'discover');
-const getTopRatedMovieIds = state => getEntityIds(state, 'movie', 'topRated');
-const getUpcomingMovieIds = state => getEntityIds(state, 'movie', 'upcoming');
-const getInTheatreMovieIds = state => getEntityIds(state, 'movie', 'inTheatre');
-const getMovieInfoId = state => getInfoId(state, 'movie');
+const getMovieListByTopic = (topic) => (state, props) => 
+  getTopicItemsByPage(state, 'movie', topic, typeof props === 'undefined' ? 1 : props.page );
+
+const getMovieEntities = state => getEntitiesByType(state, 'movie');
+
+const getPopularMovieIds = getMovieListByTopic('popular');
+
+const getTopRatedMovieIds = getMovieListByTopic('topRated');
+
+const getUpcomingMovieIds = getMovieListByTopic('upcoming');
+
+const getInTheatreMovieIds = getMovieListByTopic('inTheatre');
 
 export const getPopularMovies = createSelector(
   getPopularMovieIds,
   getMovieEntities,
-  getMovies
-);
-
-export const getDiscoveredMovies = createSelector(
-  [getDiscoveredMovieIds, getMovieEntities],
   getMovies
 );
 
@@ -41,7 +42,15 @@ export const getInTheatreMovies = createSelector(
 );
 
 export const getMovieDetail = createSelector(
-  getMovieInfoId,
+  getActiveInfoByType,
+  getFetchedInfoByType,
   getMovieEntities,
-  (id, entities) => entities[`${id}`]
+  (activeId, fetchedId, entities) => 
+    typeof activeId === 'undefined' 
+      ? null 
+      : typeof fetchedId === 'undefined' 
+        ? null 
+        : fetchedId.includes(activeId)
+          ? entities[`${activeId}`]
+          : null
 );

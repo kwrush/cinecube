@@ -1,50 +1,12 @@
 import * as movieApi from '../services/movieApi';
 import *  as tvApi from '../services/tvApi';
 import * as peopleApi from '../services/peopleApi';
-import { 
-  fetchRequest,
-  fetchSuccess,
-  fetchFailure,
-  promptError
-} from '../actions/commonActions';
 import { mergeEntites } from '../actions/entitiesActions';
-
-export const setFetching = (scope, fetching) => ({
-  [`${scope}`]: { isFetching: fetching }
-});
-
-export const setError = (scope, error) => ({
-  [`${scope}`]: { error: error }
-});
-
-export const setListResults = (scope, result) => {
-  const { page, totalPages, results } = result;
-
-  return {
-    [`${scope}`]: {
-      page,
-      totalPages,
-      items: results,
-      updatedAt: Date.now()
-    }
-  };
-};
-
-export const setInfoResult = (result) => {
-  const { id } =  result;
-
-  return {
-    info: { 
-      target: id,
-      updatedAt: Date.now() 
-    }
-  };
-};
+import actionCreatorFactory from './actionCreatorFactory';
+import { promptError } from '../actions/globalActions';
 
 const getMovieListApi = (topic) => {
   switch (topic.toLowerCase()) {
-    case 'discover':
-      return movieApi['discoverMovies'];
     case 'popular':
       return movieApi['fetchPopularMovies'];
     case 'toprated':
@@ -60,8 +22,6 @@ const getMovieListApi = (topic) => {
 
 const getTvListApi = (topic) => {
   switch (topic.toLowerCase()) {
-    case 'discover':
-      return tvApi['discoverTvs'];
     case 'popular':
       return tvApi['fetchPopularTvs'];
     case 'topRated':
@@ -74,7 +34,8 @@ const getTvListApi = (topic) => {
 };
 
 const getPeopleListApi = (topic) => {
-  if (topic === 'popular') return peopleApi['fetchPopularPeople'];
+  if (topic === 'popular') 
+    return peopleApi['fetchPopularPeople'];
 
   return null;
 };
@@ -96,26 +57,22 @@ export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => 
   const fetchApi = getMediaListApi(mediaType, topic);
 
   try {
-    if (topic === 'info' || fetchApi === null) {
-      throw new Error('The information requested is not available.');
+    if (fetchApi === null) {
+      throw new Error('The resource requested is not available.');
     }
 
-    dispatch(fetchRequest(mediaType, 'list', topic));
-
+    dispatch(actionCreatorFactory.mediaListFetchActionFactory('request', mediaType, topic)(params.page));
+    
     const { data } = await fetchApi(params);
 
     dispatch(mergeEntites({
       [`${mediaType}`]: data.entities.results
     }));
 
-    dispatch(fetchSuccess(mediaType, 'list', topic, data.result));
+    dispatch(actionCreatorFactory.mediaListFetchActionFactory('success', mediaType, topic)(data.result));
 
   } catch (e) {
-    dispatch(fetchFailure(mediaType, 'list', topic, e));
+    dispatch(actionCreatorFactory.mediaListFetchActionFactory('failure', mediaType, topic)(e));
     dispatch(promptError('Error occured during requesting of resources.'));
-
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(e);
-    }
   }
 };

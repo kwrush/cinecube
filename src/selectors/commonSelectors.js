@@ -1,17 +1,15 @@
 import { get } from 'lodash';
 
-export const getEntities = (state, mediaType) => get(state, ['entities', mediaType]);
+export const getEntitiesByType = (state, mediaType) => get(state, ['entities', mediaType]);
 
-export const getEntityIds = (state, mediaType, indexType) => get(state, [mediaType, indexType , 'items']);
+export const getTopicItemsByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'items']);
 
-export const getInfoId = (state, mediaType) => get(state, [mediaType, 'info', 'target']);
+export const getTopicUpdatedTimeByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'updatedAt']);
 
-export const getUpdatedTime = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'updatedAt']);
+export const getFetchingStatusByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'isFetching']);
 
-export const getPageNumber = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'page']);
+export const getTotalPagesByTopic = (state, mediaType, topic) => get(state, ['pagination', mediaType, topic, 'totalPages']);
 
-export const getFetchingStatus = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'isFetching']);
+export const getActiveInfoByType = (state, mediaType) => get(state, ['mediaInfo', mediaType, 'active']);
 
-export const getError = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'error']);
-
-export const getTotalPages = (state, mediaType, indexType) => get(state, [mediaType, indexType, 'totalPages']);
+export const getFetchedInfoByType = (state, mediaType) => get(state, ['mediaInfo', mediaType, 'fetched']);

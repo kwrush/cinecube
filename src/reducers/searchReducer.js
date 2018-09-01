@@ -2,7 +2,7 @@ import { searchActionTypes as actionTypes } from '../constants/actionTypes';
 
 const initialState = {};
 
-const searchReducers = (state = initialState, action) => {
+const search = (state = initialState, action) => {
 
   const { type, payload } = action;
 
@@ -12,5 +12,5 @@ const searchReducers = (state = initialState, action) => {
   }
 };
 
-export default searchReducers;
+export default search;
 

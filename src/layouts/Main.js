@@ -18,7 +18,7 @@ import NotFound from '../pages/404';
 
 const Main = props => (
   <Switch>
-    <Route exact path="/" component={Home} />
+    <Route exact path="/" render={ ()=><Home page={1} /> } />
     <Route path={MOVIE_ROUTES.home} component={Movie} />
     <Route path={TV_ROUTES.home} component={TV} />
     <Route path={PEOPLE_ROUTES.home} component={People} />

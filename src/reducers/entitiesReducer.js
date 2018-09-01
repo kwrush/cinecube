@@ -7,7 +7,7 @@ const initialState = {
   credits: {}
 };
 
-const entitiesReducers = (state = initialState, action) => {
+const entities = (state = initialState, action) => {
   const { type, payload } = action;
 
   if (type === entitiesActionTypes.MERGE_ENTITIES) {
@@ -17,4 +17,4 @@ const entitiesReducers = (state = initialState, action) => {
   }
 };
 
-export default entitiesReducers;
+export default entities;
