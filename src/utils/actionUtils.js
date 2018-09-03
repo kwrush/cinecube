@@ -40,7 +40,7 @@ const getPeopleListApi = (topic) => {
   return null;
 };
 
-const getMediaListApi = (mediaType, topic) => {
+export const getMediaListApi = (mediaType, topic) => {
   if (mediaType === 'movie') {
     return getMovieListApi(topic);
   } else if (mediaType === 'tv') {
@@ -50,7 +50,7 @@ const getMediaListApi = (mediaType, topic) => {
   }
 
   return null;
-}
+};
 
 export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => {
  

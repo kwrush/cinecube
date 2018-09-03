@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import { mediaListActionTypes } from "../constants/actionTypes";
 
 const pagination = (state = {}, action) => {
@@ -6,16 +7,16 @@ const pagination = (state = {}, action) => {
   switch (type) {
     case mediaListActionTypes.FETCH_MEDIA_LIST_REQUEST:
     case mediaListActionTypes.FETCH_MEDIA_LIST_FAILURE:
-      return {
+      return merge(state, {
         [`${meta.mediaType}`]: {
           [`${meta.topic}`]: { [`${payload.page}`]: { ...payload } }
         }
-      };
+      });
     case mediaListActionTypes.FETCH_MEDIA_LIST_SUCCESS:
 
       const { results, page, updatedAt, ...others } = payload;
 
-      return {
+      return merge(state, {
         [`${meta.mediaType}`]: {
           [`${meta.topic}`]: { 
             [`${page}`]: { 
@@ -26,7 +27,7 @@ const pagination = (state = {}, action) => {
             ...others 
           }
         }
-      };
+      });
     default:
       return state;
   }

@@ -1,3 +1,4 @@
+import { merge } from 'lodash';
 import { entitiesActionTypes } from "../constants/actionTypes";
 
 const initialState = {
@@ -11,7 +12,7 @@ const entities = (state = initialState, action) => {
   const { type, payload } = action;
 
   if (type === entitiesActionTypes.MERGE_ENTITIES) {
-    return { ...state, ...payload };
+    return merge(state, payload);
   } else {
     return state;
   }
