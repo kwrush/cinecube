@@ -1,7 +1,7 @@
 import { fetchListRequest, fetchListSuccess, fetchListFailure, fetchInfoRequest, fetchInfoSuccess, fetchInfoFailure } from "../fetchMediaActions";
 import { mediaListActionTypes, mediaInfoActionTypes } from "../../constants/actionTypes";
 
-describe('Actions tests of fetching media resources', () => {
+describe('Tests of sync fetching actions', () => {
   it('should create fetching list actions', () => {
     const result = {
       page: 2,
@@ -22,9 +22,9 @@ describe('Actions tests of fetching media resources', () => {
       meta: { mediaType: 'movie', topic: 'popular' }
     });
 
-    expect(fetchListFailure('movie','popular', 'Error')).toEqual({
+    expect(fetchListFailure('movie','popular', 1, 'Error')).toEqual({
       type: mediaListActionTypes.FETCH_MEDIA_LIST_FAILURE,
-      payload: { isFetching: false, error: 'Error' },
+      payload: { isFetching: false, page: 1, error: 'Error' },
       meta: { mediaType: 'movie', topic: 'popular' }
     });
   });

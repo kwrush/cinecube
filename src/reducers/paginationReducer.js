@@ -7,24 +7,25 @@ const pagination = (state = {}, action) => {
   switch (type) {
     case mediaListActionTypes.FETCH_MEDIA_LIST_REQUEST:
     case mediaListActionTypes.FETCH_MEDIA_LIST_FAILURE:
-      return merge(state, {
+      return merge({ ...state }, {
         [`${meta.mediaType}`]: {
           [`${meta.topic}`]: { [`${payload.page}`]: { ...payload } }
         }
       });
     case mediaListActionTypes.FETCH_MEDIA_LIST_SUCCESS:
 
-      const { results, page, updatedAt, ...others } = payload;
+      const { results, page, updatedAt, isFetching, ...others } = payload;
 
-      return merge(state, {
+      return merge({ ...state }, {
         [`${meta.mediaType}`]: {
           [`${meta.topic}`]: { 
             [`${page}`]: { 
               items: results,
               page,
-              updatedAt
+              updatedAt,
+              isFetching
             },
-            ...others 
+            ...others
           }
         }
       });

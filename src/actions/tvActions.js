@@ -1,15 +1,15 @@
 import * as tvApi from '../services/tvApi';
-import { fetchRequest, fetchSuccess, fetchFailure, promptError } from './commonActions';
 import { mergeEntites } from './entitiesActions';
+import { promptError } from './globalActions';
 import { fetchMediaList } from '../utils/actionUtils';
-import { getPageNumber } from '../selectors/commonSelectors';
+import actionCreatorFactory from '../utils/actionCreatorFactory';
 
-const fetchTvList = (topic, params) => fetchMediaList('tv', topic, params);
+export const fetchTvList = (topic, params) => fetchMediaList('tv', topic, params);
 
-const fetchTvInfo = (id) => async (dispatch) => {
+export const fetchTvInfo = (id) => async (dispatch) => {
   try {
 
-    dispatch(fetchRequest('tv', 'info', 'info'));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('request', 'tv')(id));
 
     // If error occurs, calling api fails anyway
     const [ info, credits, images, similarTvs ] = await Promise.all([
@@ -20,61 +20,32 @@ const fetchTvInfo = (id) => async (dispatch) => {
     ]);
 
     dispatch(mergeEntites({
-      credits: { ...credits.entities.cast, ...credits.entities.crew }
+      credits: { 
+        ...credits.data.entities.cast, 
+        ...credits.data.entities.crew 
+      }
     }));
 
     dispatch(mergeEntites({
-      tv: similarTvs.entitis.results
+      movie: similarTvs.data.entities.results
     }));
 
+
     dispatch(mergeEntites({
-      movie: { 
-        [`${info.id}`]: {
-          ...info,
-          ...images,
-          credits: { ...credits.result },
-          similar: similarTvs.resut.results
+      tv: { 
+        [`${info.data.id}`]: {
+          ...info.data,
+          ...images.data,
+          credits: { ...credits.data.result },
+          similar: similarTvs.data.result.results
         }
       }
     }));
 
-    dispatch(fetchSuccess('tv', 'info', 'info', info));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('success', 'tv')(id));
 
   } catch (e) {
-    dispatch(fetchFailure('tv', 'info', e));
+    dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('success', 'tv')(e));
     dispatch(promptError('Error occured during requesting resources.'));
-
-    if  (process.env.NODE_ENV !== 'production') {
-      console.error(e);
-    }
   }
-};
-
-const shouldFetchTvList = (state, topic) => {
-  //TODO: check if needed to update
-  return true;
-};
-
-const shouldFetchTvInfo = (state, id) => {
-  return true;
-}
-
-export const fetchTvListIfNeeded = (topic) => (dispatch, getState) => {
-
-  const state = getState();
-
-  if (!shouldFetchTvList(state, topic)) return;
-
-  const currentPage = getPageNumber(state, 'tv', topic);
-
-  dispatch(fetchTvList(topic, {
-    page: currentPage ? currentPage : 1
-  }));
-};
-
-export const fetchTvInfoAction = (id) => async (dispatch, getState) => {
-  
-  if (!shouldFetchTvInfo(getState(), id)) return;
-
-  dispatch(fetchTvInfo(id));
 };

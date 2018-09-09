@@ -27,7 +27,12 @@ describe('Test of pagination reducers', () => {
 
   it('should set response data correctly', () => {
     const state = {
-      movie: { popular: { totalPages: 50 } }
+      movie: {
+        popular: {
+          1: { isFetching: false, items: [1, 2, 3] },
+          totalPages: 50
+        }
+      }
     };
 
     const action = {
@@ -36,7 +41,8 @@ describe('Test of pagination reducers', () => {
         page: 2,
         results: [1, 2, 3, 4],
         updatedAt: 123,
-        totalPages: 100
+        totalPages: 100,
+        isFetching: false
       },
       meta: { mediaType: 'movie', topic: 'popular' }
     };
@@ -44,10 +50,12 @@ describe('Test of pagination reducers', () => {
     expect(pagination(state, action)).toEqual({
       movie: {
         popular: {
+          1: { isFetching: false, items: [1, 2, 3] },
           2: {
             page: 2,
             items: [1, 2, 3, 4],
-            updatedAt: 123
+            updatedAt: 123,
+            isFetching: false
           },
           totalPages: 100
         }

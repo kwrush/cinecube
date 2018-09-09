@@ -2,12 +2,16 @@ import {
   mediaListActionTypes, 
   mediaInfoActionTypes 
 } from '../constants/actionTypes';
+import { mergeEntites } from '../actions/entitiesActions';
+import actionCreatorFactory from '../utils/actionCreatorFactory';
+import { promptError } from '../actions/globalActions';
+import { getMediaListApi } from '../utils/actionUtils';
 
 export const fetchListRequest = (mediaType, topic, page) => ({
   type: mediaListActionTypes.FETCH_MEDIA_LIST_REQUEST,
   payload: {
     isFetching: true,
-    page: page
+    page
   },
   meta: {
     mediaType,
@@ -51,11 +55,12 @@ export const fetchInfoSuccess = (mediaType, id) => ({
   }
 });
 
-export const fetchListFailure = (mediaType, topic, error) => ({
+export const fetchListFailure = (mediaType, topic, page, error) => ({
   type: mediaListActionTypes.FETCH_MEDIA_LIST_FAILURE,
   payload: {
+    page,
     isFetching: false,
-    ...process.env.NODE_ENV === 'production' || { error: error } 
+    ...process.env.NODE_ENV === 'production' || { error }
   },
   meta: {
     mediaType,
@@ -67,9 +72,34 @@ export const fetchInfoFailure = (mediaType, error) => ({
   type: mediaInfoActionTypes.FETCH_MEDIA_INFO_FAILURE,
   payload: {
     isFetching: false,
-    ...process.env.NODE_ENV === 'production' || { error: error } 
+    ...process.env.NODE_ENV === 'production' || { error }
   },
   meta: {
     mediaType
   }
 });
+
+export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => {
+ 
+  const fetchApi = getMediaListApi(mediaType, topic);
+
+  try {
+    if (fetchApi === null) {
+      throw new Error('The resource requested is not available.');
+    }
+
+    dispatch(actionCreatorFactory.makeMediaListFetchAction('request', mediaType, topic)(params.page || 1));
+    
+    const { data } = await fetchApi(params);
+
+    dispatch(mergeEntites({
+      [`${mediaType}`]: data.entities.results
+    }));
+
+    dispatch(actionCreatorFactory.makeMediaListFetchAction('success', mediaType, topic)(data.result));
+
+  } catch (e) {
+    dispatch(actionCreatorFactory.makeMediaListFetchAction('failure', mediaType, topic)(params.page, e));
+    dispatch(promptError('Error occured during requesting of resources.'));
+  }
+};

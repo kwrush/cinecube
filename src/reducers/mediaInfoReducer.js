@@ -7,7 +7,7 @@ const mediaInfo = (state = {}, action) => {
   switch (type) {
     case mediaInfoActionTypes.FETCH_MEDIA_INFO_REQUEST:
     case mediaInfoActionTypes.FETCH_MEDIA_INFO_FAILURE:
-      return merge(state, {
+      return merge({ ...state }, {
         [`${meta.mediaType}`]: { ...payload }
       });
     case mediaInfoActionTypes.FETCH_MEDIA_INFO_SUCCESS:
@@ -15,7 +15,7 @@ const mediaInfo = (state = {}, action) => {
       const { fetched, ...others } = payload;
       fetchedIds.push(fetched);
 
-      return mergeWith(state, {
+      return mergeWith({ ...state }, {
         [`${meta.mediaType}`]: {
           fetched: fetchedIds,
           ...others

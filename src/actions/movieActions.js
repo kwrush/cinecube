@@ -1,12 +1,12 @@
 import * as movieApi from '../services/movieApi';
 import { mergeEntites } from './entitiesActions';
 import { promptError } from './globalActions';
-import { fetchMediaList } from '../utils/actionUtils';
+import { fetchMediaList } from './fetchMediaActions';
 import actionCreatorFactory from '../utils/actionCreatorFactory';
 
-const fetchMovieList = (topic, params) => fetchMediaList('movie', topic, params);
+export const fetchMovieList = (topic, params) => fetchMediaList('movie', topic, params);
 
-const fetchMovieInfo = (id) => async (dispatch) => {
+export const fetchMovieInfo = (id) => async (dispatch) => {
   try {
 
     dispatch(actionCreatorFactory.mediaInfoFetchActionFactory('request', 'movie')(id));
@@ -20,11 +20,14 @@ const fetchMovieInfo = (id) => async (dispatch) => {
     ]);
 
     dispatch(mergeEntites({
-      credits: { ...credits.data.entities.cast, ...credits.data.entities.crew }
+      credits: { 
+        ...credits.data.entities.cast, 
+        ...credits.data.entities.crew 
+      }
     }));
 
     dispatch(mergeEntites({
-      movie: similarMovies.data.entitis.results
+      movie: similarMovies.data.entities.results
     }));
 
 
@@ -46,28 +49,3 @@ const fetchMovieInfo = (id) => async (dispatch) => {
     dispatch(promptError('Error occured during requesting resources.'));
   }
 };
-
-const shouldFetchMovieList = (state, topic) => {
-  return true;
-};
-
-const shouldFetchMovieInfo = (state, id) => {
-  return true;
-}
-
-export const fetchMovieListIfNeeded = (topic, page) => (dispatch, getState) => {
-
-  const state = getState();
-
-  if (!shouldFetchMovieList(state, topic)) return;
-
-  dispatch(fetchMovieList(topic, { page }));
-};
-
-export const fetchMovieInfoAction = (id) => async (dispatch, getState) => {
-  
-  if (!shouldFetchMovieInfo(getState(), id)) return;
-
-  dispatch(fetchMovieInfo(id));
-};
-

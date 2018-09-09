@@ -1,9 +1,6 @@
 import * as movieApi from '../services/movieApi';
 import *  as tvApi from '../services/tvApi';
 import * as peopleApi from '../services/peopleApi';
-import { mergeEntites } from '../actions/entitiesActions';
-import actionCreatorFactory from './actionCreatorFactory';
-import { promptError } from '../actions/globalActions';
 
 const getMovieListApi = (topic) => {
   switch (topic.toLowerCase()) {
@@ -52,27 +49,3 @@ export const getMediaListApi = (mediaType, topic) => {
   return null;
 };
 
-export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => {
- 
-  const fetchApi = getMediaListApi(mediaType, topic);
-
-  try {
-    if (fetchApi === null) {
-      throw new Error('The resource requested is not available.');
-    }
-
-    dispatch(actionCreatorFactory.mediaListFetchActionFactory('request', mediaType, topic)(params.page));
-    
-    const { data } = await fetchApi(params);
-
-    dispatch(mergeEntites({
-      [`${mediaType}`]: data.entities.results
-    }));
-
-    dispatch(actionCreatorFactory.mediaListFetchActionFactory('success', mediaType, topic)(data.result));
-
-  } catch (e) {
-    dispatch(actionCreatorFactory.mediaListFetchActionFactory('failure', mediaType, topic)(e));
-    dispatch(promptError('Error occured during requesting of resources.'));
-  }
-};

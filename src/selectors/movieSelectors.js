@@ -1,21 +1,35 @@
 import { createSelector } from "reselect";
-import { getEntitiesByType, getTopicItemsByPage, getActiveInfoByType, getFetchedInfoByType } from "./commonSelectors";
+import { 
+  getEntitiesByType, 
+  getTopicItemsByPage, 
+  getActiveInfoByType, 
+  getFetchedInfoByType 
+} from "./commonSelectors";
 
 const getMovies = (ids, entities) => 
-  typeof ids === 'array' ? ids.map(id => entities[`${id}`]) : [];
+  Array.isArray(ids) ? ids.map(id => ({ ...entities[`${id}`], ...{ mediaType: 'movie' } })) : [];
 
 const getMovieListByTopic = (topic) => (state, props) => 
-  getTopicItemsByPage(state, 'movie', topic, typeof props === 'undefined' ? 1 : props.page );
+  getTopicItemsByPage(state, 'movie', topic, 
+    typeof props === 'undefined' 
+      ? 1 
+      : typeof props.page === 'undefined'
+        ? 1
+        : props.page);
 
 const getMovieEntities = state => getEntitiesByType(state, 'movie');
 
-const getPopularMovieIds = getMovieListByTopic('popular');
+const getPopularMovieIds = (state, props) => getMovieListByTopic('popular')(state, props);
 
-const getTopRatedMovieIds = getMovieListByTopic('topRated');
+const getTopRatedMovieIds = (state, props) => getMovieListByTopic('topRated')(state, props);
 
-const getUpcomingMovieIds = getMovieListByTopic('upcoming');
+const getUpcomingMovieIds = (state, props) => getMovieListByTopic('upcoming')(state, props);
 
-const getInTheatreMovieIds = getMovieListByTopic('inTheatre');
+const getInTheatreMovieIds = (state, props) => getMovieListByTopic('inTheatre')(state, props);
+
+const getActiveMovieInfo = (state) => getActiveInfoByType(state, 'movie');
+
+const getFetchedMovieInfo = (state) => getFetchedInfoByType(state, 'movie');
 
 export const getPopularMovies = createSelector(
   getPopularMovieIds,
@@ -42,8 +56,8 @@ export const getInTheatreMovies = createSelector(
 );
 
 export const getMovieDetail = createSelector(
-  getActiveInfoByType,
-  getFetchedInfoByType,
+  getActiveMovieInfo,
+  getFetchedMovieInfo,
   getMovieEntities,
   (activeId, fetchedId, entities) => 
     typeof activeId === 'undefined' 
