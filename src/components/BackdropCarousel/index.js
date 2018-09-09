@@ -11,13 +11,13 @@ import './style.scss';
 
 class BackdropCarousel extends React.PureComponent {
 
-  static PropTypes = {
+  static propTypes = {
     backdrops: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         mediaType: PropTypes.oneOf(['movie', 'tv']).isRequired,
-        backdropUrl: PropTypes.string.isRequired,
-        posterUrl: PropTypes.string.isRequired,
+        backdropPath: PropTypes.string.isRequired,
+        posterPath: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         rating: PropTypes.number,
         genreIds: PropTypes.array,
