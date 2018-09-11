@@ -1,7 +1,7 @@
 /**
  * Search by media type of multi
  */
-import { api } from './apiUtils';
+import { api, fetchMediaList } from './apiUtils';
 import { API_URL } from '../constants/routes';
 
 export const searchMulti = (query, params) => {
@@ -11,3 +11,9 @@ export const searchMulti = (query, params) => {
     params: { query: query, ...params }
   });
 };
+
+export const searchMovies = (params) => fetchMediaList('movie', 'search', params);
+
+export const searchTvs = (params) => fetchMediaList('tv', 'search', params);
+
+export const searchPeople = (params) => fetchMediaList('people', 'search', params);

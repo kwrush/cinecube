@@ -21,9 +21,13 @@ const mediaInfoActions = [
 ];
 
 const searchActions = [
-  'SEARCH_REQUEST',
-  'SEARCH_SUCCESS',
-  'SEARCH_FAILURE'
+  'UPDATE_AUTO_SUGGESTION',
+  'SEARCH_MULTI_REQUEST',
+  'UPDATE_SEARCH_MULTI_RESULT',
+  'SEARCH_MULTI_FAILURE',
+  'SEARCH_MEDIA_REQUEST',
+  'UPDATE_SEARCH_MEDIA_RESULT',
+  'SEARCH_MEDIA_FAILURE'
 ];
 
 export const globalActionTypes = generateActions(globalActions);

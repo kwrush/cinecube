@@ -22,6 +22,3 @@ export const fetchMovieImages = (id) => fetchMediaInfo('movie', id, 'images');
 
 export const fetchSimilarMovies = (id) => fetchMediaInfo('movie', id, 'similar');
 
-export const searchMovies = (params) => fetchMediaList('movie', 'search', params);
-
-

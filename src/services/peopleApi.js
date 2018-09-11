@@ -12,5 +12,3 @@ export const fetchPeopleImages = (id) => fetchMediaInfo('people', id, 'images');
 
 export const fetchPeopleCredits = (id) => fetchMediaInfo('people', id, 'credits');
 
-export const searchPeople = (params) => fetchMediaList('people', 'search', params);
-

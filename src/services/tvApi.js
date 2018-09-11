@@ -19,5 +19,3 @@ export const fetchTvCredits = (id) => fetchMediaInfo('tv', id, 'credits');
 export const fetchTvImages = (id) => fetchMediaInfo('tv', id, 'images');
 
 export const fetchSimilarTvs = (id) => fetchMediaInfo('tv', id, 'similar');
-
-export const searchTvs = (params) => fetchMediaList('tv', 'search', params);
