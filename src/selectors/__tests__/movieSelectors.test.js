@@ -22,14 +22,15 @@ describe('Movie selectors tests', () => {
   };
 
   it('should get popular movies from state', () => {
-    expect(getPopularMovies(state)).toEqual([{ title: 'A' }, { title: 'B' }]);
+    expect(getPopularMovies(state)).toEqual(
+      [{ mediaType: 'movie', title: 'A' }, { mediaType: 'movie', title: 'B' }]);
   });
 
   it('should get upcoming movies from state', () =>  {
-    expect(getUpcomingMovies(state)).toEqual([{ title: 'C' }]);
+    expect(getUpcomingMovies(state)).toEqual([{ mediaType: 'movie', title: 'C' }]);
   });
 
   it('should get detail of movie#2', () => {
     expect(getMovieDetail(state)).toEqual({ title: 'B' });
-  })
+  });
 });

@@ -1,22 +1,40 @@
-import { getPopularTvs, getTvDetail } from '../tvSelectors';
+import { 
+  getPopularTvs,
+  getTopRatedTvs,
+  getTvDetail
+ } from '../tvSelectors';
 
 describe('Tv selectors tests', () => {
 
   const state = {
     entities: {
-      tv: { 1: { id: 1, 'title': 'A' }, 2: { id: 2, 'title': 'B' } }
+      tv: { 1: { title: 'A' }, 2: { title: 'B' }, 3: { title: 'C' } },
     },
-    tv: {
-      popular: {items: [1, 2]},
-      info: { target: 1 }
+    pagination: {
+      tv: {
+        popular: {
+          1: { items: [1, 2], page: 1 }
+        },
+        topRated: {
+          1: { items: [3], page: 1 }
+        }
+      }
+    },
+    mediaInfo: {
+      tv: { active: 2, fetched: [1, 2] }
     }
   };
 
-  it('should get popular tvs correctly', () => {
-    expect(getPopularTvs(state)).toEqual([{ id: 1, 'title': 'A' }, { id: 2, 'title': 'B' }]);
+  it('should get popular tvs from state', () => {
+    expect(getPopularTvs(state)).toEqual(
+      [{ mediaType: 'tv', title: 'A' }, { mediaType: 'tv', title: 'B' }]);
   });
 
-  it('should get detail of tv#1', () => {
-    expect(getTvDetail(state)).toEqual({ id:1, 'title': 'A' });
+  it('should get top rated tvs from state', () =>  {
+    expect(getTopRatedTvs(state)).toEqual([{ mediaType: 'tv', title: 'C' }]);
+  });
+
+  it('should get detail of movie#2', () => {
+    expect(getTvDetail(state)).toEqual({ title: 'B' });
   })
 });
