@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
+import { connect } from 'react-redux';
 import {
   InputGroup,
   InputGroupAddon,
@@ -11,8 +12,10 @@ import {
 import { GoSearch } from 'react-icons/go';
 import Suggestions from '../Suggestions/index';
 import './style.scss';
+import { getAutoSuggestion } from '../../actions/searchActions';
+import { getSearchSuggestion } from '../../selectors/commonSelectors';
 
-class SearchBox extends React.PureComponent {
+class SearchBox extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
@@ -173,4 +176,14 @@ class SearchBox extends React.PureComponent {
 
 }
 
-export default SearchBox;
+const mapStateToProps = (state) => ({
+  searchResults: getSearchSuggestion(state)
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSearch: (query) => {
+    dispatch(getAutoSuggestion(query))
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBox);

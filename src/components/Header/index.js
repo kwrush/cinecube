@@ -17,6 +17,7 @@ import HeaderNav from '../HeaderNav';
 import SearchBox from '../SearchBox';
 import Logo from '../Logo';
 import './style.scss';
+import { throws } from 'assert';
 
 class Header extends React.Component {
 
@@ -65,7 +66,6 @@ class Header extends React.Component {
               />
               <SearchBox 
                 styleName="searchbox" 
-                searchResults={this.state.results}
               />
             </Collapse>
           </Navbar>
@@ -74,5 +74,6 @@ class Header extends React.Component {
     );
   }
 }
+
 
 export default Header;

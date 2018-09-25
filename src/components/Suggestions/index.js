@@ -5,22 +5,14 @@ import { Link } from 'react-router-dom';
 import { GoIssueOpened } from 'react-icons/go';
 import './style.scss'
 
-class Suggestions extends React.PureComponent {
+class Suggestions extends React.Component {
 
   static propTypes = {
     results: PropTypes.arrayOf(
       PropTypes.shape({
-        type: PropTypes.string.isRequired,
-        items: PropTypes.arrayOf(
-          PropTypes.shape({
-            url: PropTypes.oneOfType([
-              PropTypes.string,
-              PropTypes.number
-            ]).isRequired,
-            title: PropTypes.string.isRequired,
-            imgUrl: PropTypes.string.isRequired,
-          })
-        )
+        url: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        imgUrl: PropTypes.string.isRequired,
       })
     )
   }
@@ -58,13 +50,13 @@ class Suggestions extends React.PureComponent {
     );
   }
 
-  renderResultGroup = (group) => (
+  renderResultGroup = (results) => (
     <ListGroup flush>
       {
-        group.map((item, index) => {
+        results.map((item, index) => {
           return (
             <ListGroupItem 
-              key={index} 
+              key={`${index}_${item.id}`} 
               styleName="list-item"
               onClick={this.props.onClick}
             >
@@ -78,7 +70,21 @@ class Suggestions extends React.PureComponent {
 
   renderSuggestions = (results) => {
 
-    const contents = [];
+    return results.map((item, index) => {
+      return (
+        <ListGroupItem 
+          key={`${index}_${item.id}`} 
+          styleName="list-item"
+          onClick={this.props.onClick}
+        >
+          { this.renderResultItem(item) }
+        </ListGroupItem>
+      );
+    });
+
+/*     const contents = [];
+
+
 
     for (let ii = 0; ii < results.length; ii++) {
       const result = results[ii];
@@ -101,13 +107,13 @@ class Suggestions extends React.PureComponent {
       }
     }
 
-    return contents;
+    return contents; */
   }
 
   render () {
 
     const { results, onMouseEnter, onMouseLeave } = this.props;
-    const contents = this.renderSuggestions(results);
+    //const contents = this.renderSuggestions(results);
 
     return (
       <div 
@@ -116,8 +122,8 @@ class Suggestions extends React.PureComponent {
         onMouseLeave={onMouseLeave}
       >
         {
-          contents.length > 0
-            ? contents
+          results.length > 0
+            ? this.renderSuggestions(results)
             : this.renderNoResult()
         }
       </div>

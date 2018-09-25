@@ -74,7 +74,7 @@ export const searchMediaRequest = (mediaType, query, page) => ({
 });
 
 export const updateSearchMediaResult = (mediaType, query, result) => ({
-  type: actionTypes.UPDATE_SEARCH_MULTI_RESULT,
+  type: actionTypes.UPDATE_SEARCH_MEDIA_RESULT,
   payload: { 
     mediaType,
     query,

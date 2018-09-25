@@ -23,7 +23,7 @@ export const ascendComparator = (v1, v2) => {
 };
 
 export const getFullYear = (dateStr) => {
-  return new Date(dateStr).getFullYear();
+  return dateStr ? new Date(dateStr).getFullYear() : '';
 };
 
 /**
@@ -33,8 +33,6 @@ export const getFullYear = (dateStr) => {
  * @param {string} format time difference in this format, can be seconds, minutes, hours or days
  */
 export const differenceInTime = (d1, d2, format) => {
-  const date1 = new Date(d1);
-  const date2 = new Date(d2);
 
   format = format || 'seconds';
   let factor = 1;

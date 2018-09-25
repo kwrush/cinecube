@@ -1,12 +1,12 @@
 import { searchActionTypes as actionTypes } from '../constants/actionTypes';
 import { combineReducers } from 'redux';
 
-const searchMulti = (state = {}, action) => {
+const searchMediaByQuery = (mediaType, state = {}, action) => {
   const { type, payload } = action;
-
+  const mType = mediaType.toUpperCase();
   switch (type) {
-    case actionTypes.SEARCH_MULTI_REQUEST:
-    case actionTypes.SEARCH_MULTI_FAILURE:
+    case actionTypes[`SEARCH_${mType}_REQUEST`]:
+    case actionTypes[`SEARCH_${mType}_FAILURE`]:
       return {
         ...state,
         ...{ 
@@ -15,7 +15,7 @@ const searchMulti = (state = {}, action) => {
           } 
         }
       };
-    case actionTypes.UPDATE_SEARCH_MULTI_RESULT:
+    case actionTypes[`UPDATE_SEARCH_${mType}_RESULT`]:
 
       const { page, query, fetching, ...others } = payload;
 
@@ -36,17 +36,11 @@ const searchMulti = (state = {}, action) => {
   }
 };
 
-const searchMovieByQuery = (state = {}, action) => {
+const searchMovieByQuery = (state = {}, action) => searchMediaByQuery('movie', state, action);
 
-};
+const searchTvByQuery = (state = {}, action) => searchMediaByQuery('tv', state, action);
 
-const searchTvByQuery = (state = {}, action) => {
-
-};
-
-const searchPeopleByQuery = (state = {}, action) => {
-
-};
+const searchPeopleByQuery = (state = {}, action) => searchMediaByQuery('people', state, action);
 
 const suggestion = (state = {}, action) => {
   const { type, payload } = action;
@@ -62,7 +56,6 @@ const suggestion = (state = {}, action) => {
 };
 
 const search = combineReducers({
-  searchMulti,
   searchMovieByQuery,
   searchTvByQuery,
   searchPeopleByQuery,
