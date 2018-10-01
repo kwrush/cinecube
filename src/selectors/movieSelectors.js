@@ -6,30 +6,38 @@ import {
   getFetchedInfoByType 
 } from "./commonSelectors";
 
-const getMovies = (ids, entities) => 
+const getMovies = (ids, entities) =>
   Array.isArray(ids) ? ids.map(id => ({ ...entities[`${id}`], ...{ mediaType: 'movie' } })) : [];
 
-const getMovieListByTopic = (topic) => (state, props) => 
-  getTopicItemsByPage(state, 'movie', topic, 
-    typeof props === 'undefined' 
-      ? 1 
-      : typeof props.page === 'undefined'
+const getMovieListByTopic = (topic) =>
+  (state, props) =>
+    getTopicItemsByPage(state, 'movie', topic,
+      typeof props === 'undefined'
         ? 1
-        : props.page);
+        : typeof props.page === 'undefined'
+          ? 1
+          : props.page);
 
-const getMovieEntities = state => getEntitiesByType(state, 'movie');
+const getMovieEntities = state => 
+  getEntitiesByType(state, 'movie');
 
-const getPopularMovieIds = (state, props) => getMovieListByTopic('popular')(state, props);
+const getPopularMovieIds = (state, props) => 
+  getMovieListByTopic('popular')(state, props);
 
-const getTopRatedMovieIds = (state, props) => getMovieListByTopic('topRated')(state, props);
+const getTopRatedMovieIds = (state, props) => 
+  getMovieListByTopic('topRated')(state, props);
 
-const getUpcomingMovieIds = (state, props) => getMovieListByTopic('upcoming')(state, props);
+const getUpcomingMovieIds = (state, props) => 
+  getMovieListByTopic('upcoming')(state, props);
 
-const getInTheatreMovieIds = (state, props) => getMovieListByTopic('inTheatre')(state, props);
+const getInTheatreMovieIds = (state, props) => 
+  getMovieListByTopic('inTheatre')(state, props);
 
-const getActiveMovieInfo = (state) => getActiveInfoByType(state, 'movie');
+const getActiveMovieInfo = (state) => 
+  getActiveInfoByType(state, 'movie');
 
-const getFetchedMovieInfo = (state) => getFetchedInfoByType(state, 'movie');
+const getFetchedMovieInfo = (state) => 
+  getFetchedInfoByType(state, 'movie');
 
 export const getPopularMovies = createSelector(
   getPopularMovieIds,

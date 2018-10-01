@@ -1,5 +1,5 @@
 import { globalActionTypes } from "../../constants/actionTypes";
-import globalReducers from "../globalReducers";
+import { globalScope } from "../globalReducers";
 
 describe('Tests of global reducers', () => {
   it('should set promptError to the state', () => {
@@ -8,7 +8,7 @@ describe('Tests of global reducers', () => {
       payload: { promptError: 'global error' }
     };
 
-    expect(globalReducers({}, action)).toEqual({
+    expect(globalScope({}, action)).toEqual({
       promptError: 'global error'
     });
   });

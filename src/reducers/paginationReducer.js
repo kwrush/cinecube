@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { mediaListActionTypes } from "../constants/actionTypes";
 
-const pagination = (state = {}, action) => {
+export const pagination = (state = {}, action) => {
   const { type, payload, meta } = action;
 
   switch (type) {
@@ -33,5 +33,3 @@ const pagination = (state = {}, action) => {
       return state;
   }
 };
-
-export default pagination;

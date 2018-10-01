@@ -36,11 +36,14 @@ const searchMediaByQuery = (mediaType, state = {}, action) => {
   }
 };
 
-const searchMovieByQuery = (state = {}, action) => searchMediaByQuery('movie', state, action);
+const searchMovieByQuery = (state = {}, action) => 
+  searchMediaByQuery('movie', state, action);
 
-const searchTvByQuery = (state = {}, action) => searchMediaByQuery('tv', state, action);
+const searchTvByQuery = (state = {}, action) => 
+  searchMediaByQuery('tv', state, action);
 
-const searchPeopleByQuery = (state = {}, action) => searchMediaByQuery('people', state, action);
+const searchPeopleByQuery = (state = {}, action) => 
+  searchMediaByQuery('people', state, action);
 
 const suggestion = (state = {}, action) => {
   const { type, payload } = action;
@@ -55,12 +58,10 @@ const suggestion = (state = {}, action) => {
   return state;
 };
 
-const search = combineReducers({
+export const search = combineReducers({
   searchMovieByQuery,
   searchTvByQuery,
   searchPeopleByQuery,
   suggestion
 });
-
-export default search;
 

@@ -1,5 +1,5 @@
 import { mediaListActionTypes } from "../../constants/actionTypes";
-import pagination from "../paginationReducer";
+import { pagination } from "../paginationReducer";
 
 describe('Test of pagination reducers', () => {
   it('should update state correctly on fetching request', () => {

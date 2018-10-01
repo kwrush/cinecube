@@ -12,8 +12,11 @@ export const searchMulti = (query, params) => {
   });
 };
 
-export const searchMovies = (params) => fetchMediaList('movie', 'search', params);
+export const searchMovies = (params) => 
+  fetchMediaList('movie', 'search', params);
 
-export const searchTvs = (params) => fetchMediaList('tv', 'search', params);
+export const searchTvs = (params) => 
+  fetchMediaList('tv', 'search', params);
 
-export const searchPeople = (params) => fetchMediaList('people', 'search', params);
+export const searchPeople = (params) => 
+  fetchMediaList('people', 'search', params);

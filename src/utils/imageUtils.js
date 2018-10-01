@@ -1,3 +1,7 @@
+/**
+ * Complete url of images wtih the specific size
+ */
+
 import { IMAGE_BASE_URL } from '../constants/routes';
 
 const posterSizes = {

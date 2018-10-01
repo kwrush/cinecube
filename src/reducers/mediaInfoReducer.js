@@ -1,7 +1,7 @@
 import { merge, mergeWith } from 'lodash';
 import { mediaInfoActionTypes } from "../constants/actionTypes";
 
-const mediaInfo = (state = {}, action) => {
+export const mediaInfo = (state = {}, action) => {
   const { type, payload, meta } = action;
 
   switch (type) {
@@ -28,5 +28,3 @@ const mediaInfo = (state = {}, action) => {
       return state;
   }
 };
-
-export default mediaInfo;

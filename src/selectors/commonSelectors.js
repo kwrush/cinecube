@@ -3,21 +3,29 @@ import { createSelector } from 'reselect';
 import { getPosterUrl, getProfileUrl } from '../utils/imageUtils';
 import { getFullYear } from '../utils/helpers';
 
-export const getEntitiesByType = (state, mediaType) => get(state, ['entities', mediaType]);
+export const getEntitiesByType = (state, mediaType) => 
+  get(state, ['entities', mediaType]);
 
-export const getTopicItemsByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'items']);
+export const getTopicItemsByPage = (state, mediaType, topic, page) => 
+  get(state, ['pagination', mediaType, topic, page, 'items']);
 
-export const getTopicUpdatedTimeByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'updatedAt']);
+export const getTopicUpdatedTimeByPage = (state, mediaType, topic, page) => 
+  get(state, ['pagination', mediaType, topic, page, 'updatedAt']);
 
-export const getFetchingStatusByPage = (state, mediaType, topic, page) => get(state, ['pagination', mediaType, topic, page, 'isFetching']);
+export const getFetchingStatusByPage = (state, mediaType, topic, page) => 
+  get(state, ['pagination', mediaType, topic, page, 'isFetching']);
 
-export const getTotalPagesByTopic = (state, mediaType, topic) => get(state, ['pagination', mediaType, topic, 'totalPages']);
+export const getTotalPagesByTopic = (state, mediaType, topic) => 
+  get(state, ['pagination', mediaType, topic, 'totalPages']);
 
-export const getActiveInfoByType = (state, mediaType) => get(state, ['mediaInfo', mediaType, 'active']);
+export const getActiveInfoByType = (state, mediaType) => 
+  get(state, ['mediaInfo', mediaType, 'active']);
 
-export const getFetchedInfoByType = (state, mediaType) => get(state, ['mediaInfo', mediaType, 'fetched']);
+export const getFetchedInfoByType = (state, mediaType) => 
+  get(state, ['mediaInfo', mediaType, 'fetched']);
 
-export const getSuggestionResults = (state) => get(state, ['search', 'suggestion', 'results']);
+export const getSuggestionResults = (state) => 
+  get(state, ['search', 'suggestion', 'results']);
 
 export const getSearchSuggestion = createSelector(
   getSuggestionResults,
@@ -39,7 +47,7 @@ export const getSearchSuggestion = createSelector(
         ? entry.releaseDate 
           ? `${entry.title}(${getFullYear(entry.releaseDate)})`
           : `${entry.title}(${getFullYear(entry.firstAirDate)})`
-        : entry.name
+        : entry.name;
   
       return {
         id: id,

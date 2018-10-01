@@ -1,5 +1,5 @@
 import { mediaInfoActionTypes } from "../../constants/actionTypes";
-import mediaInfo from "../mediaInfoReducer";
+import { mediaInfo } from "../mediaInfoReducer";
 
 describe('Test of media info reducers', () => {
   it('should update state correctly on fetching request', () => {

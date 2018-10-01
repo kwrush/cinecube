@@ -17,17 +17,23 @@ const getTvListByTopic = (topic) => (state, props) =>
         ? 1
         : props.page);
 
-const getTvEntities = state => getEntitiesByType(state, 'tv');
+const getTvEntities = state => 
+  getEntitiesByType(state, 'tv');
 
-const getPopularTvIds = (state, props) => getTvListByTopic('popular')(state, props);
+const getPopularTvIds = (state, props) => 
+  getTvListByTopic('popular')(state, props);
 
-const getTopRatedTvIds = (state, props) => getTvListByTopic('topRated')(state, props);
+const getTopRatedTvIds = (state, props) => 
+  getTvListByTopic('topRated')(state, props);
 
-const getOnAirTvIds = (state, props) => getTvListByTopic('onAir')(state, props);
+const getOnAirTvIds = (state, props) => 
+  getTvListByTopic('onAir')(state, props);
 
-const getActiveTvInfo = (state) => getActiveInfoByType(state, 'tv');
+const getActiveTvInfo = (state) => 
+  getActiveInfoByType(state, 'tv');
 
-const getFetchedTvInfo = (state) => getFetchedInfoByType(state, 'tv');
+const getFetchedTvInfo = (state) => 
+  getFetchedInfoByType(state, 'tv');
 
 export const getPopularTvs = createSelector(
   getPopularTvIds,

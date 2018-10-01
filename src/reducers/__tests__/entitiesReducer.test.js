@@ -1,4 +1,4 @@
-import entities from "../entitiesReducer";
+import { entities } from "../entitiesReducer";
 import { entitiesActionTypes } from "../../constants/actionTypes";
 
 describe('Entities reducer tests', () => {

@@ -1,0 +1,22 @@
+.unfixed {
+  position: relative;
+  transform: translateY(0px);
+}
+
+.pinned,
+.unpinned {
+  position: fixed;
+}
+
+.unpinned {
+  transform: translateY(-100%);
+}
+
+.pinned {
+  transform: translateY(0px);
+}
+
+.transitionHeader {
+  transition: all 0.2s ease-in-out;
+}
+

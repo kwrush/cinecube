@@ -1,24 +1,24 @@
-import actionCreatorFactory from '../actionCreatorFactory';
+import { makeMediaListFetchAction, makeMediaInfoFetchAction } from '../actionCreatorFactory';
 import { mediaListActionTypes, mediaInfoActionTypes } from '../../constants/actionTypes';
 
 describe('Tests of action creator factory', () => {
   it('should create request action correctly', () => {
-    expect(actionCreatorFactory
-      .makeMediaListFetchAction('request', 'movie', 'popular')(2))
+    expect(
+      makeMediaListFetchAction('request', 'movie', 'popular')(2))
       .toEqual({
         type: mediaListActionTypes.FETCH_MEDIA_LIST_REQUEST,
         payload: {
           isFetching: true,
           page: 2
-        }, 
+        },
         meta: {
           mediaType: 'movie',
           topic: 'popular'
         }
       });
 
-    expect(actionCreatorFactory
-      .makeMediaInfoFetchAction('request', 'movie')(33))
+    expect(
+      makeMediaInfoFetchAction('request', 'movie')(33))
       .toEqual({
         type: mediaInfoActionTypes.FETCH_MEDIA_INFO_REQUEST,
         payload: {
@@ -34,7 +34,7 @@ describe('Tests of action creator factory', () => {
   it('should create fetching success action correctly', () => {
 
     const listRes = {
-      entities: { 1: {id: 1, title: 'A'}, 2: {id: 2, title: 'B'} },
+      entities: { 1: { id: 1, title: 'A' }, 2: { id: 2, title: 'B' } },
       result: {
         page: 1,
         results: [1, 2],
@@ -42,8 +42,8 @@ describe('Tests of action creator factory', () => {
       }
     };
 
-    expect(actionCreatorFactory
-      .makeMediaListFetchAction('success', 'movie', 'popular')(listRes))
+    expect(
+      makeMediaListFetchAction('success', 'movie', 'popular')(listRes))
       .toMatchObject({
         type: mediaListActionTypes.FETCH_MEDIA_LIST_SUCCESS,
         payload: {
@@ -56,8 +56,7 @@ describe('Tests of action creator factory', () => {
         }
       });
 
-    expect(actionCreatorFactory
-      .makeMediaInfoFetchAction('success', 'movie')(33))
+    expect(makeMediaInfoFetchAction('success', 'movie')(33))
       .toMatchObject({
         type: mediaInfoActionTypes.FETCH_MEDIA_INFO_SUCCESS,
         payload: {
@@ -71,8 +70,8 @@ describe('Tests of action creator factory', () => {
   });
 
   it('should create fetching failure action correctly', () => {
-    expect(actionCreatorFactory
-      .makeMediaListFetchAction('failure', 'movie', 'popular')(1, 'Request failed'))
+    expect(
+      makeMediaListFetchAction('failure', 'movie', 'popular')(1, 'Request failed'))
       .toEqual({
         type: mediaListActionTypes.FETCH_MEDIA_LIST_FAILURE,
         payload: {
@@ -86,8 +85,8 @@ describe('Tests of action creator factory', () => {
         }
       });
 
-    expect(actionCreatorFactory
-      .makeMediaInfoFetchAction('failure', 'movie')('Request failed'))
+    expect(
+      makeMediaInfoFetchAction('failure', 'movie')('Request failed'))
       .toEqual({
         type: mediaInfoActionTypes.FETCH_MEDIA_INFO_FAILURE,
         payload: {

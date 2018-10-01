@@ -3,9 +3,10 @@ import {
   mediaInfoActionTypes 
 } from '../constants/actionTypes';
 import { mergeEntites } from '../actions/entitiesActions';
-import actionCreatorFactory from '../utils/actionCreatorFactory';
+import { makeMediaListFetchAction } from '../utils/actionCreatorFactory';
 import { promptError } from '../actions/globalActions';
 import { getMediaListApi } from '../utils/actionUtils';
+import { shouldFetchListFromApi } from '../services/apiUtils';
 
 export const fetchListRequest = (mediaType, topic, page) => ({
   type: mediaListActionTypes.FETCH_MEDIA_LIST_REQUEST,
@@ -79,16 +80,20 @@ export const fetchInfoFailure = (mediaType, error) => ({
   }
 });
 
-export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => {
+export const fetchMediaList = (mediaType, topic, params) => async (dispatch, getState) => {
  
   const fetchApi = getMediaListApi(mediaType, topic);
+  const page = params.page || 1;
 
   try {
     if (fetchApi === null) {
       throw new Error('The resource requested is not available.');
     }
 
-    dispatch(actionCreatorFactory.makeMediaListFetchAction('request', mediaType, topic)(params.page || 1));
+    if (!shouldFetchListFromApi(getState(), mediaType, topic, page))
+      return;
+
+    dispatch(makeMediaListFetchAction('request', mediaType, topic)(page));
     
     const { data } = await fetchApi(params);
 
@@ -96,10 +101,10 @@ export const fetchMediaList = (mediaType, topic, params) => async (dispatch) => 
       [`${mediaType}`]: data.entities.results
     }));
 
-    dispatch(actionCreatorFactory.makeMediaListFetchAction('success', mediaType, topic)(data.result));
+    dispatch(makeMediaListFetchAction('success', mediaType, topic)(data.result));
 
   } catch (e) {
-    dispatch(actionCreatorFactory.makeMediaListFetchAction('failure', mediaType, topic)(params.page, e));
+    dispatch(makeMediaListFetchAction('failure', mediaType, topic)(page, e));
     dispatch(promptError('Error occured during requesting of resources.'));
   }
 };
