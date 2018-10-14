@@ -1,0 +1,13 @@
+@import "../../assets/styles/_base.scss";
+
+.nav-item {
+  padding: 0 $list-inline-padding;
+}
+
+@media (max-width: $media-md) {
+  .nav-item {
+    padding: 1.25rem;
+    font-size: $font-size-xl;
+    text-align: center;
+  }
+}

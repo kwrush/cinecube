@@ -2,46 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import raf from 'raf';
 import classNames from 'classnames';
-import { blue, grey } from '@material-ui/core/colors';
-import Header from './Header';
-import './StickyHeader.scss';
-import { withStyles } from '@material-ui/core';
 import { mapToCssModules } from '../../utils/helpers';
+import { RootRef } from '../RootRef';
 import shouldToggleOrScrollHeader from './shouldToggleOrScrollHeader';
-
-const styles = theme => ({
-  root: {
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    zIndex: 1,
-    minHeight: 56,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      minHeight: 48,
-    },
-    [theme.breakpoints.up('sm')]: {
-      minHeight: 64,
-    }
-  }
-});
+import './StickyHeader.scss';
 
 class StickyHeader extends React.PureComponent {
 
   static propTypes = {
     cssModule: PropTypes.object,
     className: PropTypes.string,
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node
-    ]),
-    titleColor: PropTypes.string,
-    color: PropTypes.string
-  }
-
-  static defaultProps = {
-    titleColor: blue[500],
-    color: grey[200]
+    children: PropTypes.element
   }
 
   constructor(props) {
@@ -51,6 +22,8 @@ class StickyHeader extends React.PureComponent {
     this.currentScrollY = 0;
     this.scrollTicking = false;
     this.resizeTicking = false;
+
+    this.headerRef = React.createRef();
 
     this.state = {
       status: 'unfixed',
@@ -71,18 +44,15 @@ class StickyHeader extends React.PureComponent {
   UNSAFE_componentWillUpdate (nextProps, nextState) {
     // This is needed because we have to add transition 
     // after status changed from "unfixed" to "unpinned"
-    // to avoid animation of negative translateY
+    // to avoid transition of negative translateY
     this.initialUnpin = 
       nextState.status === 'unpinned' 
       && this.state.status === 'unfixed';
   }
-  
-  setRef = ref => 
-    this.headerRef = ref;
 
   setWrapperHeight = () => {
     this.headerRef && this.setState({
-      wrapperHeight: this.headerRef.offsetHeight
+      wrapperHeight: this.headerRef.current.offsetHeight
     });
 
     this.resizeTicking = false;
@@ -153,27 +123,32 @@ class StickyHeader extends React.PureComponent {
 
   render() {
 
-    const { classes, className, cssModule, children, ...rest } = this.props;
+    const { className, cssModule, children } = this.props;
 
-    const { status } = this.state;
+    const { status, wrapperHeight } = this.state;
     const pinned = status === 'pinned';
     const unfixed = status === 'unfixed';
     const unpinned = status === 'unpinned';
 
     // Transition is not applied when state changes from "unfixed" to "unpinned"
-    const styleClasses = classNames({ pinned }, { unpinned }, { unfixed }, { 'transitionHeader': !this.initialUnpin });
-    const rootClasses = classNames(classes.root,  mapToCssModules(className, cssModule));
+    const styleClasses = classNames('innerWrapper', { pinned, unpinned, unfixed }, { 'transitionHeader': !this.initialUnpin });
+    const innerClasses = mapToCssModules(className, cssModule);
+
+    const wrapperStyle = {
+      height: wrapperHeight ? wrapperHeight : null,
+      background: 'none'
+    };
 
     return (
-      <div className={classes.root}>
-        <div styleName={styleClasses} className={rootClasses} ref={this.setRef}>
-          <Header position="absolute" {...rest}>
-            {children}
-          </Header>
+      <div style={wrapperStyle}>
+        <div style={wrapperStyle} styleName={styleClasses} className={innerClasses}>
+          <RootRef rootRef={this.headerRef}>
+              {children}
+          </RootRef>
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(StickyHeader);
+export default StickyHeader;

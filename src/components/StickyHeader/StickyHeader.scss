@@ -17,6 +17,14 @@
 }
 
 .transitionHeader {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.innerWrapper {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: '100%';
+  z-index: 1;
 }
 

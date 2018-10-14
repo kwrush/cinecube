@@ -1,0 +1,9 @@
+@import "../../assets/styles/_base.scss";
+
+.link-item {
+  color: $text-link;
+
+  &:hover {
+    color: $text-link-hover;
+  }
+}

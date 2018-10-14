@@ -6,7 +6,7 @@ import {
   NavLink 
 } from 'reactstrap';
 import { GoMarkGithub } from 'react-icons/go';
-import Logo from '../Logo/index';
+import { Logo } from '../Logo';
 
 import './style.scss';
 
