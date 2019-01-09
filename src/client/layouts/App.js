@@ -8,15 +8,15 @@ import {
 import NotFound from '../pages/404';
 import Main from './Main';
 
-import Header from '../components/Header/index';
-import Footer from '../components/Footer/index';
+import { AppHeader } from '../components/AppHeader';
+import Footer from '../components/Footer';
 import configureStore from '../store/configureStore';
 
 const App = props => (
   <Provider store={configureStore()}>
     <BrowserRouter>
       <div>
-        <Header />
+        <AppHeader />
         <Switch>
           <Route path="/" component={Main} />
           <Route component={NotFound} />
