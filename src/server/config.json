@@ -1,7 +1,8 @@
 {
   "config": {
     "httpPort": 3001,
-    "apiKey": "c6b424c3bb5ffc5ca289439319b96b7c"
+    "apiKey": "c6b424c3bb5ffc5ca289439319b96b7c",
+    "logs": "./logs/server.log"
   },
   "morgan": {
     "logType": "dev"

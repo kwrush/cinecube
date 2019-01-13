@@ -1,18 +1,25 @@
 /**
  * Entry point of routers
  */
-
+const express = require('express');
 const bodyParser = require('body-parser');
+const MovieRoutes = require('./MovieRoutes');
+const TvRoutes = require('./TvRoutes');
+const PeopleRoutes = require('./PeopleRoutes');
 
-const router = require('express').Router();
+const apiRouter = express.Router();
 
-router.use(bodyParser.urlencoded({extended: true}));   
-router.use(bodyParser.json());                                                                                 
-router.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+apiRouter.use(bodyParser.urlencoded({extended: true}));   
+apiRouter.use(bodyParser.json());                                                                                 
+apiRouter.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
-router.use('/movie', require('./movie'));
+new MovieRoutes(apiRouter);
+new TvRoutes(apiRouter);
+new PeopleRoutes(apiRouter);
+
+/* router.use('/movie', require('./movie'));
 router.use('/tv', require('./tv'));
 router.use('/people', require('./people'));
-router.use('/search', require('./search'));
+router.use('/search', require('./search')); */
 
-module.exports = router;
+module.exports = apiRouter;

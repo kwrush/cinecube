@@ -7,13 +7,13 @@ const results = new schema.Entity('results');
 const movie = new schema.Entity('movie');
 const tv = new schema.Entity('tv');
 
-const cast = new schema.Entity('cast', {}, { idAttribute: 'creditId' });
-const crew = new schema.Entity('crew', {}, { idAttribute: 'creditId' });
+const cast = new schema.Entity('cast', {}, { idAttribute: 'credit_id' });
+const crew = new schema.Entity('crew', {}, { idAttribute: 'credit_id' });
 
 const mediaType = new schema.Union({
   movie: movie,
   tv: tv
-}, 'mediaType');
+}, 'media_type');
 
 // persons list
 const persons = new schema.Entity('results', { knownFor: [mediaType] });
@@ -26,17 +26,17 @@ const mediaTypeMulti = new schema.Union({
   movie: movie,
   tv: tv,
   person: person 
-}, 'mediaType');
+}, 'media_type');
 
 // pre process people credits, to keep only necessary information of movie or tv
 const creditProcessStrategy = (entity) => {
-  const propsToKeey = [
-    'id', 'mediaType', 'character', 'title', 'postPath', 'releaseDate', 'creditId', 'department', 'job'
+  const propsToKeep = [
+    'id', 'media_type', 'character', 'title', 'post_path', 'release_date', 'credit_id', 'department', 'job'
   ];
 
   let newEntity = {};
 
-  for (let prop of propsToKeey) {
+  for (let prop of propsToKeep) {
     entity[prop] && (newEntity[prop] = entity[prop]);
   }
 
@@ -44,12 +44,12 @@ const creditProcessStrategy = (entity) => {
 };
 
 const castCredit = new schema.Entity('cast', {}, { 
-  idAttribute: 'creditId',
+  idAttribute: 'credit_id',
   processStrategy: creditProcessStrategy 
 });
 
 const crewCredit = new schema.Entity('crew', {}, { 
-  idAttribute: 'creditId',
+  idAttribute: 'credit_id',
   processStrategy: creditProcessStrategy
 });
 
