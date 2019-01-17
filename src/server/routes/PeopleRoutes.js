@@ -20,17 +20,22 @@ class PeopleRoutes extends Routable {
 
     this._router.get(
       `${baseURL}/:id(\\d+)`,
-      this._getPeopleDetails.bind(this)
+      this._getPeople.bind(this)
     );
 
     this._router.get(
-      `${baseURL}/:id(\\d+)/intro`,
-      this._getPeopleIntro.bind(this)
+      `${baseURL}/:id(\\d+)/info`,
+      this._getPeopleInfo.bind(this)
     );
 
     this._router.get(
       `${baseURL}/:id(\\d+)/images`,
       this._getPeopleImages.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/:id(\\d+)/credits`,
+      this._getPeopleCombinedCredits.bind(this)
     );
 
     this._router.get(
@@ -45,23 +50,23 @@ class PeopleRoutes extends Routable {
   }
 
   _getPopularPeoples (req, res, next) {
-    this._peopleServices.getPopularPeoples(req.query)
+    this._peopleServices.getPopularPeople(req.query)
       .then(data => res.send(data))
       .catch(next);
   }
 
-  _getPeopleDetails (req, res, next) {
+  _getPeople (req, res, next) {
     const { id } = req.params;
-    this._peopleServices.getPeopleDetails(id, req.query)
+    this._peopleServices.getPeople(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
       .catch(next);
   }
 
-  _getPeopleIntro (req, res, next) {
+  _getPeopleInfo (req, res, next) {
     const { id } = req.params;
-    this._peopleServices.getPeopleIntro(id, req.query)
+    this._peopleServices.getPeopleInfo(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -72,7 +77,9 @@ class PeopleRoutes extends Routable {
     const { id } = req.params;
 
     this._peopleServices.getPeopleMovieCredits(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -80,7 +87,19 @@ class PeopleRoutes extends Routable {
     const { id } = req.params;
 
     this._peopleServices.getPeopleTvCredits(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
+      .catch(next);
+  }
+
+  _getPeopleCombinedCredits (req, res, next) {
+    const { id } = req.params;
+
+    this._peopleServices.getPeopleCombinedCredits(id, req.query)
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -88,7 +107,9 @@ class PeopleRoutes extends Routable {
     const { id } = req.params;
 
     this._peopleServices.getPeopleImages(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 }

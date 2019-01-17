@@ -20,12 +20,12 @@ class TvRoutes extends Routable {
 
     this._router.get(
       `${baseURL}/:id(\\d+)`,
-      this._getTvDetails.bind(this)
+      this._getTv.bind(this)
     );
 
     this._router.get(
-      `${baseURL}/:id(\\d+)/intro`,
-      this._getTvIntro.bind(this)
+      `${baseURL}/:id(\\d+)/info`,
+      this._getTvInfo.bind(this)
     );
 
     this._router.get(
@@ -55,18 +55,18 @@ class TvRoutes extends Routable {
       .catch(next);
   }
 
-  _getTvIntro (req, res, next) {
+  _getTv (req, res, next) {
     const { id } = req.params;
-    this._tvServices.getTvIntro(id, req.query)
+    this._tvServices.getTv(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
       .catch(next);
   }
 
-  _getTvDetails (req, res, next) {
+  _getTvInfo (req, res, next) {
     const { id } = req.params;
-    this._tvServices.getTvDetails(id, req.query)
+    this._tvServices.getTvInfo(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -77,7 +77,9 @@ class TvRoutes extends Routable {
     const { id } = req.params;
 
     this._tvServices.getTvCredits(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -85,7 +87,9 @@ class TvRoutes extends Routable {
     const { id } = req.params;
 
     this._tvServices.getTvImages(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -93,7 +97,9 @@ class TvRoutes extends Routable {
     const { id } = req.params;
 
     this._tvServices.getTvVideos(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -101,7 +107,9 @@ class TvRoutes extends Routable {
     const { id } = req.params;
 
     this._tvServices.getSimilarTvs(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 }

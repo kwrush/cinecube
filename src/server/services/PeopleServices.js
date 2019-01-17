@@ -4,88 +4,59 @@ const schemas = require('../utils/schema');
 
 class PeopleServices extends Servable {
 
-  getPopularPeoples(options = {}) {
-    return this._api.people
-      .popular(options)
-      .then(data => {
-        if (data.results) {
-          return normalize(data, schemas.mediaResults);
-        } else {
-          return false;
-        }
-      });
+  getPopularPeople (options = {}) {
+    return this
+      ._makeRequest(options, this._api.personPopular)
+      .then(data => normalize(data, schemas.peopleResults));
   }
-  
-  getPeopleDetails(id, options) {
-    if (!id) {
-      return Promise.reject('Invalid person id value');
-    }
 
+  getPeople (id, options = {}) {
     return Promise.all([
-      this.getPeopleIntro(id, options),
+      this.getPeopleInfo(id, options),
       this.getPeopleImages(id, options),
-      this.getPeopleMovieCredits(id, options),
-      this.getPeopleTvCredits(id, options)
-    ]).then(([
-      intro, 
+      this.getPeopleCombinedCredits(id, options)
+    ])
+    .then(([
+      info, 
       images,
-      movieCredits,
-      tvCredits
+      credits
     ]) => {
 
-      return Object.assign({}, 
-        intro, 
-        images,
-        { movie_credits: {
-          cast: movieCredits.cast,
-          crew: movieCredits.crew
-        } },
-        { tv_credits: {
-          cast: tvCredits.cast,
-          crew: tvCredits.crew
-        } }
-      );
+      // get the first five entities
+      credits.cast = credits.cast.slice(0, 5);
+      credits.crew = credits.crew.slice(0, 5);
+
+      return {
+        ...info,
+        ...images,
+        ...credits
+      };
     });
   }
 
-  getPeopleIntro(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid person id value');
-    }
-
-    return this._api.people
-      .details(id, options)
-      .then(data => data);
+  getPeopleInfo (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.personInfo);
+  }
+  
+  getPeopleImages (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.personImages);
   }
 
-  getPeopleImages(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid person id value');
-    }
-
-    return this._api.people
-      .images(id, options)
-      .then(data => data);
+  getPeopleMovieCredits (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.personMovieCredits);
   }
 
-  getPeopleMovieCredits(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid person id value');
-    }
-
-    return this._api.people
-      .movieCredits(id, options)
-      .then(data => data);
+  getPeopleTvCredits (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.personeTvCredits);
   }
 
-  getPeopleTvCredits(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid person id value');
-    }
-
-    return this._api.people
-      .tvCredits(id, options)
-      .then(data => data);
+  getPeopleCombinedCredits (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.personCombinedCredits);
   }
 }
 

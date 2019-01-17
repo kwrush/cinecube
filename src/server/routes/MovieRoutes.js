@@ -20,12 +20,12 @@ class MovieRoutes extends Routable {
 
     this._router.get(
       `${baseURL}/:id(\\d+)`,
-      this._getMovieDetails.bind(this)
+      this._getMovie.bind(this)
     );
 
     this._router.get(
-      `${baseURL}/:id(\\d+)/intro`,
-      this._getMovieIntro.bind(this)
+      `${baseURL}/:id(\\d+)/info`,
+      this._getMovieInfo.bind(this)
     );
 
     this._router.get(
@@ -55,18 +55,18 @@ class MovieRoutes extends Routable {
       .catch(next);
   }
 
-  _getMovieDetails (req, res, next) {
+  _getMovie (req, res, next) {
     const { id } = req.params;
-    this._movieServices.getMovieDetails(id, req.query)
+    this._movieServices.getMovie(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
       .catch(next);
   }
 
-  _getMovieIntro (req, res, next) {
+  _getMovieInfo (req, res, next) {
     const { id } = req.params;
-    this._movieServices.getMovieIntro(id, req.query)
+    this._movieServices.getMovieInfo(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -77,7 +77,9 @@ class MovieRoutes extends Routable {
     const { id } = req.params;
 
     this._movieServices.getMovieCredits(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -85,7 +87,9 @@ class MovieRoutes extends Routable {
     const { id } = req.params;
 
     this._movieServices.getMovieImages(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -93,7 +97,9 @@ class MovieRoutes extends Routable {
     const { id } = req.params;
 
     this._movieServices.getMovieVideos(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 
@@ -101,7 +107,9 @@ class MovieRoutes extends Routable {
     const { id } = req.params;
 
     this._movieServices.getSimilarMovies(id, req.query)
-      .then(data => res.send(data))
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
       .catch(next);
   }
 }

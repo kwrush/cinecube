@@ -1,102 +1,65 @@
 const Servable = require('./Servable');
-const { normalize } = require('normalizr');
-const schemas = require('../utils/schema');
 
 class TvServices extends Servable {
 
-  getPopularTvs(options = {}) {
-    return this._api.tv
-      .popular(options)
-      .then(data => {
-        if (data.results) {
-          return normalize(data, schemas.mediaResults);
-        } else {
-          return false;
-        }
-      });
+  getPopularTvs (options = {}) {
+    return this
+      ._makeRequest(options, this._api.miscPopularTvs);
   }
-  
-  getTvDetails(id, options) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
+
+  getTv (id, options = {}) {
 
     return Promise.all([
-      this.getTvIntro(id, options),
+      this.getTvInfo(id, options),
       this.getTvCredits(id, options),
       this.getTvImages(id, options),
       this.getTvVideos(id, options),
       this.getSimilarTvs(id, options)
-    ]).then(([
-      intro, 
+    ])
+    .then(([
+      info, 
       credits,
       images,
       videos,
       similar
     ]) => {
-      return Object.assign({}, 
-        intro, 
-        credits, 
-        images, 
-        { videos: videos.results }, 
-        similar
-      );
+
+      credits.cast = credits.cast.slice(0, 5);
+      credits.crew = credits.crew.slice(0, 5);
+
+      return {
+        ...info,
+        ...credits,
+        ...images,
+        videos: videos.results,
+        similar: similar.results.slice(0, 5)
+      };
     });
   }
 
-  getTvIntro(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
-
-    return this._api.tv
-      .details(id, options)
-      .then(data => data);
+  getTvInfo (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.movieInfo);
+  }
+  
+  getTvImages (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.movieImages);
   }
 
-  getTvImages(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
-
-    return this._api.tv
-      .images(id, options)
-      .then(data => data);
+  getTvVideos (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.movieVideos);
   }
 
-  getTvVideos(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
-
-    return this._api.tv
-      .videos(id, options)
-      .then(data => data);
+  getTvCredits (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.movieCredits);
   }
 
-  getTvCredits(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
-
-    return this._api.tv
-      .credits(id, options)
-      .then(data => data);
-  }
-
-  getSimilarTvs(id, options = {}) {
-    if (!id) {
-      return Promise.reject('Invalid tv id value');
-    }
-
-    return this._api.tv
-      .similar(id, options)
-      .then(data => {
-        let similar = normalize(data, schemas.mediaResults);
-        return Object.assign({}, 
-          { entities: similar.entities }, 
-          { similar: similar.result });
-      });
+  getSimilarTvs (id, options = {}) {
+    return this
+      ._makeRequestById(id, options, this._api.movieSimilar);
   }
 }
 
