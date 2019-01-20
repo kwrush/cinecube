@@ -14,6 +14,11 @@ class SearchRoutes extends Routable {
     const baseURL = `/${this._VERSON}/search`;
 
     this._router.get(
+      `${baseURL}`,
+      this._searchMulti.bind(this)
+    );
+
+    this._router.get(
       `${baseURL}/movie`,
       this._searchMovie.bind(this)
     );
@@ -26,11 +31,6 @@ class SearchRoutes extends Routable {
     this._router.get(
       `${baseURL}/people`,
       this._searchPeople.bind(this)
-    );
-
-    this._router.get(
-      `${baseURL}/multi`,
-      this._searchMulti.bind(this)
     );
   }
 

@@ -7,7 +7,12 @@ class PeopleServices extends Servable {
   getPopularPeople (options = {}) {
     return this
       ._makeRequest(options, this._api.personPopular)
-      .then(data => normalize(data, schemas.peopleResults));
+      .then(data => {
+        const n = normalize(data, schemas.peopleResults);
+        n.entities.people = { ...n.entities.results };
+        delete n.entities.results;
+        return n;
+      });
   }
 
   getPeople (id, options = {}) {
@@ -27,9 +32,16 @@ class PeopleServices extends Servable {
       credits.crew = credits.crew.slice(0, 5);
 
       return {
-        ...info,
-        ...images,
-        ...credits
+        entities: {
+          people: {
+            [info.id]: {
+              ...info,
+              ...images,
+              ...credits
+            }
+          }
+        },
+        result: { id: info.id } 
       };
     });
   }

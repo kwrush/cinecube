@@ -1,10 +1,14 @@
+const { pick } = require('lodash');
 const Servable = require('./Servable');
+const { normalize } = require('normalizr');
+const schemas = require('../utils/schema');
 
 class MovieServices extends Servable {
 
   getPopularMovies (options = {}) {
     return this
-      ._makeRequest(options, this._api.miscPopularMovies);
+      ._makeRequest(options, this._api.miscPopularMovies)
+      .then(data => normalize(data, schemas.mediaResults));
   }
 
   getMovie (id, options = {}) {
@@ -24,15 +28,20 @@ class MovieServices extends Servable {
       similar
     ]) => {
 
-      credits.cast = credits.cast.slice(0, 5);
-      credits.crew = credits.crew.slice(0, 5);
-
-      return {
+      const res = {
         ...info,
         ...credits,
         ...images,
         videos: videos.results,
-        similar: similar.results.slice(0, 5)
+        similar: similar.result
+      };
+
+      return {
+        entities: {
+          ...similar.entities,
+          [info.id]: res
+        },
+        result: { id: info.id }
       };
     });
   }
@@ -59,7 +68,16 @@ class MovieServices extends Servable {
 
   getSimilarMovies (id, options = {}) {
     return this
-      ._makeRequestById(id, options, this._api.movieSimilar);
+      ._makeRequestById(id, options, this._api.movieSimilar)
+      .then(data => {
+        const n = normalize(data, schemas.mediaResults);
+        // keep the first 10 or fewer results
+        const toKeep = n.result.results.slice(0, 10);
+        return {
+          entities: pick(n.entities.results, toKeep),
+          result: toKeep
+        };
+      });
   }
 }
 

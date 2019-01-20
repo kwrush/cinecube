@@ -1,4 +1,19 @@
+const { normalize } = require('normalizr');
+const schemas = require('../utils/schema');
 const Servable = require('./Servable');
+
+// Change {media_type: 'person'} to 'people' to unify api results,
+// because other api calls or responses normally use 'people'
+const _personToPeople = (data) => {
+  data.results = data.results.map(r => {
+    if (r.media_type && r.media_type === 'person') {
+      r.media_type = 'people';
+    }
+    return r;
+  });
+
+  return data;
+}
 
 class SearchServices extends Servable {
 
@@ -15,7 +30,10 @@ class SearchServices extends Servable {
   }
 
   searchMulti (options = {}) {
-    return this._api.searchMulti(options);
+    return this._api
+      .searchMulti(options)
+      .then(data => 
+        normalize(_personToPeople(data), schemas.multiResults));
   }
 }
 
