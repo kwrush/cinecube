@@ -2,13 +2,17 @@ const { pick } = require('lodash');
 const Servable = require('./Servable');
 const { normalize } = require('normalizr');
 const schemas = require('../utils/schema');
+const { mapResultsToKey } = require('../utils/helper');
 
 class MovieServices extends Servable {
 
   getPopularMovies (options = {}) {
     return this
       ._makeRequest(options, this._api.miscPopularMovies)
-      .then(data => normalize(data, schemas.mediaResults));
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.mediaResults),
+        'movie'
+      ));
   }
 
   getMovie (id, options = {}) {
@@ -38,8 +42,10 @@ class MovieServices extends Servable {
 
       return {
         entities: {
-          ...similar.entities,
-          [info.id]: res
+          movie: {
+            ...similar.entities,
+            [info.id]: res
+          }
         },
         result: { id: info.id }
       };

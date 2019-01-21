@@ -1,18 +1,21 @@
 const Servable = require('./Servable');
 const { normalize } = require('normalizr');
 const schemas = require('../utils/schema');
+const {
+  mapResultsToKey,
+  sortByPopularity,
+  pickProperty 
+} = require('../utils/helper');
 
 class PeopleServices extends Servable {
 
   getPopularPeople (options = {}) {
     return this
       ._makeRequest(options, this._api.personPopular)
-      .then(data => {
-        const n = normalize(data, schemas.peopleResults);
-        n.entities.people = { ...n.entities.results };
-        delete n.entities.results;
-        return n;
-      });
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.peopleResults),
+        'people'
+      ));
   }
 
   getPeople (id, options = {}) {
@@ -27,9 +30,14 @@ class PeopleServices extends Servable {
       credits
     ]) => {
 
-      // get the first five entities
-      credits.cast = credits.cast.slice(0, 5);
-      credits.crew = credits.crew.slice(0, 5);
+      // Sorts credits by popularity and 
+      // remove useless properties from credits results
+      credits.cast = pickProperty(
+        sortByPopularity(credits.cast), 
+        ['id', 'character', 'title', 'name', 'media_type', 'credit_id', 'poster_path', 'release_date']);
+      credits.crew = pickProperty(
+        sortByPopularity(credits.crew),
+        ['id', 'department', 'job', 'title', 'name', 'media_type', 'credit_id', 'poster_path', 'release_date']);
 
       return {
         entities: {

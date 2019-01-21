@@ -30,7 +30,43 @@ function queryMediaGenresByType(mediaList, movieGenres, tvGenres) {
   });
 }
 
+/**
+ * Moves values in n.entities.results to n.entities[keyName], 
+ * and deletes 'results' property
+ * @param {object} n normalized results 
+ * @param {string} keyName
+ */
+function mapResultsToKey(n, keyName) {
+  if (n.entities && n.entities.results) {
+    n.entities[`${keyName}`] = n.entities.results;
+    delete n.entities.results;
+  }
+
+  return n;
+}
+
+/**
+ * Sort popularity in descend order
+ * @param {array[object]} data 
+ */
+function sortByPopularity(data) {
+  return data.sort((d1, d2) => d2.popularity - d1.popularity);
+}
+
+const { pick } = require('lodash');
+/**
+ * Pick properties in the given array of objects and remove others
+ * @param {array[object]} data 
+ * @param {array[string]} propsToKeep 
+ */
+function pickProperty(data, propsToKeep) {
+  return data.map(d => pick(d, propsToKeep));
+}
+
 module.exports = {
   queryMediaGenres,
-  queryMediaGenresByType
+  queryMediaGenresByType,
+  mapResultsToKey,
+  sortByPopularity,
+  pickProperty
 };

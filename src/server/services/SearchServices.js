@@ -1,6 +1,7 @@
 const { normalize } = require('normalizr');
 const schemas = require('../utils/schema');
 const Servable = require('./Servable');
+const { mapResultsToKey } = require('../utils/helper');
 
 // Change {media_type: 'person'} to 'people' to unify api results,
 // because other api calls or responses normally use 'people'
@@ -18,15 +19,30 @@ const _personToPeople = (data) => {
 class SearchServices extends Servable {
 
   searchMovies (options = {}) {
-    return this._api.searchMovie(options);
+    return this._api
+      .searchMovie(options)
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.mediaResults),
+        'movie'
+      ));
   }
 
   searchTvs (options = {}) {
-    return this._api.searchTv(options);
+    return this._api
+      .searchTv(options)
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.mediaResults),
+        'tv'
+      ));
   }
 
   searchPeople (options = {}) {
-    return this._api.searchPeople(options);
+    return this._api
+      .searchPeople(options)
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.mediaResults),
+        'people'
+      ));
   }
 
   searchMulti (options = {}) {

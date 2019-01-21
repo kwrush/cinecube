@@ -2,13 +2,17 @@ const { pick } = require('lodash');
 const Servable = require('./Servable');
 const { normalize } = require('normalizr');
 const schemas = require('../utils/schema');
+const { mapResultsToKey } = require('../utils/helper');
 
 class TvServices extends Servable {
 
   getPopularTvs (options = {}) {
     return this
       ._makeRequest(options, this._api.miscPopularTvs)
-      .then(data => normalize(data, schemas.mediaResults));
+      .then(data => mapResultsToKey(
+        normalize(data, schemas.mediaResults),
+        'tv'
+      ));
   }
 
   getTv (id, options = {}) {
