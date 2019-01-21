@@ -1,29 +1,40 @@
 /**
- * Calls backend api to fetch information about tv showss˚s 
+ * Calls backend api to fetch information about tv shows
  */
 
-import { fetchMediaList, fetchMediaInfo } from './apiUtils';
+import { requestMediaList, mediaInfo } from './apiUtils';
 
-export const discoverTvs = (params) => 
-  fetchMediaList('tv', 'discover', params);
+export const popularTvs = async (params = {}) => {
+  const { language, page, region } = params;
+  return requestMediaList('tv', 'popular', {
+    language: language,
+    page: page,
+    region: region
+  });
+};
 
-export const fetchPopularTvs = (params) => 
-  fetchMediaList('tv', 'popular', params);
+export const tvDetail = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'tv', null, { language: language });
+};
 
-export const fetchTopRatedTvs = (params) => 
-  fetchMediaList('tv', 'topRated', params);
+export const tvCredits = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'tv', 'credits', { language: language });
+};
 
-export const fetchOnAirTvs = (params) => 
-  fetchMediaList('tv', 'onAir', params);
+export const tvImages = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'tv', 'images', { language: language });
+};
 
-export const fetchTvInfo = (id) => 
-  fetchMediaInfo('tv', id);
+export const tvVideos = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'tv', 'videos', { language: language });
+};
 
-export const fetchTvCredits = (id) => 
-  fetchMediaInfo('tv', id, 'credits');
+export const similarTvs = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'tv', 'similar', { language: language });
+};
 
-export const fetchTvImages = (id) => 
-  fetchMediaInfo('tv', id, 'images');
-
-export const fetchSimilarTvs = (id) => 
-  fetchMediaInfo('tv', id, 'similar');

@@ -2,17 +2,30 @@
  * Calls backend api to fetch persons information
  */
 
-import { fetchMediaList, fetchMediaInfo } from './apiUtils';
+import { requestMediaList, mediaInfo } from './apiUtils';
 
-export const fetchPopularPeople = (params) => 
-  fetchMediaList('people', 'popular', params);
+export const popularPeople = async (params = {}) => {
+  const { language, page } = params;
+  return requestMediaList('people', 'popular', {
+    language: language,
+    page: page
+  });
+};
 
-export const fetchPeopleProfile = (id) => 
-  fetchMediaInfo('people', id);
+export const peopleDetail = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'people', null, { language: language });
+};
 
-export const fetchPeopleImages = (id) => 
-  fetchMediaInfo('people', id, 'images');
+export const peopleCredits = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'people', 'credits', { language: language });
+};
 
-export const fetchPeopleCredits = (id) => 
-  fetchMediaInfo('people', id, 'credits');
+export const peopleImages = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'people', 'images', { language: language });
+};
+
+
 

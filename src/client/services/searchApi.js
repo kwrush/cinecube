@@ -1,22 +1,16 @@
 /**
- * Search by media type of multi
+ * Search by media type
  */
-import { api, fetchMediaList } from './apiUtils';
-import { API_URL } from '../constants/routes';
+import { requestMediaList } from './apiUtils';
 
-export const searchMulti = (query, params) => {
-  const apiUrl = `${API_URL}/search/multi`;
+export const searchMulti = async (query = '', params = {}) => 
+  requestMediaList('multi', { query, ...params });
 
-  return api.get(apiUrl, {
-    params: { query: query, ...params }
-  });
-};
+export const searchMovies = async (query = '', params = {}) => 
+  requestMediaList('movie', { query, ...params });
 
-export const searchMovies = (params) => 
-  fetchMediaList('movie', 'search', params);
+export const searchTvs = async (query = '', params = {}) => 
+  requestMediaList('tv', { query, ...params });
 
-export const searchTvs = (params) => 
-  fetchMediaList('tv', 'search', params);
-
-export const searchPeople = (params) => 
-  fetchMediaList('people', 'search', params);
+export const searchPeople = async (query = '', params = {}) => 
+  requestMediaList('people', { query, ...params });

@@ -2,32 +2,39 @@
  * Calls backend api to fetch movie information
  */
 
-import { fetchMediaList, fetchMediaInfo } from './apiUtils';
+import { requestMediaList, mediaInfo } from './apiUtils';
 
-export const discoverMovies = (params) => 
-  fetchMediaList('movie', 'discover', params);
+export const popularMovies = async (params = {}) => {
+  const { language, page, region } = params;
+  return requestMediaList('movie', 'popular', {
+    language: language,
+    page: page,
+    region: region
+  });
+};
 
-export const fetchPopularMovies = (params) => 
-  fetchMediaList('movie', 'popular', params);
+export const movieDetail = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'movie', null, { language: language });
+};
 
-export const fetchTopRatedMovies = (params) => 
-  fetchMediaList('movie', 'topRated', params);
+export const movieCredits = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'movie', 'credits', { language: language });
+};
 
-export const fetchUpcomingMovies = (params) => 
-  fetchMediaList('movie', 'upcoming', params);
+export const movieImages = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'movie', 'images', { language: language });
+};
 
-export const fetchInTheatreMovies = (params) => 
-  fetchMediaList('movie', 'inTheatre', params);
+export const movieVideos = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'movie', 'videos', { language: language });
+};
 
-export const fetchMovieInfo = (id) => 
-  fetchMediaInfo('movie', id);
-
-export const fetchMovieCredits = (id) => 
-  fetchMediaInfo('movie', id, 'credits');
-
-export const fetchMovieImages = (id) => 
-  fetchMediaInfo('movie', id, 'images');
-
-export const fetchSimilarMovies = (id) => 
-  fetchMediaInfo('movie', id, 'similar');
+export const similarMovies = async (id, params = {}) => {
+  const { language } = params;
+  return mediaInfo(id, 'movie', 'similar', { language: language });
+};
 

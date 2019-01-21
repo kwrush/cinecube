@@ -1,103 +1,110 @@
-import moxios from 'moxios';
-import {
-  popularFirstPage,
-  popularSecondPage,
-  overview,
-  credits,
-  multiResults
-} from '../__mockData__/apiData';
-import {
-  API_URL
-} from '../../constants/routes';
-import { 
-  api,
-  fetchMediaList,
-  fetchMediaInfo 
-} from '../apiUtils';
-import { searchMulti } from '../searchApi';
+import * as movie from '../movieApi';
+import * as tv from '../tvApi';
+import * as people from '../peopleApi';
+import * as search from '..//searchApi';
 
-describe('Client api testing', () => {
+jest.mock('../apiUtils', () => ({
+  requestMediaList: jest.fn(() => Promise.resolve({})),
+  mediaInfo: jest.fn(() => Promise.resolve('info'))
+}));
 
-  describe('Api utilities tests', () => {
+describe('Client api should run without any error', () => {
 
-    beforeEach(() => {
-      moxios.install(api);
-    });
-
-    afterEach(() => {
-      moxios.uninstall(api);
-    });
-
-    it('should fetch the popular movies in the 1st page.', async () => {
-      moxios.stubRequest(`${API_URL}/movie/popular?page=1`, {
-        status: 200,
-        response: popularFirstPage
-      });
-
-      const res = await fetchMediaList('movie', 'popular', { page: 1 }).then(res => res);
-      const data = res.data;
-
-      expect.assertions(1);
-      expect(data).toEqual(popularFirstPage);
-    });
-
-    it('should fetch the popular movies in the 2nd page', async () => {
-      moxios.stubRequest(`${API_URL}/movie/popular?page=2`, {
-        status: 200,
-        response: popularSecondPage
-      });
-
-      const res = await fetchMediaList('movie', 'popular', { page: 2 }).then(res => res);
-
-      expect.assertions(1);
-      expect(res.data).toEqual(popularSecondPage);
-    });
-
-    it('should fetch the info for the given media id', async () => {
-
-      moxios.stubRequest(`${API_URL}/tv/1`, {
-        status: 200,
-        response: overview
-      });
-
-      const res = await fetchMediaInfo('tv', 1).then(res => res);
-      expect.assertions(1);
-      expect(res.data).toEqual(overview);
-    });
-
-    it('should fetch the specified info for the media id', async () => {
-      moxios.stubRequest(`${API_URL}/tv/1/credits`, {
-        status: 200,
-        response: credits
-      });
-
-      const res = await fetchMediaInfo('tv', 1, 'credits').then(res => res);
-      expect.assertions(1);
-      expect(res.data).toEqual(credits);
-    });
+  it('should resolve media list call with no parameters', async () => {
+    const mp = movie.popularMovies();
+    const tp = tv.popularTvs();
+    const pp = people.popularPeople();
+    await expect(mp).resolves.toEqual({});
+    await expect(tp).resolves.toEqual({});
+    await expect(pp).resolves.toEqual({});
   });
 
-  describe('Multi search test', () => {
+  it('should resolve media list call when parameters are provided', async () => {
+    const params = { language: 'zh-CH' };
+    const mp = movie.popularMovies(params);
+    const tp = tv.popularTvs(params);
+    const pp = people.popularPeople(params);
+    await expect(mp).resolves.toEqual({});
+    await expect(tp).resolves.toEqual({});
+    await expect(pp).resolves.toEqual({});
+  });
 
-    beforeEach(() => {
-      moxios.install(api);
-    });
+  it('should resolve detail call when id is provided', async () => {
+    const mp = movie.movieDetail(1);
+    const tp = tv.tvDetail(1);
+    const pp = people.peopleDetail(1);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+    await expect(pp).resolves.toBe('info');
+  });
 
-    afterEach(() => {
-      moxios.uninstall(api);
-    });
+  it('should resolve detail call when id and options are provided', async () => {
+    const params = {page: 1, language: 'zh-CH'};
+    
+    const mp = movie.movieDetail(1, params);
+    const tp = tv.tvDetail(1, params);
+    const pp = people.peopleDetail(1, params);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+    await expect(pp).resolves.toBe('info');
+  });
 
-    it('should fetch the multi search result correctly', async () => {
+  it('should resolve credits call when id is provided', async () => {
+    const mp = movie.movieCredits(1);
+    const tp = tv.tvCredits(1);
+    const pp = people.peopleCredits(1);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+    await expect(pp).resolves.toBe('info');
+  });
 
-      moxios.stubRequest(`${API_URL}/search/multi?query=Tom&page=1`, {
-        status: 200,
-        response: multiResults
-      });
+  it('should resolve images call when id is provided', async () => {
+    const mp = movie.movieImages(1);
+    const tp = tv.tvImages(1);
+    const pp = people.peopleImages(1);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+    await expect(pp).resolves.toBe('info');
+  });
 
-      const res = await searchMulti('Tom', { page: 1 }).then(res => res);
+  it('should resolve videos call when id is provided', async () => {
+    const mp = movie.movieVideos(1);
+    const tp = tv.tvVideos(1);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+  });
 
-      expect.assertions(1);
-      expect(res.data).toEqual(multiResults);
-    });
+  it('should resolve similarMovies call when id is provided', async () => {
+    const mp = movie.similarMovies(1);
+    const tp = tv.similarTvs(1);
+    await expect(mp).resolves.toBe('info');
+    await expect(tp).resolves.toBe('info');
+  });
+
+  it('should resolve search call when query is provided', async () => {
+   
+    const s = search.searchMulti('Tom');
+    const ms = search.searchMovies('Tom');
+    const ps = search.searchPeople('Tom');
+    const ts = search.searchTvs('Tom');
+
+    await expect(s).resolves.toEqual({});
+    await expect(ms).resolves.toEqual({});
+    await expect(ps).resolves.toEqual({});
+    await expect(ts).resolves.toEqual({});
+  });
+
+  it('should resolve search call when query and parameters are provided', async () => {
+    const params = {page: 1, language: 'zh-CH'};
+    
+    const s = search.searchMulti('Tom', params);
+    const ms = search.searchMovies('Tom', params);
+    const ps = search.searchPeople('Tom', params);
+    const ts = search.searchTvs('Tom', params);
+
+    await expect(s).resolves.toEqual({});
+    await expect(ms).resolves.toEqual({});
+    await expect(ps).resolves.toEqual({});
+    await expect(ts).resolves.toEqual({});
   });
 });

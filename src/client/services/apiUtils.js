@@ -3,35 +3,41 @@ import {
   API_URL,
   MOVIE_ROUTES,
   TV_ROUTES,
-  PEOPLE_ROUTES
+  PEOPLE_ROUTES,
+  SEARCH_ROUTES
 } from '../constants/routes';
 import { differenceInTime } from '../utils/helpers';
-import { getTopicUpdatedTimeByPage, getFetchingStatusByPage, getTopicItemsByPage } from '../selectors/commonSelectors';
-
+import { 
+  getTopicUpdatedTimeByPage, 
+  getFetchingStatusByPage, 
+  getTopicItemsByPage 
+} from '../selectors/commonSelectors';
 
 export const api = axios.create({
   baseURL: API_URL,
   timeout: 30000
 });
 
-export const fetchMediaList = async (mediaType, listType, params) => {
+export const requestMediaList = async (reqType, listType, params) => {
 
   let apiUrl = '';
 
-  if (mediaType === 'movie') {
+  if (reqType === 'movie') {
     apiUrl = MOVIE_ROUTES[listType]; 
-  } else if (mediaType === 'people') {
+  } else if (reqType === 'tv') {
     apiUrl = TV_ROUTES[listType];
-  } else {
+  } else if (reqType === 'people') {
     apiUrl = PEOPLE_ROUTES[listType];
+  } else if (reqType === 'search') {
+    apiUrl = SEARCH_ROUTES[listType];
   }
 
   return api.get(apiUrl, {
-    params: params
-  })
+    params: { ...params }
+  });
 };
 
-export const fetchMediaInfo = async (mediaType, mediaId, infoType) => {
+export const mediaInfo = async (mediaId, mediaType, infoType, params) => {
 
   let apiUrl = '';
 
@@ -45,7 +51,9 @@ export const fetchMediaInfo = async (mediaType, mediaId, infoType) => {
 
   apiUrl += (`/${mediaId}` + (infoType ? `/${infoType}` : ''));
 
-  return api.get(apiUrl);
+  return api.get(apiUrl, {
+    params: { ...params }
+  });
 };
 
 export const shouldFetchListFromApi = (state, mediaType, topic, page) => {
