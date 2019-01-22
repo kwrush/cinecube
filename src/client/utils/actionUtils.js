@@ -1,5 +1,5 @@
 import * as movieApi from '../services/movieApi';
-import *  as tvApi from '../services/tvApi';
+import * as tvApi from '../services/tvApi';
 import * as peopleApi from '../services/peopleApi';
 
 const getMovieListApi = (topic) => {

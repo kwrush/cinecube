@@ -1,3 +1,5 @@
+import { merge, camelCase } from 'lodash';
+
 export const generateActions = (actions) => {
   const actionMap = {};
 
@@ -64,4 +66,41 @@ export const mapToCssModules  = (className = '', cssModule) => {
     .split(/\s+/)
     .map(c => cssModule[c] || c)
     .join(' ');
-}
+};
+
+export const camelCaseKey = (obj) => {
+  const newObj = Array.isArray(obj) ? [] : {};
+  
+  for (let prop in obj) {
+    if (typeof obj[prop] === 'object' && obj[prop] !== null) {
+      newObj[camelCase(prop)] = camelCaseKey(obj[prop]);
+    } else {
+      newObj[camelCase(prop)] = obj[prop];
+    }
+  }
+  
+  return newObj;
+};
+
+export const mapPayloadToState = (state, key, payload) => {
+
+  const result = payload && payload.result ? payload.result : {};
+  
+  return merge(
+    state,
+    {
+      [`${key}`]: { result }
+    }
+  );
+};
+
+export const mapMetadataToState = (state, key, meta) => {
+  const metadata = meta || {}; 
+
+  return merge(
+    state,
+    {
+      [`${key}`]: { metadata }
+    }
+  );
+};

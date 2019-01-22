@@ -1,6 +1,6 @@
-import { entitiesActionTypes as actionTypes } from '../constants/actionTypes';
+import { entitiesActionTypes as t } from '../constants/actionTypes';
 
-export const mergeEntites = (entities) => ({
-  type: actionTypes.MERGE_ENTITIES,
-  payload: { ...entities }
+export const mergeEntities = (entities) => ({
+  type: t.MERGE_ENTITIES,
+  payload: entities 
 });

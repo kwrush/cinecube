@@ -31,7 +31,7 @@ export const requestMediaList = async (reqType, listType, params) => {
   } else if (reqType === 'search') {
     apiUrl = SEARCH_ROUTES[listType];
   }
-
+  
   return api.get(apiUrl, {
     params: { ...params }
   });

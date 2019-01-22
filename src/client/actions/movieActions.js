@@ -1,56 +1,78 @@
+import { movieActionTypes as t } from '../constants/actionTypes';
+import { mergeEntities } from './entitiesActions';
 import {
-  fetchMovieInfo,
-  fetchMovieCredits,
-  fetchMovieImages,
-  fetchSimilarMovies
-} from '../services/movieApi';
-import { mergeEntites } from './entitiesActions';
-import { promptError } from './globalActions';
-import { fetchMediaList } from './fetchMediaActions';
-import { makeMediaInfoFetchAction } from '../utils/actionCreatorFactory';
+  popularMovies,
+  movieDetail
+} from '../services/movieApi'; 
+import { camelCaseKey } from '../utils/helpers';
 
-export const fetchMovieList = (topic, params) => fetchMediaList('movie', topic, params);
+export const fetchPopularMoviesRequest = () => ({
+  type: t.FETCH_POPULAR_MOVIES_REQUEST,
+  payload: {}
+});
 
-export const fetchMovieDetails = (id) => async (dispatch) => {
+export const fetchPopularMoviesSuccess = (result) => ({
+  type: t.FETCH_POPULAR_MOVIES_SUCCESS,
+  payload: result
+});
+
+export const fetchPopularMoviesFailure = (e) => ({
+  type: t.FETCH_POPULAR_MOVIES_FAILURE,
+  payload: {
+    errorMessage: e.message || 'Error occured during the request of resource'
+  }
+});
+
+export const fetchMovieDetailRequest = () => ({
+  type: t.FETCH_MOVIE_DETAIL_REQUEST,
+  payload: {}
+});
+
+export const fetchMovieDetailSuccess = (result) => ({
+  type: t.FETCH_MOVIE_DETAIL_SUCCESS,
+  payload: result
+});
+
+export const fetchMovieDetailFailure = (e) => ({
+  type: t.FETCH_MOVIE_DETAIL_FAILURE,
+  payload: {
+    errorMessage: e.message || 'Error occured during the request of resource'
+  }
+});
+
+/**
+ * 
+ * @param {object} params request parameters 
+ */
+export const fetchPopularMovies = (params) => async (dispatch) => {
+  dispatch(fetchPopularMoviesRequest());
+
+  // TODO: check if the api call is needed or data in the state can be used
+  // TODO: check status to handle different response
   try {
-
-    dispatch(makeMediaInfoFetchAction('request', 'movie')(id));
-
-    // If error occurs, calling api fails anyway
-    const [ info, credits, images, similarMovies ] = await Promise.all([
-      fetchMovieInfo(id),
-      fetchMovieCredits(id),
-      fetchMovieImages(id),
-      fetchSimilarMovies(id) 
-    ]);
-
-    dispatch(mergeEntites({
-      credits: { 
-        ...credits.data.entities.cast, 
-        ...credits.data.entities.crew 
-      }
-    }));
-
-    dispatch(mergeEntites({
-      movie: similarMovies.data.entities.results
-    }));
-
-
-    dispatch(mergeEntites({
-      movie: { 
-        [`${info.data.id}`]: {
-          ...info.data,
-          ...images.data,
-          credits: { ...credits.data.result },
-          similar: similarMovies.data.result.results
-        }
-      }
-    }));
-
-    dispatch(makeMediaInfoFetchAction('success', 'movie')(id));
-
+    const response = await popularMovies({ ...params });
+    const camelized = camelCaseKey(response.data);
+    dispatch(mergeEntities(camelized.entities));
+    dispatch(fetchPopularMoviesSuccess(camelized.result));
   } catch (e) {
-    dispatch(makeMediaInfoFetchAction('failure', 'movie')(e));
-    dispatch(promptError('Error occured during requesting resources.'));
+    dispatch(fetchPopularMoviesFailure(e));
+  }
+};
+
+/**
+ * 
+ * @param {number} id movie id 
+ * @param {object} params request paramerter
+ */
+export const fetchMovieDetail = (id, params) => async (dispatch) => {
+  dispatch(fetchMovieDetailRequest());
+
+  try {
+    const response = await movieDetail(id, { ...params });
+    const camelized = camelCaseKey(response.data);
+    dispatch(mergeEntities(camelized.entities));
+    dispatch(fetchMovieDetailSuccess(camelized.result));
+  } catch (e) {
+    dispatch(fetchMovieDetailFailure(e));
   }
 };

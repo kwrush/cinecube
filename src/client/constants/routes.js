@@ -4,40 +4,46 @@
  */
 
 const PORT = 3000;
-export const API_URL = `http://localhost:${PORT}/api`;
-
+export const API_URL = `http://localhost:${PORT}/v1/api`;
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
 
 const movie = '/movie';
 const tv = '/tv';
 const people = '/people';
+const search = '/search';
 
 export const MOVIE_ROUTES = {
-  name: 'Movie',
   home: `${movie}`,
   popular: `${movie}/popular`,
-  topRated: `${movie}/top_rated`,
-  upcoming: `${movie}/upcoming`,
-  inTheatre: `${movie}/in_theatre`,
-  search: `${movie}/search`,
-  info: `${movie}/:id(\d+)`
+  detail: `${movie}/:id(\\d+)`,
+  credits: `${movie}/:id(\\d+)/credits`,
+  images: `${movie}/:id(\\d+)/images`,
+  videos: `${movie}/:id(\\d+)/videos`,
+  similar: `${movie}/:id(\\d+)/similar`,
 };
 
 export const TV_ROUTES = {
-  name: 'TV Series',
   home: `${tv}`,
   popular: `${tv}/popular`,
-  topRated: `${tv}/top_rated`,
-  onAir: `${tv}/on_air`,
-  search: `${tv}/search`,
-  info: `${tv}/:id(\d+)`
+  detail: `${tv}/:id(\\d+)`,
+  credits: `${tv}/:id(\\d+)/credits`,
+  images: `${tv}/:id(\\d+)/images`,
+  videos: `${tv}/:id(\\d+)/videos`,
+  similar: `${tv}/:id(\\d+)/similar`,
 };
 
 export const PEOPLE_ROUTES = {
-  name: 'People',
   home: `${people}`,
   popular: `${people}/popular`,
-  search: `${people}/search`,
-  info: `${people}/:id(\d+)`
+  detail: `${people}/:id(\\d+)`,
+  credits: `${people}/:id(\\d+)/credits`,
+  images: `${people}/:id(\\d+)/images`,
 };
+
+export const SEARCH_ROUTES = {
+  multi: `${search}`,
+  movie: `${search}/movie`,
+  tv: `${search}/tv`,
+  people: `${search}/people`
+}
 
