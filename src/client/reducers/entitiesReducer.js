@@ -1,17 +1,10 @@
 import { merge } from 'lodash';
-import { entitiesActionTypes } from "../constants/actionTypes";
+import { entitiesActionTypes as t } from '../constants/actionTypes';
 
-const initialState = {
-  movie: {},
-  tv: {},
-  people: {},
-  credits: {}
-};
-
-export const entities = (state = initialState, action) => {
+export default (state = {}, action) => {
   const { type, payload } = action;
 
-  if (type === entitiesActionTypes.MERGE_ENTITIES) {
+  if (type === t.MERGE_ENTITIES) {
     return merge({ ...state }, payload);
   } else {
     return state;

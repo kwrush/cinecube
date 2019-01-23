@@ -117,7 +117,7 @@ describe('Search action creators tests', () => {
       const expActions = [
         {
           type: t.SEARCH_MOVIE_REQUEST,
-          payload: {}
+          payload: { query: 'movie' }
         },
         {
           type: et.MERGE_ENTITIES,
@@ -141,7 +141,7 @@ describe('Search action creators tests', () => {
       const expActions = [
         {
           type: t.SEARCH_MOVIE_REQUEST,
-          payload: {}
+          payload: { query: 'movie' }
         },
         {
           type: t.SEARCH_MOVIE_FAILURE,

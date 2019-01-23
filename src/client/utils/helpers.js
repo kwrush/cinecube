@@ -104,3 +104,10 @@ export const mapMetadataToState = (state, key, meta) => {
     }
   );
 };
+
+export const uniqueConcat = (...arrs) => {
+  const all = arrs.reduce((prev, curr) => prev.concat(curr));
+  const uniq = new Set(all);
+
+  return Array.from(uniq);
+}

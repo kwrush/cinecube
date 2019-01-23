@@ -1,69 +1,54 @@
-import { mediaInfoActionTypes } from "../../constants/actionTypes";
-import { mediaInfo } from "../mediaInfoReducer";
+import infoReducer from '../mediaInfoReducers';
+import {
+  movieActionTypes as mt,
+  tvActionTypes as tt,
+  peopleActionTypes as pt
+} from '../../constants/actionTypes';
 
-describe('Test of media info reducers', () => {
-  it('should update state correctly on fetching request', () => {
-    const action = {
-      type: mediaInfoActionTypes.FETCH_MEDIA_INFO_REQUEST,
-      payload: { isFetching: true, active: 1 },
-      meta: { mediaType: 'movie'}
-    };
+const initialState = {
+  movie: { 
+    id: 2
+  },
+  tv: {},
+  people: {}
+};
 
-    expect(mediaInfo({}, action)).toEqual({
-      movie: {
-        active: 1,
-        isFetching: true
-      }
+describe('Media detail reducers test', () => {
+  it('should return the initial state', () => {
+    expect(infoReducer(undefined, {})).toEqual({
+      movie: {},
+      tv: {},
+      people: {}
     });
   });
 
-  it('should update fetched id correctly on request success', () => {
-    const action = {
-      type: mediaInfoActionTypes.FETCH_MEDIA_INFO_SUCCESS,
-      payload: { fetched: 1, isFetching: false },
-      meta: { mediaType: 'movie' }
-    };
-
-    expect(mediaInfo({}, action)).toMatchObject({
-      movie: {
-        fetched: [1],
-        isFetching: false
-      }
+  it('should update movie id in state when the loading has been done', () => {
+    expect(infoReducer(initialState, {
+      type: mt.FETCH_MOVIE_DETAIL_SUCCESS,
+      payload: { result: { id: 3 } } 
+    })).toEqual({
+      ...initialState,
+      movie: { id: 3 }
     });
   });
 
-  it('should push id into array of fetched ids on request success', () => {
-    const state = {
-      movie: { active: 2, isFetching: true, fetched: [1] }
-    };
-
-    const action = {
-      type: mediaInfoActionTypes.FETCH_MEDIA_INFO_SUCCESS,
-      payload: { fetched: 2, isFetching: false },
-      meta: { mediaType: 'movie' }
-    };
-
-    expect(mediaInfo(state, action)).toMatchObject({
-      movie: {
-        active: 2,
-        isFetching: false,
-        fetched: [1, 2]
-      }
+  it('should update tv id in state when the loading has been done', () => {
+    expect(infoReducer(initialState, {
+      type: tt.FETCH_TV_DETAIL_SUCCESS,
+      payload: { result: { id: 1 } } 
+    })).toEqual({
+      ...initialState,
+      tv: { id: 1 }
     });
   });
-
-  it('should set error to the state correctly', () => {
-    const action = {
-      type: mediaInfoActionTypes.FETCH_MEDIA_INFO_FAILURE,
-      payload: { isFetching: false, error:  'Error' },
-      meta: { mediaType: 'movie' }
-    };
-
-    expect(mediaInfo({}, action)).toEqual({
-      movie: {
-        isFetching: false,
-        error: 'Error'
-      }
+  
+  it('should update people id in state when the loading has been done', () => {
+    expect(infoReducer(initialState, {
+      type: pt.FETCH_PEOPLE_DETAIL_SUCCESS,
+      payload: { result: { id: 1 } } 
+    })).toEqual({
+      ...initialState,
+      people: { id: 1 }
     });
   });
 });

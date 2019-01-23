@@ -8,9 +8,9 @@ import {
 } from '../services/searchApi';
 import { mergeEntities } from './entitiesActions';
 
-export const searchMediaRequest = (type) => ({
+export const searchMediaRequest = (type, query) => ({
   type: t[`SEARCH_${type.toUpperCase()}_REQUEST`],
-  payload: {}
+  payload: { query: query }
 });
 
 export const searchMediaSuccess = (type, result) => ({
@@ -44,7 +44,7 @@ export const searchByMediaType = (mediaType, params = {}) => async (dispatch) =>
   const { query, ...options } = params;
 
   try {
-    dispatch(searchMediaRequest(mediaType));
+    dispatch(searchMediaRequest(query, mediaType));
 
     const response = await searchApi(query, options);
     const camelized = camelCaseKey(response.data);
