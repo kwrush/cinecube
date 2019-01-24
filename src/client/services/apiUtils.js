@@ -6,12 +6,6 @@ import {
   PEOPLE_ROUTES,
   SEARCH_ROUTES
 } from '../constants/routes';
-import { differenceInTime } from '../utils/helpers';
-import { 
-  getTopicUpdatedTimeByPage, 
-  getFetchingStatusByPage, 
-  getTopicItemsByPage 
-} from '../selectors/commonSelectors';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -31,7 +25,7 @@ export const requestMediaList = async (reqType, listType, params) => {
   } else if (reqType === 'search') {
     apiUrl = SEARCH_ROUTES[listType];
   }
-  
+
   return api.get(apiUrl, {
     params: { ...params }
   });
@@ -54,15 +48,4 @@ export const mediaInfo = async (mediaId, mediaType, infoType, params) => {
   return api.get(apiUrl, {
     params: { ...params }
   });
-};
-
-export const shouldFetchListFromApi = (state, mediaType, topic, page) => {
-
-  if (!getTopicItemsByPage(state, mediaType, topic, page)) return true;
-
-  const isFetching = getFetchingStatusByPage(state, mediaType, topic, page);
-  const updatedTime = getTopicUpdatedTimeByPage(state, mediaType, topic, page);
-  const currentTime = Date.now();
-
-  return !isFetching && differenceInTime(updatedTime, currentTime, 'hours') > 2;
 };
