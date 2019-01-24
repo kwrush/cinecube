@@ -7,7 +7,7 @@ import {
 
 const _handleMediaResults = (state, payload) => ({
   ...state,
-  id: payload.result.id
+  id: payload.id
 });
 
 const movie = (state = {}, action) => {

@@ -40,7 +40,7 @@ describe('Popular media reducers tests', () => {
       mediaReducer(initialState, {
         type: mt.FETCH_POPULAR_MOVIES_SUCCESS,
         payload: {
-          result: { page: 2, totalPages: 10, totalResults: 100, results: [5, 6] }
+          page: 2, totalPages: 10, totalResults: 100, results: [5, 6]
         }
       })
     ).toEqual({
@@ -59,7 +59,7 @@ describe('Popular media reducers tests', () => {
       mediaReducer(initialState, {
         type: tt.FETCH_POPULAR_TVS_SUCCESS,
         payload: {
-          result: { page: 3, totalPages: 10, totalResults: 110, results: [5, 6] }
+          page: 3, totalPages: 10, totalResults: 110, results: [5, 6]
         }
       })
     ).toEqual({
@@ -78,7 +78,7 @@ describe('Popular media reducers tests', () => {
       mediaReducer(initialState, {
         type: pt.FETCH_POPULAR_PEOPLE_SUCCESS,
         payload: {
-          result: { page: 3, totalPages: 10, totalResults: 110, results: [5, 6] }
+          page: 3, totalPages: 10, totalResults: 110, results: [5, 6]
         }
       })
     ).toEqual({

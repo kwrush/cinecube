@@ -7,7 +7,7 @@ import {
 import { uniqueConcat } from '../utils/helpers';
 
 const _handleMediaResults = (state, payload) => {
-  const { results, ...pageInfo } = payload.result;
+  const { results, ...pageInfo } = payload;
   const prevResults = state && state.results ? state.results : [];
   const newResults = uniqueConcat(prevResults, results);
   return {

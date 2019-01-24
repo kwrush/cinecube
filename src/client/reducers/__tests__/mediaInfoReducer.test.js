@@ -25,7 +25,7 @@ describe('Media detail reducers test', () => {
   it('should update movie id in state when the loading has been done', () => {
     expect(infoReducer(initialState, {
       type: mt.FETCH_MOVIE_DETAIL_SUCCESS,
-      payload: { result: { id: 3 } } 
+      payload: { id: 3 } 
     })).toEqual({
       ...initialState,
       movie: { id: 3 }
@@ -35,7 +35,7 @@ describe('Media detail reducers test', () => {
   it('should update tv id in state when the loading has been done', () => {
     expect(infoReducer(initialState, {
       type: tt.FETCH_TV_DETAIL_SUCCESS,
-      payload: { result: { id: 1 } } 
+      payload: { id: 1 } 
     })).toEqual({
       ...initialState,
       tv: { id: 1 }
@@ -45,7 +45,7 @@ describe('Media detail reducers test', () => {
   it('should update people id in state when the loading has been done', () => {
     expect(infoReducer(initialState, {
       type: pt.FETCH_PEOPLE_DETAIL_SUCCESS,
-      payload: { result: { id: 1 } } 
+      payload: { id: 1 } 
     })).toEqual({
       ...initialState,
       people: { id: 1 }
