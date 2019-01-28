@@ -5,50 +5,31 @@ import {
   peopleActionTypes as pt
 } from '../../constants/actionTypes';
 
-const initialState = {
-  movie: { 
-    id: 2
-  },
-  tv: {},
-  people: {}
-};
-
 describe('Media detail reducers test', () => {
   it('should return the initial state', () => {
-    expect(infoReducer(undefined, {})).toEqual({
-      movie: {},
-      tv: {},
-      people: {}
-    });
+    expect(infoReducer(undefined, {})).toEqual({});
   });
 
-  it('should update movie id in state when the loading has been done', () => {
-    expect(infoReducer(initialState, {
+  it('should update state correctly when the loading has been done', () => {
+    expect(infoReducer({}, {
       type: mt.FETCH_MOVIE_DETAIL_SUCCESS,
       payload: { id: 3 } 
     })).toEqual({
-      ...initialState,
-      movie: { id: 3 }
+      active: 'movie__3',
+      ids: ['movie__3']
     });
   });
 
-  it('should update tv id in state when the loading has been done', () => {
-    expect(infoReducer(initialState, {
+  it('should set active to `tv__1` when the loading has been done', () => {
+    expect(infoReducer({
+      active: 'tv__2',
+      ids: ['tv__2', 'movie__3']
+    }, {
       type: tt.FETCH_TV_DETAIL_SUCCESS,
       payload: { id: 1 } 
     })).toEqual({
-      ...initialState,
-      tv: { id: 1 }
-    });
-  });
-  
-  it('should update people id in state when the loading has been done', () => {
-    expect(infoReducer(initialState, {
-      type: pt.FETCH_PEOPLE_DETAIL_SUCCESS,
-      payload: { id: 1 } 
-    })).toEqual({
-      ...initialState,
-      people: { id: 1 }
+      active: 'tv__1',
+      ids: ['tv__2', 'movie__3', 'tv__1']
     });
   });
 });

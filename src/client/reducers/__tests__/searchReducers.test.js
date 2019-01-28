@@ -2,96 +2,113 @@ import searchReducer from '../searchReducers';
 import { searchActionTypes as t } from '../../constants/actionTypes';
 
 const initialState = {
-  forMulti: {
-    results: [1, 2],
-    page: 1,
-    totalPages: 5,
-    totalResults: 20
-  },
-  forMovie: {
-    results: [1],
-    page: 1,
-    totalPages: 4,
-    totalResults: 10
-  },
-  forTv: {},
-  forPeople: {}
+  query: 'Something',
+  active: 'multi__[query:Something]',
+  listings: {
+    'multi__[query:Something]': {
+      results: [1, 4, 6],
+      page: 1,
+      totalPages: 10,
+      totalResults: 100
+    }
+  }
 };
 
 describe('Search reducers tests', () => {
   it('should return the inital state', () => {
-    expect(searchReducer(undefined, {})).toEqual({
-      forMulti: {},
-      forMovie: {},
-      forTv: {},
-      forPeople: {}
-    });
+    expect(searchReducer(initialState, {})).toEqual(initialState);
   });
 
-  it('should update forMulti when the loading has been done', () => {
+  it('should update query and active to tv__[query:shows] for search tv request', () => {
     expect(searchReducer(initialState, {
-      type: t.SEARCH_MULTI_SUCCESS,
+      type: t.SEARCH_TV_REQUEST,
       payload: {
-        result: { page: 2, totalPages: 5, totalResults: 15, results: [4, 2] }
+        query: 'shows'
       }
     })).toEqual({
-      ...initialState,
-      forMulti: {
-        results: [1, 2, 4],
-        page: 2,
-        totalPages: 5,
-        totalResults: 15
+      query: 'shows',
+      active: 'tv__[query:shows]',
+      listings: {
+        'multi__[query:Something]': {
+          results: [1, 4, 6],
+          page: 1,
+          totalPages: 10,
+          totalResults: 100
+        }
       }
     });
   });
 
-  it('should update forMovie when the loading has been done', () => {
+  it('should merge results in multi__[query:Something] when the loading has been done', () => {
+
+    const state = {
+      query: 'Something',
+      active: 'multi__[query:Something]',
+      listings: {
+        'multi__[query:Something]': {
+          results: [
+            { id: 4, schema: 'movie' },
+            { id: 3, schema: 'tv' },
+            { id: 5, schema: 'people' }
+          ],
+          page: 1,
+          totalPages: 10,
+          totalResults: 100
+        }
+      }
+    };
+
+    expect(searchReducer(state, {
+      type: t.SEARCH_MULTI_SUCCESS,
+      payload: {
+        query: 'Something',
+        result: { page: 2, totalPages: 10, totalResults: 200, results: [
+          { id: 3, schema: 'movie' }, { id: 3, schema: 'tv' }, { id: 6, schema: 'people' }
+        ] }
+      }
+    })).toEqual({
+      query: 'Something',
+      active: 'multi__[query:Something]',
+      listings: {
+        'multi__[query:Something]': {
+          results: [
+            { id: 4, schema: 'movie' },
+            { id: 3, schema: 'tv' },
+            { id: 5, schema: 'people' },
+            { id: 3, schema: 'movie' },
+            { id: 6, schema: 'people' }
+          ],
+          page: 2,
+          totalPages: 10,
+          totalResults: 200
+        }
+      }
+    });
+  });
+
+  it('should add movie__[query:Toys] to state when the loading has been done', () => {
     expect(searchReducer(initialState, {
       type: t.SEARCH_MOVIE_SUCCESS,
       payload: {
-        result: { page: 2, totalPages: 5, totalResults: 15, results: [2] }
+        query: 'Toys',
+        result: { page: 1, totalPages: 10, totalResults: 100, results: [2, 3, 5] }
       }
     })).toEqual({
-      ...initialState,
-      forMovie: {
-        results: [1, 2],
-        page: 2,
-        totalPages: 5,
-        totalResults: 15
-      }
-    });
-  });
-
-  it('should update forTv when the loading has been done', () => {
-    expect(searchReducer(initialState, {
-      type: t.SEARCH_TV_SUCCESS,
-      payload: {
-        result: { page: 1, totalPages: 5, totalResults: 15, results: [2, 3] }
-      }
-    })).toEqual({
-      ...initialState,
-      forTv: {
-        results: [2, 3],
-        page: 1,
-        totalPages: 5,
-        totalResults: 15
-      }
-    });
-  });
-
-  it('should update forPeople when the loading has been done', () => {
-    expect(searchReducer(initialState, {
-      type: t.SEARCH_PEOPLE_SUCCESS,
-      payload: {
-        result: { page: 1, totalPages: 5, totalResults: 15, results: [1, 2] }
-      }
-    })).toEqual({
-      ...initialState,
-      forPeople: {
-        results: [1, 2],
-        page: 1,
-        totalPages: 5,
-        totalResults: 15
+      query: 'Something',
+      active: 'multi__[query:Something]',
+      listings: {
+        'multi__[query:Something]': {
+          results: [1, 4, 6],
+          page: 1,
+          totalPages: 10,
+          totalResults: 100
+        },
+        'movie__[query:Toys]': {
+          results: [2, 3, 5],
+          page: 1,
+          totalPages: 10,
+          totalResults: 100
+        }
       }
     });
   });

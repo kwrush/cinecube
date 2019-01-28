@@ -41,28 +41,29 @@ describe('Search action creators tests', () => {
 
     it('should create an action to update result', () => {
       const result = { id: 1, title: 'Test' }; 
+      const query = 'test';
 
       const exp1 = {
         type: t.SEARCH_MOVIE_SUCCESS,
-        payload: result
+        payload: { query, result }
       };
       const exp2 = {
         type: t.SEARCH_TV_SUCCESS,
-        payload: result
+        payload: { query, result }
       };
       const exp3 = {
         type: t.SEARCH_PEOPLE_SUCCESS,
-        payload: result
+        payload: { query, result }
       };
       const exp4 = {
         type: t.SEARCH_MULTI_SUCCESS,
-        payload: result
+        payload: { query, result }
       };
 
-      expect(sa.searchMediaSuccess('movie', result)).toEqual(exp1);
-      expect(sa.searchMediaSuccess('tv', result)).toEqual(exp2);
-      expect(sa.searchMediaSuccess('people', result)).toEqual(exp3);
-      expect(sa.searchMediaSuccess('multi', result)).toEqual(exp4);
+      expect(sa.searchMediaSuccess('movie', query, result)).toEqual(exp1);
+      expect(sa.searchMediaSuccess('tv', query, result)).toEqual(exp2);
+      expect(sa.searchMediaSuccess('people', query, result)).toEqual(exp3);
+      expect(sa.searchMediaSuccess('multi', query, result)).toEqual(exp4);
     });
 
     it('should create an action to update error', () => {
@@ -117,7 +118,7 @@ describe('Search action creators tests', () => {
       const expActions = [
         {
           type: t.SEARCH_MOVIE_REQUEST,
-          payload: { query: 'movie' }
+          payload: { query: 'Something' }
         },
         {
           type: et.MERGE_ENTITIES,
@@ -125,7 +126,10 @@ describe('Search action creators tests', () => {
         },
         {
           type: t.SEARCH_MOVIE_SUCCESS,
-          payload: data.result
+          payload: {
+            query: 'Something',
+            result: data.result
+          }
         }
       ];
       
@@ -133,7 +137,7 @@ describe('Search action creators tests', () => {
         .onGet('/search/movie')
         .reply(200, { ...data });
 
-      await store.dispatch(sa.searchByMediaType('movie', { query: 'Movie' }));
+      await store.dispatch(sa.searchByMediaType('movie', { query: 'Something' }));
       expect(store.getActions()).toEqual(expActions);
     });
 
@@ -141,7 +145,7 @@ describe('Search action creators tests', () => {
       const expActions = [
         {
           type: t.SEARCH_MOVIE_REQUEST,
-          payload: { query: 'movie' }
+          payload: { query: 'Something' }
         },
         {
           type: t.SEARCH_MOVIE_FAILURE,
@@ -153,7 +157,7 @@ describe('Search action creators tests', () => {
         .onGet('/search/movie')
         .networkError();
 
-      await store.dispatch(sa.searchByMediaType('movie', { query: 'Movie' }));
+      await store.dispatch(sa.searchByMediaType('movie', { query: 'Something' }));
       expect(store.getActions()).toEqual(expActions); 
     });
   });

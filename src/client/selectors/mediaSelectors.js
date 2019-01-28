@@ -28,23 +28,37 @@ export const getPopularMediaResults = (mediaType) => (state) =>
 export const getPopularMediaPageNumber = (mediaType) => (state) => 
   get(state, `popularMedia.${mediaType.toLowerCase()}.page`);
 
-export const getPopularMediaPagesCount = (mediaType) => (state) => 
+export const getPopularMediaTotalPages = (mediaType) => (state) => 
   get(state, `popularMedia.${mediaType.toLowerCase()}.totalPages`);
 
 export const getPopularMediaResultsCount = (mediaType) => (state) => 
   get(state, `popularMedia.${mediaType.toLowerCase()}.totalResults`);
-  
+
+export const hasMorePopularMediaResults = (mediaType) => createSelector(
+  getPopularMediaPageNumber(mediaType),
+  getPopularMediaTotalPages(mediaType),
+  (page, totalPages) => page < totalPages
+);
+
 export const getPopularMedia = (mediaType) => createSelector(
-  _entitiesSelector(`${mediaType}`),
-  getPopularMediaResults(`${mediaType}`),
+  _entitiesSelector(mediaType),
+  getPopularMediaResults(mediaType),
   (entities, ids) => ids && ids.map(id => get(entities, id))
 );
 
-export const getMediaInfoResult = (mediaType) => (state) => 
-  get(state, `mediaInfo.${mediaType.toLowerCase()}.id`);
+export const getActiveMediaId = (state) => get(state, 'mediaInfo.active');
+
+export const getMediaInfoResults = (state) => get(state, 'mediaInfo.ids');
 
 export const getMediaDetail = (mediaType) => createSelector(
-  _entitiesSelector(`${mediaType}`),
-  getMediaInfoResult(`${mediaType}`),
-  (entities, id) => id && get(entities, id)
+  _entitiesSelector(mediaType),
+  getActiveMediaId,
+  (entities, activeId) => {
+
+    if (!activeId) return false;
+
+    const [, id] = activeId.split('__');
+
+    return get(entities, id);
+  } 
 );

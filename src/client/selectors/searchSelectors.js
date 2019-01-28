@@ -1,4 +1,4 @@
-import { get, capitalize } from 'lodash';
+import { get } from 'lodash';
 import { createSelector } from 'reselect';
 import {
   getEntities,
@@ -25,21 +25,46 @@ const _entitiesSelector = (mediaType) => {
   return entitiesSelector;
 };
 
-export const getSearchResults = (searchType) => (state) => 
-  get(state, `search.for${capitalize(searchType)}.results`);
+export const getSearchQuery = (state) => 
+  get(state, 'search.query');
 
-export const getSearchResultsPageNumber = (searchType) => (state) => 
-  get(state, `search.for${capitalize(searchType)}.page`);
+export const getActiveSearch = (state) => 
+  get(state, 'search.active');
 
-export const getSearchRsultsPagesCount = (searchType) => (state) => 
-  get(state, `search.for${capitalize(searchType)}.totalPages`);
+export const getSearchListing = (searchType, query) => (state) => {
+  const key = `${searchType}__query__${query}`;
+  return get(state, `search.listings.${key}`);
+};
 
-export const getSearchResultsTotalNumber = (searchType) => (state) => 
-  get(state, `search.for${capitalize(searchType)}.totalResults`);
+export const getSearchResults = (searchType, query) => createSelector(
+  getSearchListing(searchType, query),
+  (listing) => listing && listing.results
+);
 
-export const getMediaResults = (searchType) => createSelector(
-  _entitiesSelector(`${searchType}`),
-  getSearchResults(`${searchType}`),
+export const getSearchResultsPageNumber = (searchType, query) => createSelector(
+  getSearchListing(searchType, query),
+  (listing) => listing && listing.page
+);
+
+export const getSearchResultsTotalPages = (searchType, query) => createSelector(
+  getSearchListing(searchType, query),
+  (listing) => listing && listing.totalPages
+);
+
+export const getSearchResultsTotalNumber = (searchType, query) => createSelector(
+  getSearchListing(searchType, query),
+  (listing) => listing && listing.totalResults
+);
+
+export const hasMoreSearchResults = (searchType, query) => createSelector(
+  getSearchResultsPageNumber(searchType, query),
+  getSearchResultsTotalPages(searchType, query),
+  (page, totalPages) => page < totalPages
+);
+
+export const getSearchMedia = (searchType, query) => createSelector(
+  _entitiesSelector(searchType),
+  getSearchResults(searchType, query),
   (entities, results) => results && results.map(res => {
     if (typeof res === 'object') {
       const { schema, id } = res;

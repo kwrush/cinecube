@@ -5,51 +5,66 @@ const state = {
     movie: {
       1: { id: 1, title: 'AA' },
       2: { id: 2, title: 'BB' },
-      4: { id: 4, title: 'CC' }
+      4: { id: 4, title: 'CC' },
+      5: { id: 5, title: 'DD' }
     },
     tv: {
       1: { id: 1, name: 'DD' },
-      2: { id: 2, name: 'EE' }
+      2: { id: 2, name: 'EE' },
+      5: { id: 5, name: 'FF' },
+      8: { id: 8, name: 'GG'}
     }
   },
   search: {
-    forMulti: {
-      results: [
-        { id: 1, schema: 'movie' },
-        { id: 2, schema: 'tv' }
-      ]
-    },
-    forMovie: {
-      results: [1, 4]
-    },
-    forTv: {
-      results: [2, 1]
+    query: 'Something',
+    acitve: 'multi__query__Something',
+    listings: {
+      'multi__query__Something': {
+        results: [
+          { id: 2, schema: 'movie' },
+          { id: 1, schema: 'tv' },
+          { id: 5, schema: 'movie' }
+        ],
+        page: 1,
+        totalPages: 5,
+        totalResults: 10
+      },
+      'tv__query__Other': {
+        results: [1, 5, 8],
+        page: 1,
+        totalPages: 5,
+        totalResults: 10
+      }
     }
   }
 };
 
 describe('Search selectors tests', () => {
-  it('should get search multi results', () => {
-    const multi = searchSel.getMediaResults('multi')(state);
-    expect(multi).toEqual([
-      { id: 1, title: 'AA' },
-      { id: 2, name: 'EE' }
+
+  it('should have more results to load of tv_[query:Other]', () => {
+    expect(searchSel.hasMoreSearchResults('tv', 'Other')(state)).toBeTruthy();
+  });
+
+  it('should return search results of tv[query:Other]', () => {
+    const res = searchSel.getSearchResults('tv', 'Other')(state);
+    expect(res).toEqual([1, 5, 8]);
+  });
+
+  it('should return search results of multi[query:Something]', () => {
+    const res = searchSel.getSearchResults('multi', 'Something')(state);
+    expect(res).toEqual([
+      { id: 2, schema: 'movie' },
+      { id: 1, schema: 'tv' },
+      { id: 5, schema: 'movie' }
     ]);
   });
 
-  it('should get movie and tv search results', () => {
-    const movies = searchSel.getMediaResults('movie')(state);
-    const tvs = searchSel.getMediaResults('tv')(state);
-    const people = searchSel.getMediaResults('people')(state);
-
-    expect(movies).toEqual([
-      { id: 1, title: 'AA' },
-      { id: 4, title: 'CC' }
+  it('should return media entities by the results of multi[query:Something]', () => {
+    const res = searchSel.getSearchMedia('multi', 'Something')(state);
+    expect(res).toEqual([
+      { id: 2, title: 'BB' },
+      { id: 1, name: 'DD' },
+      { id: 5, title: 'DD' }
     ]);
-    expect(tvs).toEqual([
-      { id: 2, name: 'EE' },
-      { id: 1, name: 'DD' }
-    ]);
-    expect(people).toBeUndefined();
   });
 });

@@ -1,4 +1,4 @@
-import { merge, camelCase } from 'lodash';
+import { merge, camelCase, unionWith, isEqual } from 'lodash';
 
 export const generateActions = (actions) => {
   const actionMap = {};
@@ -106,8 +106,5 @@ export const mapMetadataToState = (state, key, meta) => {
 };
 
 export const uniqueConcat = (...arrs) => {
-  const all = arrs.reduce((prev, curr) => prev.concat(curr));
-  const uniq = new Set(all);
-
-  return Array.from(uniq);
+  return arrs.reduce((prev, curr) => unionWith(prev, curr, isEqual));
 };

@@ -1,71 +1,56 @@
-import { combineReducers } from 'redux';
-import { searchActionTypes as t } from '../constants/actionTypes';
+import { merge } from 'lodash';
 import { uniqueConcat } from '../utils/helpers';
 
-const _handleSearchRequest = (state, payload) => ({
-  ...state,
-  query: payload.query
-});
+const _searchTypeKey = (searchType, query) => (`${searchType}__[query:${query}]`);
 
-const _handleSearchResults = (state, payload) => {
-  const { results, ...pageInfo } = payload.result;
-  const prevResults = state && state.results ? state.results : [];
-  const newResults = uniqueConcat(prevResults, results);
+const _handleSearchResults = (state, action) => {
+  const { type, payload } = action;
+  const matches = /(.*)_(MULTI|MOVIE|TV|PEOPLE)_SUCCESS/.exec(type);
+
+  if (!matches) return state;
+
+  const [, , requestType] = matches;
+
+  let { query, result } = payload;
+  let { results, ...pageInfo } = result;
+  const key = _searchTypeKey(requestType.toLocaleLowerCase(), query);
+
+  if (state.listings && state.listings[key]) {
+    const prevResults = state.listings[key].results;
+    results = uniqueConcat(prevResults, results);
+  } 
+
+  return merge(
+    {}, 
+    state,
+    {
+      listings: {
+        [key]: {
+          results,
+          ...pageInfo
+        }
+      }
+    }
+  );
+};
+
+
+export default (state = {}, action) => {
+
+  const { type, payload } = action;
+  const requestMatches = /(.*)_(MULTI|MOVIE|TV|PEOPLE)_REQUEST/.exec(type);
+
+  if (!requestMatches) return _handleSearchResults(state, action);
+
+  const [, , requestType] = requestMatches;
+  const { query } = payload;
+
+  const key = _searchTypeKey(requestType.toLowerCase(), query);
+
   return {
     ...state,
-    ...pageInfo,
-    results: newResults
+    query,
+    active: key
   };
 };
-
-const forMulti = (state = {}, action) => {
-  const { type, payload } = action;
-  if (type === t.SEARCH_MULTI_REQUEST) {
-    return _handleSearchRequest(state, payload);
-  } else if (type === t.SEARCH_MULTI_SUCCESS) {
-    return _handleSearchResults(state, payload);
-  }
-
-  return state;
-};
-
-const forMovie = (state = {}, action) => {
-  const { type, payload } = action;
-  if (type === t.SEARCH_MOVIE_REQUEST) {
-    return _handleSearchRequest(state, payload);
-  } else if (type === t.SEARCH_MOVIE_SUCCESS) {
-    return _handleSearchResults(state, payload);
-  }
-
-  return state;
-};
-
-const forTv = (state = {}, action) => {
-  const { type, payload } = action;
-  if (type === t.SEARCH_TV_REQUEST) {
-    return _handleSearchRequest(state, payload);
-  } else if (type === t.SEARCH_TV_SUCCESS) {
-    return _handleSearchResults(state, payload);
-  }
-
-  return state;
-};
-
-const forPeople = (state = {}, action) => {
-  const { type, payload } = action;
-  if (type === t.SEARCH_PEOPLE_REQUEST) {
-    return _handleSearchRequest(state, payload);
-  } else if (type === t.SEARCH_PEOPLE_SUCCESS) {
-    return _handleSearchResults(state, payload);
-  }
-
-  return state;
-};
-
-export default combineReducers({
-  forMulti,
-  forMovie,
-  forTv,
-  forPeople
-});
 

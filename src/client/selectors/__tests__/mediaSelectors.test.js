@@ -30,12 +30,16 @@ const state = {
       totalPages: 10,
       totalResults: 50
     },
-    people: {}
+    people: {
+      results: [2, 3],
+      page: 10,
+      totalPages: 10,
+      totalResults: 50
+    }
   },
   mediaInfo: {
-    movie: { id: 1 },
-    tv: { id: 3 },
-    people: { id: 2 }
+    active: 'movie__2',
+    ids: ['tv__1', 'movie__3', 'people_3', 'movie__2', 'tv__4']
   }
 };
 
@@ -52,15 +56,24 @@ describe('Media selectors tests', () => {
       { id: 2, name: 'CC' }, 
       { id: 4, name: 'EE' }
     ]);
-    expect(people).toBeUndefined();
+    expect(people).toEqual([
+      { id: 2, name: 'BB' }, 
+      { id: 3, name: 'CC' }
+    ]);
   });
 
-  it('should get media detail contents', () => {
-    const movie = sels.getMediaDetail('movie')(state);
-    const tv = sels.getMediaDetail('tv')(state);
-    const people = sels.getMediaDetail('people')(state);
-    expect(movie).toEqual({ id: 1, title: 'AA' });
-    expect(tv).toEqual({ id: 3, name: 'DD' });
-    expect(people).toEqual({ id: 2, name: 'BB' });
+  it('should get the active movie detail', () => {
+    const info = sels.getMediaDetail('movie')(state);
+    expect(info).toEqual({ id: 2, title: 'BB' });
+  });
+
+  it('should has more popular movies to load', () => {
+    const res = sels.hasMorePopularMediaResults('movie')(state);
+    expect(res).toBeTruthy();
+  });
+
+  it('should has no more popular people to load', () => {
+    const res = sels.hasMorePopularMediaResults('people')(state);
+    expect(res).toBeFalsy();
   });
 });
