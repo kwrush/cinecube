@@ -1,0 +1,21 @@
+@import "../../assets/styles/_base.scss";
+
+.search.input-container {
+  width: 320px;
+}
+
+// overrides bootstrap input on focus glow
+.search-input {
+  outline: none;
+  box-shadow: none !important;
+
+  &:focus {
+    border-color: $secondary !important;
+  }
+} 
+
+@media (max-width: $media-md) {
+  .search.input-container {
+    width: 100%; 
+  }
+}

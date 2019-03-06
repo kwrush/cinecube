@@ -21,7 +21,10 @@ class RootRef extends React.Component {
 
   static propTypes = {
     children: PropTypes.element.isRequired,
-    rootRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
+    rootRef: PropTypes.oneOfType([
+      PropTypes.func, 
+      PropTypes.object
+    ]).isRequired
   }
 
   componentDidMount() {

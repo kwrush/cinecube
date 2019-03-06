@@ -4,10 +4,10 @@ import { mapToCssModules } from '../../utils/helpers';
 
 const propTypes = {
   color: PropTypes.string,
-  size: PropTypes.oneOfType(
+  size: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
-  ),
+  ]),
   cssModule: PropTypes.object,
   className: PropTypes.string
 };

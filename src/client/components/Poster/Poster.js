@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Util } from 'reactstrap';
-import './style.scss'
+import { mapToCssModules } from '../../utils/helpers';
+import './Poster.scss';
 
 const propTypes = {
   imageUrl: PropTypes.string.isRequired,
@@ -9,17 +9,17 @@ const propTypes = {
 };
 
 const defaultProps = {
-  title: 'media'
+  title: 'poster'
 };
 
 const Poster = (props) => {
   const { imageUrl, title, className, cssModule } = props;
 
-  const classes = Util.mapToCssModules(className, cssModule);
+  const classes = mapToCssModules(className, cssModule);
   
   return (
     <div styleName="poster" className={classes}>
-      <img src={imageUrl} alt={`poster of ${title}`} styleName="poster-img" />
+      <img src={imageUrl} alt={title} styleName="poster-img" />
     </div>
   );
 } 
