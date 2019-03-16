@@ -1,0 +1,6 @@
+.image-holder {
+  transition: 0.3s filter linear;
+  &.blurry {
+    filter: blur(40px);
+  }
+}
