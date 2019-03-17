@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
-import BackdropCarousel from '../components/BackdropCarousel';
-import PosterBanner from '../components/PosterBanner';
-import { getPopularMovies, getInTheatreMovies } from '../selectors/movieSelectors';
-import { fetchMovieList } from '../actions/movieActions';
+import { Backdrop } from '../components/Backdrop';
+import { fetchPopularMovies } from '../actions/movieActions';
+import { getPopularMedia } from '../selectors/mediaSelectors';
+import { getPosterUrl } from '../utils/imageUtils';
 
 class Home extends React.Component {
 
@@ -15,34 +15,27 @@ class Home extends React.Component {
 
   render () {
 
-    const { popularMovies, inTheatreMovies } = this.props;
+    const { popularMovies } = this.props;
 
     return (
       <Container>
         <div>This is home page</div>
-        <BackdropCarousel backdrops={popularMovies ? popularMovies.slice(0, 4) : []} />
-        <PosterBanner 
-          items={
-            inTheatreMovies ? inTheatreMovies.slice(0, 4) : [1]
-          }
-          title="Now Playing"
-        />
+        <Backdrop mediaEntities={popularMovies ? popularMovies.slice(0, 4) : []} />
       </Container>
     );
   }
 };
 
 const mapStateToProps = (state) => ({
-  popularMovies: getPopularMovies(state),
-  inTheatreMovies: getInTheatreMovies(state)
+  popularMovies: getPopularMedia('movie')(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getPopularMovies: () => {
-    dispatch(fetchMovieList('popular', { page: 1 }));
+    dispatch(fetchPopularMovies());
   },
   getInTheatreMovies: () => {
-    dispatch(fetchMovieList('inTheatre', { page: 1 }));
+    dispatch(fetchPopularMovies());
   }
 });
 

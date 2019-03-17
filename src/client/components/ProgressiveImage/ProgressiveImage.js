@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { mapToCssModules } from '../../utils/helpers';
 import './ProgressiveImage.scss';
 
 class ProgressiveImage extends React.PureComponent {
@@ -9,12 +10,16 @@ class ProgressiveImage extends React.PureComponent {
     src: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     alt: PropTypes.string,
-    onError: PropTypes.func
+    onError: PropTypes.func,
+    onLoad: PropTypes.func,
+    className: PropTypes.string,
+    cssModule: PropTypes.object
   }
 
   static defaultProps = {
     alt: '',
-    onError: () => {}
+    onError: () => {},
+    onLoad: () => {}
   }
 
   constructor(props) {
@@ -57,10 +62,13 @@ class ProgressiveImage extends React.PureComponent {
     this.loadingImage = image;
   }
 
-  onLoad = () => {
+  onLoad = (e) => {
+    const { onLoad } = this.props;
     this.setState({
       currentImage: this.loadingImage.src,
       loading: false
+    }, () => {
+      !this.state.loading && onLoad(e)
     });
   }
 
@@ -70,12 +78,18 @@ class ProgressiveImage extends React.PureComponent {
   }
 
   render () {
-    const { currentImage, loading } = this.state;
+    const { currentImage, loading, className, cssModule } = this.state;
     const { alt } = this.props;
 
-    const classes = classNames('image-holder', { 'blurry': loading });
+    const styles = classNames('image-holder', { 'blurry': loading });
+    const classes = mapToCssModules(className, cssModule);
 
-    return <img styleName={classes} src={currentImage} alt={alt} />;
+    return <img 
+      styleName={styles} 
+      className={classes} 
+      src={currentImage} 
+      alt={alt} 
+    />;
   }
 }
 

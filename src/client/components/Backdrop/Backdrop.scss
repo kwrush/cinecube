@@ -1,0 +1,30 @@
+@import "../../assets/styles/_base.scss"; 
+
+.poster-box {
+  @include cubic-transition();
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+}
+
+.poster {
+  @include card-shadow();
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: $light-color;
+  outline: none;
+  border: none;
+  background: none;
+  font-size: $font-size-lg;
+}
+
+.close-icon {
+  color: inherit;
+}

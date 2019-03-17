@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import { Util } from 'reactstrap';
-import Poster from '../Poster'
+import { Poster } from '../Poster'
 import { getPosterUrl } from '../../utils/imageUtils';
 import './style.scss'
 
@@ -64,7 +64,8 @@ const BackdropPoster = (props) => {
           >
             <Poster
               styleName="card"
-              imageUrl={posterUrl}
+              imageURL={posterUrl}
+              previewURL={posterUrl}
               title={title}
             />
           </div>

@@ -43,7 +43,11 @@ export const hasMorePopularMediaResults = (mediaType) => createSelector(
 export const getPopularMedia = (mediaType) => createSelector(
   _entitiesSelector(mediaType),
   getPopularMediaResults(mediaType),
-  (entities, ids) => ids && ids.map(id => get(entities, id))
+  (entities, ids) => ids && ids.map(id => {
+    const entity = get(entities, id);
+    if (entity && !entity.mediaType) entity.mediaType = mediaType;
+    return entity;
+  })
 );
 
 export const getActiveMediaId = (state) => get(state, 'mediaInfo.active');

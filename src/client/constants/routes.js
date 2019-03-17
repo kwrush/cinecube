@@ -3,8 +3,8 @@
  * Routes for calling api
  */
 
-const PORT = 3000;
-export const API_URL = `http://localhost:${PORT}/v1/api`;
+const PORT = 3001;
+export const API_URL = `http://localhost:${PORT}/api/v1`;
 export const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
 
 const movie = '/movie';

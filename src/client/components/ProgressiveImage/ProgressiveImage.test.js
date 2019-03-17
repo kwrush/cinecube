@@ -4,10 +4,14 @@ import ProgressiveImage from './ProgressiveImage';
 
 const src = 'https://image.example/src';
 const placeholder = 'https://image.example/placeholder';
-const mountImage = () => {
+const mountImage = (opt) => {
+  const onError = opt && opt.onError ? opt.onError : () => {};
+  const onLoad = opt && opt.onLoad ? opt.onLoad : () => {};
   return mount(
     <ProgressiveImage 
       src={src}
+      onLoad={onLoad}
+      onError={onError}
       placeholder={placeholder}
     />
   );
@@ -45,5 +49,12 @@ describe('Progressive image tests', () => {
     wrapper.instance().onLoad();
     const img = wrapper.update().find('img');
     expect(img.prop('src')).toEqual(src);
+  });
+
+  it('should invoke onLoad prop when the image is loaded', () => {
+    const onLoad = jest.fn();
+    const wrapper = mountImage({ onLoad });
+    wrapper.instance().onLoad();
+    expect(onLoad.mock.calls.length).toBe(1);
   });
 });

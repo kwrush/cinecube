@@ -1,25 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mapToCssModules } from '../../utils/helpers';
+import ProgressiveImage from '../ProgressiveImage/ProgressiveImage';
 import './Poster.scss';
 
 const propTypes = {
-  imageUrl: PropTypes.string.isRequired,
-  title: PropTypes.string 
+  imageURL: PropTypes.string.isRequired,
+  previewURL: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  onClick: PropTypes.func
 };
 
 const defaultProps = {
-  title: 'poster'
+  title: 'poster',
+  onClick: () => {}
 };
 
 const Poster = (props) => {
-  const { imageUrl, title, className, cssModule } = props;
+  const { imageURL, previewURL, title, onClick, className, cssModule } = props;
 
   const classes = mapToCssModules(className, cssModule);
   
   return (
-    <div styleName="poster" className={classes}>
-      <img src={imageUrl} alt={title} styleName="poster-img" />
+    <div 
+      styleName="poster" 
+      className={classes}
+      onClick={onClick}
+    >
+      <ProgressiveImage 
+        src={imageURL}
+        placeholder={previewURL}
+        alt={title}
+      />
     </div>
   );
 } 
