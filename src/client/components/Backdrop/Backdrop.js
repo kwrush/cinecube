@@ -64,7 +64,7 @@ class Backdrop extends React.PureComponent {
       const placeholder = getPosterUrl(posterPath, 'xs');
 
       return (
-        <Col key={`id_${id}`} styleName="poster-box">
+        <Col key={`id_${id}`}>
           <Poster
             styleName="poster"
             imageURL={poster}
@@ -84,7 +84,7 @@ class Backdrop extends React.PureComponent {
         styleName="close-button"
         onClick={this.closeMediaCard}
       >
-        <MdClose sytleName="close-icon"/>
+        <MdClose styleName="close-icon"/>
       </button>
     );
     return (
@@ -106,12 +106,10 @@ class Backdrop extends React.PureComponent {
     const classes = mapToCssModules(className, cssModule);
 
     return (
-      <Container className={classes}>
-        <Row>
-          { this.renderPosters(mediaEntities) }
-        </Row>
-        { mediaToShow && this.renderMediaCard(mediaToShow) }
-      </Container>
+      <Row className={classes}>
+        {this.renderPosters(mediaEntities)}
+        {mediaToShow && this.renderMediaCard(mediaToShow)}
+      </Row>
     );
   }
 }

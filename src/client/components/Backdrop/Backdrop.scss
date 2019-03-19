@@ -1,18 +1,15 @@
 @import "../../assets/styles/_base.scss"; 
 
-.poster-box {
-  @include cubic-transition();
+.poster {
+  @include card-shadow();
+  border-radius: 4px;
+  overflow: hidden;
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
   }
 }
 
-.poster {
-  @include card-shadow();
-  border-radius: 4px;
-  overflow: hidden;
-}
 
 .close-button {
   position: absolute;
