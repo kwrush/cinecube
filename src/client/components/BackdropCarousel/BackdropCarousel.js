@@ -40,12 +40,8 @@ class BackdropCarousel extends React.PureComponent {
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    const { onActiveIndex, initialIndex } = this.props;
-    onActiveIndex(this.state.activeIndex);
-    if (prevProps.initialIndex !== initialIndex) {
-      this.goToSlice(initialIndex);
-    }
+  componentDidUpdate () {
+    this.props.onActiveIndex(this.state.activeIndex);
   }
 
   onExiting = () => {

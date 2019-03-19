@@ -52,8 +52,9 @@ class ResponsiveCarousel extends React.PureComponent {
 
             this._itemPerSlice = itemPerSlice;
             const entities = chunk(mediaEntities, this._itemPerSlice);
-
+            console.log(`backdrop_carousel_${match}`);
             return <BackdropCarousel
+              key={`backdrop_carousel_${match}`}
               className={classes}
               mediaEntities={entities}
               initialIndex={initialIndex}
