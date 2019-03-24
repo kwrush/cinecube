@@ -4,21 +4,11 @@ $media-md: map-get($grid-breakpoints, 'md');
 $media-lg: map-get($grid-breakpoints, 'lg');
 $media-xl: map-get($grid-breakpoints, 'xl');
 
-$light-color: map-get($theme-colors, "light");
-$dark-color: map-get($theme-colors, "dark");
-$light-gray: map-get($grays, "300");
-$gray: map-get($grays, "600");
-$dark-gray: map-get($grays, "800");
-
-$font-size-xs: 0.75rem;
-$line-height-lg: 1.8rem;
-$line-height-xl: 2.125rem;
-
-$border-gray: rgba(255, 255, 255, 0.5);
-$border-light-gray: rgba(255, 255, 255, 0.1);
-
-$text-link: $dark-gray;
-$text-link-hover: $gray;
+$theme-color: $success !default;
+$theme-bg: $gray-900;
+$text-color: $light;
+$font-size-xs: ($font-size-base * 0.75) !default;
+$font-size-xl: ($font-size-base * 1.75) !default;
 
 
 

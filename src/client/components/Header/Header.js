@@ -5,75 +5,53 @@ import {
   NavItem,
   Navbar,
   NavbarBrand,
-  NavbarToggler,
-  Collapse
+  Container
 } from 'reactstrap';
 import Logo from '../Logo/Logo';
 import { SearchInput } from '../SearchInput';
 import Headroom from 'react-headroom';
-import classNames from 'classnames';
 import { mapToCssModules } from '../../utils/helpers';
 import './Header.scss';
+import { Avatar } from '../Avatar';
 
-class Header extends React.PureComponent {
+const propTypes = {
+  onSearchPending: PropTypes.bool,
+  className: PropTypes.string,
+  cssModule: PropTypes.object
+};
 
-  static propTypes = {
-    onSearchPending: PropTypes.bool,
-    className: PropTypes.string,
-    cssModule: PropTypes.object
-  }
+const defaultProps = {
+  onSearchPending: true,
+};
 
-  constructor (props) {
-    super(props);
+const Header = props => {
+  const { onSearchPending, className, cssModule } = props;
+  const classes = mapToCssModules(className, cssModule);
 
-    this.state = {
-      collapse: true
-    };
-  }
-
-  toggleSearchInput = () => {
-    this.setState({
-      collapse: !this.state.collapse
-    });
-  }
-
-  render() {
-    const { onSearchPending, className, cssModule } = this.props;
-    const { collapse } = this.state;
-    const classes = mapToCssModules(className, cssModule);
-    const togglerStyles = classNames('toggler', { open: !collapse });
-
-    return (
-      <Headroom downTolerance={3}>
-        <Navbar
-          light
-          color="light"
-          expand="md"
-          className={classes}
-        >
-          <NavbarBrand>
+  return (
+    <Headroom downTolerance={3}>
+      <Container fluid styleName="header">
+        <Navbar dark expand className={classes}>
+          <NavbarBrand styleName="nav-brand">
             <Logo size="2.25rem" />
           </NavbarBrand>
-          <NavbarToggler
-            styleName={togglerStyles}
-            onClick={this.toggleSearchInput} 
-          />
-          <Collapse 
-            isOpen={!collapse} 
-            navbar
-          >
-            <Nav navbar className="ml-auto">
-              <NavItem styleName="padding-top">
-                <SearchInput
-                  onSearchPending={onSearchPending}
-                />
-              </NavItem>
-            </Nav>
-          </Collapse>
+          <Nav navbar styleName="nav" className="ml-auto">
+            <NavItem styleName="nav-item">
+              <SearchInput
+                styleName="nav-search-input"
+                onSearchPending={onSearchPending} />
+            </NavItem>
+            <NavItem styleName="nav-item">
+              <Avatar />
+            </NavItem>
+          </Nav>
         </Navbar>
-      </Headroom>
-    );
-  }
-}
+      </Container>
+    </Headroom>
+  );
+};
+
+Header.propTypes = propTypes;
+Header.defaultProps = defaultProps;
 
 export default Header;
