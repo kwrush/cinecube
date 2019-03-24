@@ -1,117 +1,73 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { 
-  Container,
-  Row,
-  Col,
-  Modal
-} from 'reactstrap';
-import { MdClose } from 'react-icons/md';
-import { find } from 'lodash';
-import { Poster } from '../Poster';
-import { MediaCard } from '../MediaCard';
-import { getPosterUrl } from '../../utils/imageUtils';
+import posed from 'react-pose';
+import { ProgressiveImage } from '../ProgressiveImage';
+import MediaContent from './MediaContent';
+import classNames from 'classnames';
+import { getBackdropUrl } from '../../utils/imageUtils';
 import { mapToCssModules } from '../../utils/helpers';
 import './Backdrop.scss';
 
-class Backdrop extends React.PureComponent {
-  static propTypes = {
-    mediaEntities: PropTypes.arrayOf(
-      MediaCard.propTypes.mediaEntity
-    ),
-    className: PropTypes.string,
-    cssModule: PropTypes.object
+const BackdropContainer = posed.div({
+  enter: { 
+    opacity: 1,
+    scale: 1,
+    staggerChildren: 1000
+  },
+  exit: { 
+    opacity: 0,
+    scale: 1.2,
+    staggerChildren: 50, 
+    staggerDirection: -1,
+    afterChildren: true
   }
+});
 
-  static defaultProps = {
-    mediaEntities: []
-  }
+const propTypes = {
+  mediaEntity: PropTypes.shape({
+    ...MediaContent.propTypes,
+    backdropPath: PropTypes.string.isRequired
+  }).isRequired,
+  isIn: PropTypes.bool,
+  onPoseEnd: PropTypes.func,
+  className: PropTypes.string,
+  cssModule: PropTypes.object
+};
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      mediaToShow: null,
-      mediaCardOpen: false
-    };
-  }
-
-  closeMediaCard = () => {
-    this.setState((preoveState) => ({
-      mediaCardOpen: false
-    }));
-  }
-
-  openMediaCard = id => e => {
-    const { mediaEntities } = this.props;
-    const entity = find(mediaEntities, ['id', id]);
-
-    this.setState({
-      mediaToShow: entity,
-      mediaCardOpen: !!entity
-    });
-  }
-
-  resetMediaToShow = () => {
-    this.setState({
-      mediaToShow: null
-    });
-  }
-
-  renderPosters = (entities) => {
-    return entities.map(entity => {
-      const { posterPath, title, id } = entity
-      const poster = getPosterUrl(posterPath, 'm');
-      const placeholder = getPosterUrl(posterPath, 'xs');
-
-      return (
-        <Col key={`id_${id}`}>
-          <Poster
-            styleName="poster"
-            imageURL={poster}
-            previewURL={placeholder}
-            title={title}
-            onClick={this.openMediaCard(id)}
-          />
-        </Col>
-      );
-    });
-  }
-
-  renderMediaCard = mediaEntity => {
-    const { mediaCardOpen } = this.state;
-    const closeButton = (
-      <button
-        styleName="close-button"
-        onClick={this.closeMediaCard}
-      >
-        <MdClose styleName="close-icon"/>
-      </button>
-    );
-    return (
-      <Modal 
-        isOpen={mediaCardOpen} 
-        toggle={this.closeMediaCard}
-        onExit={this.resetMediaToShow}
-        external={closeButton}
-      >
-        <MediaCard mediaEntity={mediaEntity} />
-      </Modal>
-    );
-  }
-
-  render () {
-    const { mediaEntities, className, cssModule } = this.props;
-    const { mediaToShow } = this.state
-
-    const classes = mapToCssModules(className, cssModule);
-
-    return (
-      <Row className={classes}>
-        {this.renderPosters(mediaEntities)}
-        {mediaToShow && this.renderMediaCard(mediaToShow)}
-      </Row>
-    );
-  }
+const defaultProps = {
+  mediaEntity: {},
+  isIn: false,
+  onPoseEnd: () => {}
 }
+
+const Backdrop = props => {
+  const { mediaEntity, isIn, onPoseEnd, className, cssModule } = props;
+  const activeClass = classNames('backdrop-container', { active: isIn });
+  const classes = mapToCssModules(className, cssModule);
+
+  return (
+    <BackdropContainer
+      className={classes}
+      styleName={activeClass}
+      key={`backdrop_${mediaEntity.id}`}
+      pose={isIn ? 'enter' : 'exit'}
+      onPoseComplete={onPoseEnd}
+    >
+      <div styleName="backdrop-overlay">
+        <ProgressiveImage
+          src={getBackdropUrl(mediaEntity.backdropPath, 'lg')}
+          placeholder={getBackdropUrl(mediaEntity.backdropPath, 's')}
+        />
+      </div>
+      <MediaContent
+        styleName="media-content"
+        content={mediaEntity}
+      />
+    </BackdropContainer>
+  );
+};
+
+Backdrop.propTypes = propTypes;
+Backdrop.defaultProps = defaultProps;
 
 export default Backdrop;

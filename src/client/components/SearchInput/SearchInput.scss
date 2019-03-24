@@ -1,21 +1,23 @@
 @import "../../assets/styles/_base.scss";
 
-.search.input-container {
-  width: 320px;
+.input-container.override {
+  padding: 0.125rem 0.5rem;
+  background: $gray-800;
+}
+
+.input-addon {
+  margin-right: 0.125rem;
+  color: $theme-color;
+  font-size: $font-size-lg;
+  display: flex;
+  align-items: center;
 }
 
 // overrides bootstrap input on focus glow
 .search-input {
   outline: none;
   box-shadow: none !important;
-
-  &:focus {
-    border-color: $secondary !important;
-  }
+  border: none !important;
+  background: none !important;
+  color: $text-color !important;
 } 
-
-@media (max-width: $media-md) {
-  .search.input-container {
-    width: 100%; 
-  }
-}

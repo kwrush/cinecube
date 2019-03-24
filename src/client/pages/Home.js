@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container } from 'reactstrap';
-import { Backdrop } from '../components/Backdrop';
+import { Header } from '../components/Header';
 import { fetchPopularMovies } from '../actions/movieActions';
 import { getPopularMedia } from '../selectors/mediaSelectors';
-import { getPosterUrl } from '../utils/imageUtils';
+import { BackdropCarousel } from '../components/BackdropCarousel';
 
 class Home extends React.Component {
 
@@ -18,10 +17,10 @@ class Home extends React.Component {
     const { popularMovies } = this.props;
 
     return (
-      <Container>
-        <div>This is home page</div>
-        <Backdrop mediaEntities={popularMovies ? popularMovies.slice(0, 4) : []} />
-      </Container>
+      <div>
+        <Header />
+        <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 4) : []} />
+      </div>
     );
   }
 };

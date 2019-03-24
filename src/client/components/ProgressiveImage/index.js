@@ -1,1 +1,1 @@
-export { default as ProgressivieImage } from './ProgressiveImage';
+export { default as ProgressiveImage } from './ProgressiveImage';

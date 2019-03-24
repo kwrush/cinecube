@@ -1,27 +1,34 @@
 @import "../../assets/styles/_base.scss"; 
 
-.poster {
-  @include card-shadow();
-  border-radius: 4px;
-  overflow: hidden;
-  &:hover {
-    transform: scale(1.05);
-    cursor: pointer;
+.backdrop-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: $gray-800;
+
+  &.active {
+    position: relative;
+    z-index: 1;
   }
 }
 
-
-.close-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  color: $light-color;
-  outline: none;
-  border: none;
-  background: none;
-  font-size: $font-size-lg;
+.backdrop-overlay {
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    box-shadow: inset 10px -20px 300px 150px $gray-900;
+  }
 }
 
-.close-icon {
-  color: inherit;
+.media-content {
+  position: absolute;
+  top: 4rem;
+  left: 4rem;
+  background: none;
+  max-width: 575px;
 }

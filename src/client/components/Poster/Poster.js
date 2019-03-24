@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { mapToCssModules } from '../../utils/helpers';
-import ProgressiveImage from '../ProgressiveImage/ProgressiveImage';
+import { ProgressiveImage } from '../ProgressiveImage';
 import './Poster.scss';
 
 const propTypes = {

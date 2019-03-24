@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router';
-import SearchInput from './SearchInput';
+import { SearchInput } from '../SearchInput';
 
 describe('<SearchInput /> tests', () => {
   it('should not submit search when the query is empty', () => {

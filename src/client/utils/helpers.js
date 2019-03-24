@@ -108,3 +108,10 @@ export const mapMetadataToState = (state, key, meta) => {
 export const uniqueConcat = (...arrs) => {
   return arrs.reduce((prev, curr) => unionWith(prev, curr, isEqual));
 };
+
+export const roundToNearest = (num, nearest) => Math.round(num / nearest) * nearest;
+
+export const roundToDicimal = (num, dicimal) => {
+  var d = Math.pow(10, dicimal);
+  return Math.round(num * d) / d;
+}

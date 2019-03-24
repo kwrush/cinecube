@@ -7,7 +7,7 @@ import {
   Button,
   Input
 } from 'reactstrap';
-import { GoSearch } from 'react-icons/go';
+import { IoIosSearch } from 'react-icons/io';
 import { mapToCssModules } from '../../utils/helpers';
 import './SearchInput.scss';
 
@@ -66,6 +66,8 @@ class SearchInput extends React.PureComponent {
     return this.refs.input.value;
   }
 
+  initRef = el => this.refs.input = el
+
   render () {
 
     const { onSearchPendding, className, cssModule } = this.props;
@@ -74,22 +76,22 @@ class SearchInput extends React.PureComponent {
     const classes = mapToCssModules(className, cssModule);
     
     return (
-      <div className={classes}>
-        <InputGroup size="sm" styleName="search input-container">
-          <Input
-            styleName="search-input"
-            innerRef={el => this.refs.input = el}
-            onKeyDown={this.handleKeyDown}
-            onFocus={this.handleInputFocus}
-            onBlur={this.handleInputBlur}
-            placeholder="Search for movies, tv series and more..."
-          />
-          <InputGroupAddon addonType="append">
-            <Button onClick={this.onSearch}>
-              <GoSearch />
-            </Button>
-          </InputGroupAddon>
-        </InputGroup>
+      <InputGroup 
+        size="sm" 
+        styleName="input-container override"
+        className={classes}
+      >
+        <InputGroupAddon addonType="prepend" styleName="input-addon">
+          <IoIosSearch />
+        </InputGroupAddon>
+        <Input
+          styleName="search-input"
+          innerRef={this.initRef}
+          onKeyDown={this.handleKeyDown}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          placeholder="Search for movies, tv series and more..."
+        />
         {
           onSubmit &&
           <Redirect
@@ -100,7 +102,7 @@ class SearchInput extends React.PureComponent {
             }}
           />
         }
-      </div>
+      </InputGroup>
     );
   }
 }
