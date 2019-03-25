@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Media } from 'reactstrap';
 import classNames from 'classnames';
+import { ProgressiveImage } from '../ProgressiveImage';
 import { mapToCssModules } from '../../utils/helpers';
 import './Avatar.scss';
 
+const defaultAvatar = require('../../assets/images/default_user_avatar.svg');
+
 const propTypes = {
-  avatar: PropTypes.string,
+  src: PropTypes.string,
   alt: PropTypes.string,
   round: PropTypes.bool,
   border: PropTypes.bool,
@@ -15,19 +17,24 @@ const propTypes = {
 };
 
 const defaultProps = {
-  avatar: null,
+  src: defaultAvatar,
   alt: null,
   round: true,
   border: true
 };
 
 const Avatar = props => {
-  const { avatar, alt, round, border, className, cssModule } = props;
+  const { src, alt, round, border, className, cssModule } = props;
   const classes = mapToCssModules(className, cssModule);
   const styleNames = classNames('avatar', { border }, { round });
   return (
     <div className={classes} styleName={styleNames}>
-      <Media object data-src={avatar} alt={alt} />
+      <ProgressiveImage 
+        src={src}
+        placeholder={src}
+        alt={alt}
+        blur={false}
+      />
     </div>
   );
 };
