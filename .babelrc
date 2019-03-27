@@ -1,0 +1,55 @@
+{
+  "presets": [
+    "react-app"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        [
+          "react-css-modules",
+          {
+            "webpackHotModuleReloading": true,
+            "generateScopedName": "[local]",
+            "filetypes": {
+              ".scss": {
+                "syntax": "postcss-scss"
+              }
+            }
+          }
+        ]
+      ]
+    },
+    "development": {
+      "plugins": [
+        [
+          "react-css-modules",
+          {
+            "webpackHotModuleReloading": true,
+            "generateScopedName": "[local]__[hash:base64:5]",
+            "filetypes": {
+              ".scss": {
+                "syntax": "postcss-scss"
+              }
+            }
+          }
+        ]
+      ]
+    },
+    "production": {
+      "plugins": [
+        [
+          "react-css-modules",
+          {
+            "webpackHotModuleReloading": true,
+            "generateScopedName": "[local]__[hash:base64:5]",
+            "filetypes": {
+              ".scss": {
+                "syntax": "postcss-scss"
+              }
+            }
+          }
+        ]
+      ]
+    }
+  }
+}

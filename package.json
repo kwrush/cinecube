@@ -137,27 +137,5 @@
       "mjs"
     ]
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ],
-    "plugins": [
-      [
-        "react-css-modules",
-        {
-          "webpackHotModuleReloading": true,
-          "generateScopedName": "[local]__[hash:base64:5]",
-          "filetypes": {
-            ".scss": {
-              "syntax": "postcss-scss"
-            }
-          }
-        }
-      ]
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "proxy": "http://localhost:3001"
 }
