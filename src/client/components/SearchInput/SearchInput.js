@@ -7,29 +7,27 @@ import {
   Button,
   Input
 } from 'reactstrap';
-import { IoIosSearch } from 'react-icons/io';
+import { IoMdSearch } from 'react-icons/io';
 import { mapToCssModules } from '../../utils/helpers';
 import './SearchInput.scss';
 
 class SearchInput extends React.PureComponent {
 
   static propTypes = {
+    onSearch: PropTypes.func,
     className: PropTypes.string,
     cssModule: PropTypes.object,
-    onSearchPendding: PropTypes.bool
   }
 
   static defaultProps = {
-    onSearchPendding: false
+    onSearch: () => {}
   }
 
   constructor (props) {
     super(props);
 
     this.state = {
-      query: '',
-      onFocus: false,
-      onSubmit: false
+      query: ''
     };
   }
 
@@ -37,29 +35,16 @@ class SearchInput extends React.PureComponent {
     this.refs = {};
   }
 
-  onSearch = () => {
+  handleSearch = () => {
     const query = this.getInputValue();
-    // Don't submit search request if query is empty
-    this.setState({
-      query,
-      onSubmit: !!query
-    })
+    // Don't submit search request if query is too short
+    if (query.length < 2) return;
+
+    this.props.onSearch(query);
   }
   
   handleKeyDown = (e) => {
-    e.keyCode === 13 && this.onSearch();
-  }
-
-  handleInputFocus = (e) => {
-    this.setState({
-      onFocus: true
-    });
-  }
-
-  handleInputBlur = (e) => {
-    this.setState({
-      onFocus: false
-    })
+    e.keyCode === 13 && this.handleSearch();
   }
 
   getInputValue = () => {
@@ -70,38 +55,24 @@ class SearchInput extends React.PureComponent {
 
   render () {
 
-    const { onSearchPendding, className, cssModule } = this.props;
-    const { query, onSubmit } = this.state;
-
+    const { className, cssModule } = this.props;
     const classes = mapToCssModules(className, cssModule);
     
     return (
-      <InputGroup 
-        size="sm" 
+      <InputGroup
+        size="sm"
         styleName="input-container override"
         className={classes}
       >
         <InputGroupAddon addonType="prepend" styleName="input-addon">
-          <IoIosSearch />
+          <IoMdSearch />
         </InputGroupAddon>
         <Input
           styleName="search-input"
           innerRef={this.initRef}
           onKeyDown={this.handleKeyDown}
-          onFocus={this.handleInputFocus}
-          onBlur={this.handleInputBlur}
           placeholder="Search for movies, tv series and more..."
         />
-        {
-          onSubmit &&
-          <Redirect
-            to={{
-              pathname: "/search",
-              search: `?query=${query.replace(/\s+/g, '+')}`,
-              state: { onRequest: onSearchPendding }
-            }}
-          />
-        }
       </InputGroup>
     );
   }

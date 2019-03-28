@@ -59,9 +59,7 @@ class SidebarNav extends React.PureComponent {
 
     return (
       <div styleName="sidebar-wrapper">
-        <div 
-          styleName={backdropClasses}
-        ></div>
+        <div styleName={backdropClasses}></div>
         <div
           styleName={sidebarClasses}
           className={classes}

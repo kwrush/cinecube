@@ -5,53 +5,100 @@ import {
   NavItem,
   Navbar,
   NavbarBrand,
+  Button,
   Container
 } from 'reactstrap';
-import Logo from '../Logo/Logo';
-import { SearchInput } from '../SearchInput';
 import Headroom from 'react-headroom';
+import { IoIosMenu, IoMdSearch } from 'react-icons/io';
+import { Logo } from '../Logo';
+import { Avatar } from '../Avatar';
+import { SearchInput } from '../SearchInput';
+import { SidebarNav } from '../SidebarNav';
+import cx from 'classnames';
 import { mapToCssModules } from '../../utils/helpers';
 import './Header.scss';
-import { Avatar } from '../Avatar';
 
-const propTypes = {
-  onSearchPending: PropTypes.bool,
-  className: PropTypes.string,
-  cssModule: PropTypes.object
-};
+class Header extends React.PureComponent {
 
-const defaultProps = {
-  onSearchPending: true,
-};
+  static propTypes = {
+    className: PropTypes.string,
+    cssModule: PropTypes.object
+  }
 
-const Header = props => {
-  const { onSearchPending, className, cssModule } = props;
-  const classes = mapToCssModules(className, cssModule);
+  static defaultProps = {
 
-  return (
-    <Headroom downTolerance={3}>
-      <Container fluid styleName="header">
-        <Navbar dark expand className={classes}>
-          <NavbarBrand styleName="nav-brand">
-            <Logo size="2.25rem" />
-          </NavbarBrand>
-          <Nav navbar styleName="nav" className="ml-auto">
-            <NavItem styleName="nav-item">
-              <SearchInput
-                styleName="nav-search-input"
-                onSearchPending={onSearchPending} />
-            </NavItem>
-            <NavItem styleName="nav-item">
-              <Avatar />
-            </NavItem>
-          </Nav>
-        </Navbar>
-      </Container>
-    </Headroom>
-  );
-};
+  }
 
-Header.propTypes = propTypes;
-Header.defaultProps = defaultProps;
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showSearchInput: false,
+      showSidebarNav: false
+    };
+  }
+
+  onSearch = query => {
+
+  }
+
+  toggleSidebar = () => {
+    this.setState(prevState => ({
+      showSidebarNav: !prevState.showSidebarNav
+    }));
+  }
+
+  toggleSearchInput = e => {
+
+  }
+
+  render() {
+    const { className, cssModule } = this.props;
+    const { showSearchInput, showSidebarNav } = this.state;
+    const classes = mapToCssModules(className, cssModule);
+
+
+    return (
+      <React.Fragment>
+        <Headroom downTolerance={3}>
+          <Container fluid styleName="header">
+            <Navbar 
+              dark 
+              expand 
+              styleName="navbar override"
+              className={classes}
+            >
+              <NavbarBrand
+                tag='button'
+                styleName="nav-toggler"
+                onClick={this.toggleSidebar}
+              >
+                <IoIosMenu style={{ fontSize: '2rem' }} />
+              </NavbarBrand>
+              <NavbarBrand styleName="nav-brand">
+                <Logo size="2.25rem" />
+              </NavbarBrand>
+              <Nav navbar>
+                <NavItem>
+                  <Button close styleName="search-toggler">
+                    <IoMdSearch />
+                  </Button>
+                </NavItem>
+                <NavItem>
+                  <Avatar />
+                </NavItem>
+              </Nav>
+            </Navbar>
+          </Container>
+        </Headroom>
+        <SidebarNav
+          show={showSidebarNav}
+          items={['movie', 'tv', 'people']}
+          onClose={this.toggleSidebar}
+        />
+      </React.Fragment>
+    );
+  }
+}
 
 export default Header;
