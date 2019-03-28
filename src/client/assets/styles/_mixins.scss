@@ -1,17 +1,13 @@
-@mixin underline ($selector: "&:hover", $bg: $light-color) {
-  
-  position: relative;
-
+@mixin underline ($selector: "&:hover", $bg: $light, $length: 100%, $thickness: 3px) {
   &:after {
     content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2px;
+    display: block;
+    margin: 0 auto;
+    height: $thickness;
+    width: $length;
     opacity: 0;
     background: #{$bg};
-    transform-origin: 0%;
+    transform-origin: 50%;
     transform: scaleX(0);
     transition: transform 0.2s, opacity 0.18s ease-in-out; 
   }
@@ -37,10 +33,10 @@
   }
 }
 
-@mixin card {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
 @mixin gradient-bg($origin: center, $shape: ellipse cover, $from: $gray-500 0%, $to: $black 70%) {
   background-image : radial-gradient($origin, $shape, $from, $to);
+}
+
+@mixin link {
+
 }

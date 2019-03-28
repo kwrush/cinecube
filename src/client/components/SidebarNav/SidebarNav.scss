@@ -1,0 +1,76 @@
+@import "../../assets/styles/_base.scss";
+
+.sidebar,
+.sidebar-backdrop {
+  position: fixed;
+}
+
+.sidebar-wrapper {
+  position: relative;
+  display: block;
+  z-index: $zindex-modal;
+}
+
+.sidebar-backdrop {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  background-color: $modal-backdrop-bg;
+  transition: opacity 0.3s ease-out;
+
+  &.show {
+    opacity: $modal-backdrop-opacity
+  }
+}
+
+.sidebar {
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: $light;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateX(-100%);
+
+  &.show {
+    transform: translateX(0);
+  }
+}
+
+.nav-item-link {
+  @include underline("&:hover", $theme-color, 25px);
+  @extend %link;
+  padding: 0.75rem;
+  font-size: $font-size-lg;
+  font-weight: bold;
+  color: $dark;
+  text-align: center;
+  display: block;
+
+  &:hover {
+    color: $dark;
+  }
+
+  &.active {
+    color: $theme-color;
+  }
+}
+
+.close-btn {
+  &.override {
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    color: $dark !important;
+    text-align: center;
+  }
+}
+

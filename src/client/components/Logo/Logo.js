@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { mapToCssModules } from '../../utils/helpers';
-import './_Logo.scss';
+import './Logo.scss';
 
 const propTypes = {
   color: PropTypes.string,
