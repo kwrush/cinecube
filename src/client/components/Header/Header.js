@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import {
-  Nav,
-  NavItem,
   Navbar,
   NavbarBrand,
   Button,
-  Container
+  Container,
 } from 'reactstrap';
 import Headroom from 'react-headroom';
-import { IoIosMenu, IoMdSearch } from 'react-icons/io';
+import { 
+  IoIosMenu, 
+  IoMdSearch, 
+  IoMdClose 
+} from 'react-icons/io';
 import { Logo } from '../Logo';
 import { Avatar } from '../Avatar';
 import { SearchInput } from '../SearchInput';
@@ -25,11 +28,7 @@ class Header extends React.PureComponent {
     cssModule: PropTypes.object
   }
 
-  static defaultProps = {
-
-  }
-
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -39,7 +38,7 @@ class Header extends React.PureComponent {
   }
 
   onSearch = query => {
-
+    this.props.history.push(`/search?query=${query}`);
   }
 
   toggleSidebar = () => {
@@ -49,45 +48,64 @@ class Header extends React.PureComponent {
   }
 
   toggleSearchInput = e => {
-
+    this.setState(prevState => ({
+      showSearchInput: !prevState.showSearchInput
+    }));
   }
 
   render() {
     const { className, cssModule } = this.props;
     const { showSearchInput, showSidebarNav } = this.state;
     const classes = mapToCssModules(className, cssModule);
-
+    const searchInputClasses = cx('header-search-input', { show: showSearchInput });
 
     return (
       <React.Fragment>
         <Headroom downTolerance={3}>
-          <Container fluid styleName="header">
-            <Navbar 
-              dark 
-              expand 
-              styleName="navbar override"
-              className={classes}
-            >
-              <NavbarBrand
-                tag='button'
-                styleName="nav-toggler"
-                onClick={this.toggleSidebar}
-              >
-                <IoIosMenu style={{ fontSize: '2rem' }} />
-              </NavbarBrand>
-              <NavbarBrand styleName="nav-brand">
-                <Logo size="2.25rem" />
-              </NavbarBrand>
-              <Nav navbar>
-                <NavItem>
-                  <Button close styleName="search-toggler">
-                    <IoMdSearch />
+          <Container 
+            fluid 
+            styleName="header"
+            className={classes}
+          >
+            <Navbar styleName="navbar override">
+              <div>
+                <Button
+                  styleName="nav-toggler"
+                  onClick={this.toggleSidebar}
+                >
+                  <IoIosMenu style={{ fontSize: '2rem' }} />
+                </Button>
+              </div>
+              <div styleName="header-main">
+                <NavbarBrand
+                  href="/"
+                  styleName="nav-brand"
+                >
+                  <Logo size="2.25rem" />
+                </NavbarBrand>
+                <Button 
+                  styleName="search-toggler"
+                  onClick={this.toggleSearchInput}
+                >
+                  <IoMdSearch />
+                </Button>
+                <div styleName={searchInputClasses}>
+                  <SearchInput
+                    onSearch={this.onSearch}
+                  />
+                  <Button
+                    styleName="search-toggler close"
+                    onClick={this.toggleSearchInput}
+                  >
+                    <IoMdClose />
                   </Button>
-                </NavItem>
-                <NavItem>
+                </div>
+              </div>
+              <div>
+                <Button styleName="nav-toggler">
                   <Avatar />
-                </NavItem>
-              </Nav>
+                </Button>
+              </div>
             </Navbar>
           </Container>
         </Headroom>
@@ -101,4 +119,4 @@ class Header extends React.PureComponent {
   }
 }
 
-export default Header;
+export default withRouter(Header);
