@@ -18,6 +18,7 @@ class StarRating extends React.PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number,
+    max: PropTypes.number,
     editable: PropTypes.bool,
     hover: PropTypes.bool,
     color: PropTypes.string,
@@ -26,6 +27,7 @@ class StarRating extends React.PureComponent {
 
   static defaultProps = {
     value: 0,
+    max: 5,
     editable: false,
     hover: false,
     color: '#ffc107'
@@ -40,6 +42,18 @@ class StarRating extends React.PureComponent {
     this.state = {
       value: v,
       origValue: v
+    }
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.value !== this.props.value) {
+
+      const v = roundToNearest(this.props.value, 0.25);
+
+      this.setState(prevState => ({
+        value: v,
+        origValue: v
+      }));
     }
   }
 
@@ -89,11 +103,11 @@ class StarRating extends React.PureComponent {
   }
 
   renderStars = () => {
-    const { name, editable, color } = this.props; 
+    const { name, max, editable, color } = this.props; 
     const { value, origValue } = this.state;
 
     const starCount = 5;
-    const v = value > starCount ? starCount : value;
+    const v = value * starCount / max;
 
     const starStyles = {
       margin: '0',
