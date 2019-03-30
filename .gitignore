@@ -22,6 +22,3 @@ src/**/*.css
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Add too much noise
-package-lock.json
