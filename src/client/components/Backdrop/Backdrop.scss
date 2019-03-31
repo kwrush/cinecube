@@ -16,7 +16,7 @@
     bottom: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.4);
-    box-shadow: inset 10px -20px 300px 150px $gray-900;
+    //box-shadow: inset 10px -20px 300px 150px $gray-900;
   }
 }
 
@@ -29,6 +29,13 @@
 .poster-mask {
   left: 12%;
   overflow: hidden;
+  transform-origin: left;
+}
+
+.poster {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .overview {

@@ -30,7 +30,7 @@ class BackdropCarousel extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
-      activeIndex: 0,
+      activeIndex: 0
     }
   }
 
@@ -46,6 +46,9 @@ class BackdropCarousel extends React.PureComponent {
 
   onExiting = () => {
     this._animating = true;
+    this.setState(prevState => ({
+      showOverview: false
+    }));
   }
 
   onExited = () => {
@@ -91,10 +94,9 @@ class BackdropCarousel extends React.PureComponent {
 
     return slices.map((slice, i) => (
       <CarouselItem
-        styleName="backdrop-holder"
-        onExiting={this.onExiting}
-        onExited={this.onExited}
         key={`backdrop_${i}`}
+        onExited={this.onExited}
+        onExiting={this.onExiting}
       >
         <Backdrop media={slice} show={i === this.state.activeIndex}/>
       </CarouselItem>
@@ -110,13 +112,16 @@ class BackdropCarousel extends React.PureComponent {
 
     return (
       <Carousel
+        styleName="backdrop-carousel"
         className={classes}
         activeIndex={activeIndex}
         next={this.nextSlice}
         previous={this.prevSlice}
         ride={'carousel'}
+        interval={0}
       >
         <CarouselIndicators
+          styleName="carousel-indicator-dots override"
           items={backdrops}
           activeIndex={activeIndex}
           onClickHandler={this.goToSlice}

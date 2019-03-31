@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { ProgressiveImage } from '../ProgressiveImage';
 import { MediaOverview } from '../MediaOverview';
 import { Poster } from '../Poster';
+import { useSpring, animated } from 'react-spring';
 import { getBackdropUrl, getPosterUrl } from '../../utils/imageUtils';
 import { mapToCssModules } from '../../utils/helpers';
 import './Backdrop.scss';
-import { useSpring, animated } from 'react-spring';
 
 
 const propTypes = {
