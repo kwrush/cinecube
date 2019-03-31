@@ -37,6 +37,6 @@
   background-image : radial-gradient($origin, $shape, $from, $to);
 }
 
-@mixin link {
-
+@mixin shadow-border($borderSize: 1px, $color: #0000) {
+  box-shadow: 0 0 0 $borderSize $color;
 }

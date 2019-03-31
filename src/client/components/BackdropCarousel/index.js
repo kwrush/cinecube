@@ -1,1 +1,1 @@
-export { default as BackdropCarousel } from './ResponsiveCarousel';
+export { default as BackdropCarousel } from './BackdropCarousel';

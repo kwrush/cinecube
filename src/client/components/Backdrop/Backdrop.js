@@ -1,69 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import posed from 'react-pose';
 import { ProgressiveImage } from '../ProgressiveImage';
-import MediaContent from './MediaContent';
-import classNames from 'classnames';
-import { getBackdropUrl } from '../../utils/imageUtils';
+import { MediaOverview } from '../MediaOverview';
+import { Poster } from '../Poster';
+import { getBackdropUrl, getPosterUrl } from '../../utils/imageUtils';
 import { mapToCssModules } from '../../utils/helpers';
 import './Backdrop.scss';
+import { useSpring, animated } from 'react-spring';
 
-const BackdropContainer = posed.div({
-  enter: { 
-    opacity: 1,
-    scale: 1,
-    staggerChildren: 1000
-  },
-  exit: { 
-    opacity: 0,
-    scale: 1.2,
-    staggerChildren: 50, 
-    staggerDirection: -1,
-    afterChildren: true
-  }
-});
 
 const propTypes = {
-  mediaEntity: PropTypes.shape({
-    ...MediaContent.propTypes,
+  media: PropTypes.shape({
+    ...MediaOverview.propTypes,
+    posterPath: PropTypes.string.isRequired,
     backdropPath: PropTypes.string.isRequired
   }).isRequired,
-  isIn: PropTypes.bool,
-  onPoseEnd: PropTypes.func,
+  show: PropTypes.bool,
   className: PropTypes.string,
   cssModule: PropTypes.object
 };
 
 const defaultProps = {
-  mediaEntity: {},
-  isIn: false,
-  onPoseEnd: () => {}
-}
+  show: false
+};
 
 const Backdrop = props => {
-  const { mediaEntity, isIn, onPoseEnd, className, cssModule } = props;
-  const activeClass = classNames('backdrop-container', { active: isIn });
+  const { media, show, className, cssModule } = props;
   const classes = mapToCssModules(className, cssModule);
 
+  const maskProps = useSpring({
+    transform: `translateX(${show ? 0 : '100%'})`,
+    from: {
+      transform: 'translateX(100%)'
+    },
+    delay: 300
+  });
+
   return (
-    <BackdropContainer
-      className={classes}
-      styleName={activeClass}
-      key={`backdrop_${mediaEntity.id}`}
-      pose={isIn ? 'enter' : 'exit'}
-      onPoseComplete={onPoseEnd}
-    >
+    <div className={classes} styleName="backdrop-container">
       <div styleName="backdrop-overlay">
         <ProgressiveImage
-          src={getBackdropUrl(mediaEntity.backdropPath, 'lg')}
-          placeholder={getBackdropUrl(mediaEntity.backdropPath, 's')}
+          src={getBackdropUrl(media.backdropPath, 'lg')}
+          placeholder={getBackdropUrl(media.backdropPath, 's')}
         />
       </div>
-      <MediaContent
-        styleName="media-content"
-        content={mediaEntity}
+      <div styleName="poster-mask">
+        <animated.div style={maskProps}>
+          <Poster
+            imageURL={getPosterUrl(media.posterPath, 'm')}
+            previewURL={getPosterUrl(media.posterPath, 'xs')}
+            title={media.title}
+          />
+        </animated.div>
+      </div>
+      <MediaOverview 
+        media={media} 
+        show={show} 
+        delay={400} 
+        styleName="overview"
       />
-    </BackdropContainer>
+    </div>
   );
 };
 

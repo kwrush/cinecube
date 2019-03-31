@@ -9,12 +9,15 @@
   }
 }
 
-%text-btn {
+%plain-btn {
   outline: none !important;
   border: none !important;
+  border-radius: 0; 
+}
+
+%text-btn {
+  @extend %plain-btn;
   box-shadow: none !important;
   background: none !important;
-  border-radius: 0;
-  
 }
 

@@ -4,6 +4,8 @@ import { Header } from '../components/Header';
 import { fetchPopularMovies } from '../actions/movieActions';
 import { getPopularMedia } from '../selectors/mediaSelectors';
 import { BackdropCarousel } from '../components/BackdropCarousel';
+import { MediaOverview } from '../components/MediaOverview';
+import { Backdrop } from '../components/Backdrop';
 
 class Home extends React.Component {
 
@@ -18,8 +20,7 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Header />
-        <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 4) : []} />
+        <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 5) : []} />
       </div>
     );
   }

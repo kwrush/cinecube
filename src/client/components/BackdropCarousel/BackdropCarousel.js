@@ -13,7 +13,7 @@ import './BackdropCarousel.scss';
 class BackdropCarousel extends React.PureComponent {
   static propTypes = {
     mediaEntities: PropTypes.arrayOf(
-      Backdrop.propTypes.mediaEntities
+      Backdrop.propTypes.media
     ),
     initialIndex: PropTypes.number,
     onActiveIndex: PropTypes.func,
@@ -96,7 +96,7 @@ class BackdropCarousel extends React.PureComponent {
         onExited={this.onExited}
         key={`backdrop_${i}`}
       >
-        <Backdrop mediaEntities={slice} />
+        <Backdrop media={slice} show={i === this.state.activeIndex}/>
       </CarouselItem>
     ));
   }

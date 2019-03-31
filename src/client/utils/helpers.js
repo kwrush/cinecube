@@ -1,4 +1,10 @@
-import { merge, camelCase, unionWith, isEqual } from 'lodash';
+import { 
+  merge, 
+  camelCase, 
+  unionWith, 
+  isEqual 
+} from 'lodash';
+import { Util } from 'reactstrap';
 
 export const generateActions = (actions) => {
   const actionMap = {};
@@ -59,14 +65,7 @@ export const differenceInTime = (d1, d2, format) => {
   return (new Date(d2) - new Date(d1)) / factor;
 };
 
-export const mapToCssModules  = (className = '', cssModule) => {
-  if (!cssModule) return className;
-
-  return className
-    .split(/\s+/)
-    .map(c => cssModule[c] || c)
-    .join(' ');
-};
+export const mapToCssModules  = Util.mapToCssModules;
 
 export const camelCaseKey = (obj) => {
   const newObj = Array.isArray(obj) ? [] : {};

@@ -93,6 +93,7 @@ class StarRating extends React.PureComponent {
   }
 
   renderStar = (value, i) => {
+    
     if (value > i) {
       return <IoIosStar />;
     } else if (value === i) {
@@ -110,9 +111,9 @@ class StarRating extends React.PureComponent {
     const v = value * starCount / max;
 
     const starStyles = {
+      display: 'flex',
       margin: '0',
       padding: '0 1px',
-      float: 'left',
       corsor: editable ? 'pointer' : 'default',
       color
     };
@@ -164,7 +165,7 @@ class StarRating extends React.PureComponent {
     return (
       <div 
         className={classes} 
-        style={{ display: 'inline-block', position: 'relative' }}
+        style={{ display: 'flex', position: 'relative' }}
       >
         { this.renderStars() }
       </div>
