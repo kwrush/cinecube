@@ -5,20 +5,17 @@ import {
  } from 'react-router-dom';
 
 import { PEOPLE_ROUTES } from '../constants/routes';
-import Home from '../pages/people/Home';
-import Popular from '../pages/people/Popular';
+import {
+  PeopleHome,
+  PeopleInfo
+} from '../pages/people';
 import NotFound from '../pages/404';
 
 
 const People= props => (
   <Switch>
-    <Route path="/" component={Home} />
-    <Route path={PEOPLE_ROUTES.popular} component={Popular} />
-    <Route path={PEOPLE_ROUTES.discover} component={Popular} />
-    <Route path={PEOPLE_ROUTES.topRated} component={Popular} />
-    <Route path={PEOPLE_ROUTES.upcoming} component={Popular} />
-    <Route path={PEOPLE_ROUTES.inTheatre} component={Popular} />
-    <Route path={PEOPLE_ROUTES.info} component={Popular} />
+    <Route exact path={PEOPLE_ROUTES.home} component={PeopleHome} />
+    <Route path={PEOPLE_ROUTES.detail} component={PeopleInfo} />
     <Route component={NotFound} />
   </Switch>
 );

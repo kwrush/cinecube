@@ -23,12 +23,15 @@ class PosterCarousel extends React.PureComponent {
         voteAverage: PropTypes.number.isRequired
       })
     ),
+    // for responsive testing
+    _values: PropTypes.object,
     className: PropTypes.string,
     cssModule: PropTypes.object
   }
 
   static defaultProps = {
-    mediaEntities: []
+    mediaEntities: [],
+    _values: {}
   }
 
   constructor (props) {
@@ -36,17 +39,9 @@ class PosterCarousel extends React.PureComponent {
 
     this.state = {
       activeIndex: 0,
-      posterPerSlice: 4
     };
-  }
 
-  componentDidMount () {
     this._animating = false;
-    this._activeIndex = this.state.activeIndex;
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    this._activeIndex = prevState.activeIndex;
   }
 
   next = () => {
@@ -81,18 +76,11 @@ class PosterCarousel extends React.PureComponent {
     this._animating = true;
   }
 
-  calculateInitialIndex = itemPerSlice => {
-    if (itemPerSlice === this._itemPerSlice) return this._activeIndex;
-
-    return itemPerSlice > this._itemPerSlice
-      ? Math.floor(this._activeIndex / 2)
-      : this._activeIndex * 2;
-  }
-
   renderCarouselItem = entities => {
     const { cssModule } = this.props;
     const posterContainerClasses = mapToCssModules(
       'd-flex justify-content-center', cssModule);
+    const posterClasses = mapToCssModules('ml-3 mr-3', cssModule);
 
     return (
       <div className={posterContainerClasses}>
@@ -101,8 +89,14 @@ class PosterCarousel extends React.PureComponent {
             const posterURL = getPosterUrl(media.posterPath, 's');
             const previewURL = getPosterUrl(media.posterPath, 'xs');
             return (
-              <div key={`poster_${media.id}`}>
-                <Link style={{ display: 'block' }} to={`/${media.mediaType}/${media.id}`}>
+              <div 
+                key={`poster_${media.id}`}
+                className={posterClasses}
+              >
+                <Link 
+                  style={{ display: 'block' }} 
+                  to={`/${media.mediaType}/${media.id}`}
+                >
                   <Poster
                     imageURL={posterURL}
                     previewURL={previewURL}
@@ -116,13 +110,13 @@ class PosterCarousel extends React.PureComponent {
     );
   }
 
-  renderCarousel = (entities, initialIndex) => {
+  renderCarousel = entities => {
     const { className, cssModule } = this.props;
     const { activeIndex } = this.state;
     const classes = mapToCssModules(className, cssModule);
 
     const carouselItems = entities.map((contents, index) => (
-      <CarouselItem 
+      <CarouselItem
         key={`poster_section_${index}`}
         onExited={this.onExited}
         onExiting={this.onExiting}
@@ -155,16 +149,13 @@ class PosterCarousel extends React.PureComponent {
   }
 
   render () {
-    const { mediaEntities } = this.props;
+    const { mediaEntities, _values } = this.props;
     return (
-      <MediaQuery maxWidth={767}>
+      <MediaQuery maxWidth={767} values={_values}>
         {
           match => {
             const itemPerSlice = match ? 2 : 4;
-            const initialIndex = this.calculateInitialIndex(itemPerSlice);
-
-            this._itemPerSlice = itemPerSlice;
-            const entities = chunk(mediaEntities, this._itemPerSlice);
+            const entities = chunk(mediaEntities, itemPerSlice);
             this._slidesCount = entities.length;
             return this.renderCarousel(entities);
           }

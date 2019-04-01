@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Popular = props => (
+const MovieInfo = props => (
   <div>This is detail of a movie</div>
 );
 
-export default Popular;
+export default MovieInfo;

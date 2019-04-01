@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchPopularMovies } from '../actions/movieActions';
-import { fetchPopularTvs } from '../actions/tvActions';
-import { getPopularMedia } from '../selectors/mediaSelectors';
-import { BackdropCarousel } from '../components/BackdropCarousel';
-import { PosterCarousel } from '../components/PosterCarousel';
+import { fetchPopularMovies } from '../../actions/movieActions';
+import { fetchPopularTvs } from '../../actions/tvActions';
+import { getPopularMedia } from '../../selectors/mediaSelectors';
+import { BackdropCarousel } from '../../components/BackdropCarousel';
+import { PosterCarousel } from '../../components/PosterCarousel';
 
 class Home extends React.Component {
 
@@ -22,7 +22,7 @@ class Home extends React.Component {
         <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 5) : []} />
         <div>
           <h1>Popular Movies</h1>
-          <PosterCarousel mediaEntities={popularMovies ? popularMovies.slice(6, 20) : []} />
+          <PosterCarousel mediaEntities={popularMovies ? popularMovies.slice(5, 20) : []} />
         </div>
         <div>
           <h1>Popular Series</h1>

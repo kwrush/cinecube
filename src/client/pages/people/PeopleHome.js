@@ -1,9 +1,9 @@
 import React from 'react';
 
-const PeopleHomePage = props => (
+const PeopleHome = props => (
   <div>
     <h1>Home page of people</h1>
   </div>
 );
 
-export default PeopleHomePage;
+export default PeopleHome;

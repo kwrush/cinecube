@@ -5,19 +5,17 @@ import {
  } from 'react-router-dom';
 
 import { TV_ROUTES } from '../constants/routes';
-import Home from '../pages/tv/Home';
-import Popular from '../pages/tv/Popular';
+import {
+  TvHome,
+  TvInfo
+} from '../pages/tv';
 import NotFound from '../pages/404';
 
 
 const TV = props => (
   <Switch>
-    <Route path="/" component={Home} />
-    <Route path={TV_ROUTES.popular} component={Popular} />
-    <Route path={TV_ROUTES.topRated} component={Popular} />
-    <Route path={TV_ROUTES.upcoming} component={Popular} />
-    <Route path={TV_ROUTES.inTheatre} component={Popular} />
-    <Route path={TV_ROUTES.info} component={Popular} />
+    <Route exact path={TV_ROUTES.home} component={TvHome} />
+    <Route path={TV_ROUTES.detail} component={TvInfo} />
     <Route component={NotFound} />
   </Switch>
 );

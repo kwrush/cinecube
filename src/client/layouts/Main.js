@@ -10,7 +10,7 @@ import {
   PEOPLE_ROUTES
 } from '../constants/routes';
 
-import Home from '../pages/Home';
+import Home from '../pages/home/Home';
 import Movie from './Movie';
 import TV from './TV';
 import People from './People';
