@@ -1,8 +1,8 @@
 @import "../../assets/styles/_base.scss";
 
-.header {
-  background: $theme-bg;
-  height: 64px;
+.header-container {
+  position: relative;
+  z-index: $zindex-sticky;
 }
 
 .navbar {
@@ -13,33 +13,39 @@
   }
 }
 
-.header-brand,
 .header-main {
   display: flex;
   justify-content: center;
-  overflow: hidden;
   align-items: center;
-}
-
-.header-main {
+  flex-wrap: wrap;
   position: relative;
   flex: 1;
   z-index: 1;
 }
 
+.nav-toggler,
+.search-toggler {
+  @extend %text-btn;
+  font-size: $font-size-xl !important;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 // Override default brand color
-.nav-brand,
+.header-brand,
 .nav-toggler,
 .search-toggler {
   color: $theme-color !important;
 }
 
-.nav-toggler,
-.search-toggler {
-  @extend %text-btn;
-  &:hover {
-    cursor: pointer;
-  }
+.header-brand {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-toggler {
+  font-size: $font-size-xl;
 }
 
 .search-toggler {
@@ -48,7 +54,6 @@
   right: 0;
   height: 100%;
   display: block;
-  font-size: $font-size-lg !important;
   transition: opacity 0.2s ease-in;
 
   &.close {
@@ -56,16 +61,12 @@
   }
 }
 
-.header-search-input {
+.header-search{
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
-  &.show {
-    display: block;
-  }
 }
 
 

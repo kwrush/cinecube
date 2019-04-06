@@ -1,0 +1,47 @@
+@import "../../assets/styles/_base.scss";
+
+.sidebar-wrapper {
+  position: relative;
+  z-index: $zindex-modal;
+}
+
+.sidebar-backdrop,
+.sidebar {
+  position: fixed;
+}
+
+.sidebar-backdrop {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $modal-backdrop-bg;
+}
+
+.sidebar {
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: $light;
+}
+
+.close-btn {
+  &.override {
+    @extend %text-btn;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 46px;
+    height: 46px;
+    color: $dark !important;
+    font-size: $font-size-lg;
+    text-align: center;
+  }
+}
+
+
+

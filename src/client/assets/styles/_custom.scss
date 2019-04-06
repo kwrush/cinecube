@@ -13,11 +13,11 @@
   outline: none !important;
   border: none !important;
   border-radius: 0; 
+  box-shadow: none !important;
 }
 
 %text-btn {
   @extend %plain-btn;
-  box-shadow: none !important;
   background: none !important;
 }
 

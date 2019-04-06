@@ -5,21 +5,22 @@ import {
   Navbar,
   NavbarBrand,
   Button,
-  Container,
 } from 'reactstrap';
 import Headroom from 'react-headroom';
-import { 
-  IoIosMenu, 
-  IoMdSearch, 
-  IoMdClose 
-} from 'react-icons/io';
+import { IoMdMenu } from 'react-icons/io';
 import { Logo } from '../Logo';
 import { Avatar } from '../Avatar';
-import { SearchInput } from '../SearchInput';
-import { SidebarNav } from '../SidebarNav';
+import SidebarNav  from './SidebarNav';
+import Toggler from './Toggler';
+import HeaderSearch from './HeaderSearch';
 import cx from 'classnames';
 import { mapToCssModules } from '../../utils/helpers';
 import './Header.scss';
+
+export const SidebarContext= React.createContext({
+  openSidebar: false,
+  onToggleSidebar: () => {}
+});
 
 class Header extends React.PureComponent {
 
@@ -32,8 +33,7 @@ class Header extends React.PureComponent {
     super(props);
 
     this.state = {
-      showSearchInput: false,
-      showSidebarNav: false
+      openSidebar: false
     };
   }
 
@@ -43,77 +43,47 @@ class Header extends React.PureComponent {
 
   toggleSidebar = () => {
     this.setState(prevState => ({
-      showSidebarNav: !prevState.showSidebarNav
-    }));
-  }
-
-  toggleSearchInput = e => {
-    this.setState(prevState => ({
-      showSearchInput: !prevState.showSearchInput
+      openSidebar: !prevState.openSidebar
     }));
   }
 
   render() {
     const { className, cssModule } = this.props;
-    const { showSearchInput, showSidebarNav } = this.state;
+    const { openSidebar } = this.state;
     const classes = mapToCssModules(className, cssModule);
-    const searchInputClasses = cx('header-search-input', { show: showSearchInput });
 
     return (
       <React.Fragment>
-        <Headroom downTolerance={3}>
-          <Container 
-            fluid 
-            styleName="header"
+        <Headroom downTolerance={3} styleName="header-container">
+          <Navbar 
+            styleName="navbar override" 
             className={classes}
           >
-            <Navbar styleName="navbar override">
-              <div>
-                <Button
-                  styleName="nav-toggler"
-                  onClick={this.toggleSidebar}
-                >
-                  <IoIosMenu style={{ fontSize: '2rem' }} />
-                </Button>
-              </div>
-              <div styleName="header-main">
-                <NavbarBrand
-                  href="/"
-                  styleName="nav-brand"
-                >
-                  <Logo size="2.25rem" />
-                </NavbarBrand>
-                <Button 
-                  styleName="search-toggler"
-                  onClick={this.toggleSearchInput}
-                >
-                  <IoMdSearch />
-                </Button>
-                <div styleName={searchInputClasses}>
-                  <SearchInput
-                    onSearch={this.onSearch}
-                  />
-                  <Button
-                    styleName="search-toggler close"
-                    onClick={this.toggleSearchInput}
-                  >
-                    <IoMdClose />
-                  </Button>
-                </div>
-              </div>
-              <div>
-                <Button styleName="nav-toggler">
-                  <Avatar />
-                </Button>
-              </div>
-            </Navbar>
-          </Container>
+            <Toggler styleName="nav-toggler" onToggle={this.toggleSidebar}>
+              <IoMdMenu />
+            </Toggler>
+            <div styleName="header-main">
+              <NavbarBrand 
+                href="/"
+                styleName="header-brand"
+              >
+                <Logo size="2.25rem" />
+              </NavbarBrand>
+              <HeaderSearch styleName="header-search" />
+            </div>
+            <div>
+              <Button styleName="nav-toggler">
+                <Avatar />
+              </Button>
+            </div>
+          </Navbar>
         </Headroom>
-        <SidebarNav
-          show={showSidebarNav}
-          items={['movie', 'tv', 'people']}
-          onClose={this.toggleSidebar}
-        />
+        <SidebarContext.Provider value={{
+          openSidebar,
+          onToggleSidebar: this.toggleSidebar
+        }}>
+          <SidebarNav items={['movie', 'tv', 'people']} />
+        </SidebarContext.Provider>
       </React.Fragment>
     );
   }

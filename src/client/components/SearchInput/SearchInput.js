@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
 import {
   InputGroup,
   InputGroupAddon,
-  Button,
   Input
 } from 'reactstrap';
 import { IoMdSearch } from 'react-icons/io';
@@ -23,14 +21,6 @@ class SearchInput extends React.PureComponent {
     onSearch: () => {}
   }
 
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      query: ''
-    };
-  }
-
   componentWillMount () {
     this.refs = {};
   }
@@ -39,7 +29,7 @@ class SearchInput extends React.PureComponent {
     const query = this.getInputValue();
     // Don't submit search request if query is too short
     if (query.length < 2) return;
-
+    
     this.props.onSearch(query);
   }
   

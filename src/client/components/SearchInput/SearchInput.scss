@@ -4,17 +4,18 @@
   &.override {
     width: 100%;
     height: 100%;
-    background: $gray-800;
+    background: inherit;
     display: flex;
     align-items: center;
   }
 }
 
 .input-addon {
-  margin: 0 12px;
+  padding: 6px 4px 6px 12px;
   font-size: $font-size-lg;
   color: $theme-color;
   display: flex;
+  height: 100%;
   align-items: center;
 }
 

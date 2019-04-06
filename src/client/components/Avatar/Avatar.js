@@ -5,7 +5,7 @@ import { ProgressiveImage } from '../ProgressiveImage';
 import { mapToCssModules } from '../../utils/helpers';
 import './Avatar.scss';
 
-const defaultAvatar = require('../../assets/images/default_user_avatar.svg');
+const defaultAvatar = require('../../assets/images/default_user_avatar.png');
 
 const propTypes = {
   src: PropTypes.string,

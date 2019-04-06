@@ -1,0 +1,22 @@
+@import "../../assets/styles/_base.scss";
+
+.nav-item-link {
+  @include underline("&:hover", $theme-color, 25px);
+  @extend %link;
+  padding: 0.75rem;
+  font-size: $font-size-lg;
+  font-weight: bold;
+  color: $dark;
+  text-align: center;
+  display: block;
+
+  &:hover {
+    color: $dark;
+  }
+
+  &.active {
+    color: $theme-color;
+  }
+}
+
+
