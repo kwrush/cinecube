@@ -11,7 +11,7 @@ class GenreRoutes extends Routable {
 
   _registerRoutes () {
 
-    const baseURL = `/${this._VERSON}/genres`;
+    const baseURL = `/${this._VERSION}/genres`;
 
     this._router.get(
       `${baseURL}/movie`,

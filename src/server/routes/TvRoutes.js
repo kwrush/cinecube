@@ -11,11 +11,21 @@ class TvRoutes extends Routable {
 
   _registerRoutes () {
 
-    const baseURL = `/${this._VERSON}/tv`;
+    const baseURL = `/${this._VERSION}/tv`;
 
     this._router.get(
       `${baseURL}/popular`,
       this._getPopularTvs.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/top-rated`,
+      this._getTopRatedTvs.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/on-air`,
+      this._getOnAirTvs.bind(this)
     );
 
     this._router.get(
@@ -47,10 +57,27 @@ class TvRoutes extends Routable {
       `${baseURL}/:id(\\d+)/similar`,
       this._getSimilarTvs.bind(this)
     );
+
+    this._router.get(
+      `${baseURL}/:id(\\d+)/recommend`,
+      this._getRecommendTvs.bind(this)
+    );
   }
 
   _getPopularTvs (req, res, next) {
     this._tvServices.getPopularTvs(req.query)
+      .then(data => res.send(data))
+      .catch(next);
+  }
+
+  _getOnAirTvs (req, res, next) {
+    this._tvServices.getOnAirTvs(req.query)
+      .then(data => res.send(data))
+      .catch(next);
+  }
+
+  _getTopRatedTvs (req, res, next) {
+    this._tvServices.getTopRatedTvs(req.query)
       .then(data => res.send(data))
       .catch(next);
   }
@@ -107,6 +134,16 @@ class TvRoutes extends Routable {
     const { id } = req.params;
 
     this._tvServices.getSimilarTvs(id, req.query)
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
+      .catch(next);
+  }
+
+  _getRecommendTvs (req, res, next) {
+    const { id } = req.params;
+
+    this._tvServices.getRecommendTvs(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })

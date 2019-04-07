@@ -11,7 +11,7 @@ class SearchRoutes extends Routable {
 
   _registerRoutes () {
 
-    const baseURL = `/${this._VERSON}/search`;
+    const baseURL = `/${this._VERSION}/search`;
 
     this._router.get(
       `${baseURL}`,

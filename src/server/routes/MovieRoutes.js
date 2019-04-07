@@ -6,16 +6,31 @@ class MovieRoutes extends Routable {
 
   constructor (router) {
     super(router);
-    this._movieServices = new MovieServices(tmdb);
+    this._services = new MovieServices(tmdb);
   }
 
   _registerRoutes () {
 
-    const baseURL = `/${this._VERSON}/movie`;
+    const baseURL = `/${this._VERSION}/movie`;
 
     this._router.get(
       `${baseURL}/popular`,
       this._getPopularMovies.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/upcoming`,
+      this._getUpcomingMovies.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/now-playing`,
+      this._getNowPlayingMovies.bind(this)
+    );
+
+    this._router.get(
+      `${baseURL}/top-rated`,
+      this._getTopRatedMovies.bind(this)
     );
 
     this._router.get(
@@ -47,17 +62,40 @@ class MovieRoutes extends Routable {
       `${baseURL}/:id(\\d+)/similar`,
       this._getSimilarMovies.bind(this)
     );
+
+    this._router.get(
+      `${baseURL}/:id(\\d+)/recommendation`,
+      this._getRecommendMovies.bind(this)
+    );
   }
 
   _getPopularMovies (req, res, next) {
-    this._movieServices.getPopularMovies(req.query)
+    this._services.getPopularMovies(req.query)
+      .then(data => res.send(data))
+      .catch(next);
+  }
+
+  _getUpcomingMovies (req, res, next) {
+    this._services.getUpcomingMovies(req.query)
+      .then(data => res.send(data))
+      .catch(next);
+  }
+
+  _getNowPlayingMovies (req, res, next) {
+    this._services.getNowPlayingMovies(req.query)
+      .then(data => res.send(data))
+      .catch(next);
+  }
+
+  _getTopRatedMovies (req, res, next) {
+    this._services.getTopRatedMovies(req.query)
       .then(data => res.send(data))
       .catch(next);
   }
 
   _getMovie (req, res, next) {
     const { id } = req.params;
-    this._movieServices.getMovie(id, req.query)
+    this._services.getMovie(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -66,7 +104,7 @@ class MovieRoutes extends Routable {
 
   _getMovieInfo (req, res, next) {
     const { id } = req.params;
-    this._movieServices.getMovieInfo(id, req.query)
+    this._services.getMovieInfo(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -76,7 +114,7 @@ class MovieRoutes extends Routable {
   _getMovieCredits (req, res, next) {
     const { id } = req.params;
 
-    this._movieServices.getMovieCredits(id, req.query)
+    this._services.getMovieCredits(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -86,7 +124,7 @@ class MovieRoutes extends Routable {
   _getMovieImages (req, res, next) {
     const { id } = req.params;
 
-    this._movieServices.getMovieImages(id, req.query)
+    this._services.getMovieImages(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -96,7 +134,7 @@ class MovieRoutes extends Routable {
   _getMovieVideos (req, res, next) {
     const { id } = req.params;
 
-    this._movieServices.getMovieVideos(id, req.query)
+    this._services.getMovieVideos(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })
@@ -106,7 +144,17 @@ class MovieRoutes extends Routable {
   _getSimilarMovies (req, res, next) {
     const { id } = req.params;
 
-    this._movieServices.getSimilarMovies(id, req.query)
+    this._services.getSimilarMovies(id, req.query)
+      .then(data => {
+        data ? res.send(data) : res.status(404).end();
+      })
+      .catch(next);
+  }
+
+  _getRecommendMovies (req, res, next) {
+    const { id } = req.params;
+
+    this._services.getRecommendMovies(id, req.query)
       .then(data => {
         data ? res.send(data) : res.status(404).end();
       })

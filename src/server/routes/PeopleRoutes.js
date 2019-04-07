@@ -11,7 +11,7 @@ class PeopleRoutes extends Routable {
 
   _registerRoutes () {
 
-    const baseURL = `/${this._VERSON}/people`;
+    const baseURL = `/${this._VERSION}/people`;
 
     this._router.get(
       `${baseURL}/popular`,

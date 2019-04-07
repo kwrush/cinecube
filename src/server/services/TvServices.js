@@ -1,4 +1,3 @@
-const { pick } = require('lodash');
 const Servable = require('./Servable');
 const { normalize } = require('normalizr');
 const schemas = require('../utils/schema');
@@ -6,84 +5,108 @@ const { mapResultsToKey } = require('../utils/helper');
 
 class TvServices extends Servable {
 
-  getPopularTvs (options = {}) {
-    return this
-      ._makeRequest(options, this._api.miscPopularTvs)
-      .then(data => mapResultsToKey(
-        normalize(data, schemas.mediaResults),
-        'tv'
-      ));
+  async _getTvResults (options = {}, func) {
+    const result = await this
+      ._makeRequest(options, func);
+
+    return mapResultsToKey(
+      normalize(result, schemas.mediaResults),
+      'tv'
+    );
   }
 
-  getTv (id, options = {}) {
+  async getPopularTvs (options = {}) {
+    return this
+      ._getTvResults(options, this._api.miscPopularTvs);
+  }
 
-    return Promise.all([
-      this.getTvInfo(id, options),
-      this.getTvCredits(id, options),
-      this.getTvImages(id, options),
-      this.getTvVideos(id, options),
-      this.getSimilarTvs(id, options)
-    ])
-    .then(([
+  async getOnAirTvs (options = {}) {
+    return this
+      ._getTvResults(options, this._api.tvOnTheAir);
+  }
+
+  async getTopRatedTvs (options = {}) {
+    return this
+      ._getTvResults(options, this._api.miscTopRatedTvs);
+  }
+
+  async getTv (id, options = {}) {
+
+    const [
       info, 
       credits,
       images,
       videos,
-      similar
-    ]) => {
+      similar,
+      recommendation
+    ] = await Promise.all([
+      this.getTvInfo(id, options),
+      this.getTvCredits(id, options),
+      this.getTvImages(id, options),
+      this.getTvVideos(id, options),
+      this.getSimilarTvs(id, options),
+      this.getRecommendTvs(id, options)
+    ]);
 
-      const res = {
-        ...info,
-        ...credits,
-        ...images,
-        videos: videos.results,
-        similar: similar.result
-      };
+    const res = {
+      ...info,
+      ...credits,
+      ...images,
+      videos: videos.results,
+      similar: similar.result,
+      recommendation: recommendation.result
+    };
 
-      return {
-        entities: {
-          tv: {
-            ...similar.entities,
-            [info.id]: res
-          }
-        },
-        result: { id: info.id }
-      };
-    });
+    return {
+      entities: {
+        tv: {
+          ...similar.entities,
+          ...recommendation.entities,
+          [info.id]: res
+        }
+      },
+      result: { id: info.id }
+    };
   }
 
-  getTvInfo (id, options = {}) {
+  async getTvInfo (id, options = {}) {
     return this
       ._makeRequestById(id, options, this._api.tvInfo);
   }
   
-  getTvImages (id, options = {}) {
+  async getTvImages (id, options = {}) {
     return this
       ._makeRequestById(id, options, this._api.tvImages);
   }
 
-  getTvVideos (id, options = {}) {
+  async getTvVideos (id, options = {}) {
     return this
       ._makeRequestById(id, options, this._api.tvVideos);
   }
 
-  getTvCredits (id, options = {}) {
+  async getTvCredits (id, options = {}) {
     return this
       ._makeRequestById(id, options, this._api.tvCredits);
   }
 
-  getSimilarTvs (id, options = {}) {
-    return this
-      ._makeRequestById(id, options, this._api.tvSimilar)
-      .then(data => {
-        const n = normalize(data, schemas.mediaResults);
-        // keep the first 10 or fewer results
-        const toKeep = n.result.results.slice(0, 10);
-        return {
-          entities: pick(n.entities.results, toKeep),
-          result: toKeep
-        };
-      });
+  async getSimilarTvs (id, options = {}) {
+    const data = await this
+      ._makeRequestById(id, options, this._api.tvSimilar);
+    const normalized = normalize(data, schemas.mediaResults);
+    return {
+      entities: { ...normalized.entities.results },
+      result: normalized.result.results
+    };
+  }
+
+  async getRecommendTvs (id, options = {}) {
+    const data = await this
+      ._makeRequestById(id, options, this._api.tvRecommend);
+    const normalized = normalize(data, schemas.mediaResults);
+    return {
+      entities: { ...normalized.entities.results },
+      result: normalized.result.results
+    };
   }
 }
 

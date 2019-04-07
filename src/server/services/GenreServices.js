@@ -4,18 +4,18 @@ const schemas = require('../utils/schema');
 
 class GenreServices extends Servable {
 
-  getMovieGenres (options = {}) {
+  async getMovieGenres (options = {}) {
     const { language } = options;
-    return this
-      ._makeRequest({ language: language }, this._api.genreMovieList)
-      .then(data => normalize(data, schemas.genreResults));
+    const data = await this
+      ._makeRequest({ language }, this._api.genreMovieList);
+    return normalize(data, schemas.genreResults);
   }
 
-  getTvGenres (options = {}) {
+  async getTvGenres (options = {}) {
     const { language } = options;
-    return this
-      ._makeRequest({ language: language }, this._api.genreTvList)
-      .then(data => normalize(data, schemas.genreResults));
+    const data = await this
+      ._makeRequest({ language }, this._api.genreTvList);
+    return normalize(data, schemas.genreResults);
   }
 }
 
