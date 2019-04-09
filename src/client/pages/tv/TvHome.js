@@ -5,21 +5,11 @@ import {
   Button,
   Container,
   Row,
-  Col,
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText
+  Col
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { Poster } from '../../components/Poster';
-import { chunk } from 'lodash';
+import { TvPosterCard } from '../../components/PosterCard';
 import { fetchPopularTvs } from '../../actions/tvActions';
 import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
-import { getPosterUrl } from '../../utils/imageUtils';
-import { StarRating } from '../../components/StarRating';
-import { mapToCssModules } from '../../utils/helpers';
 
 class MovieHome extends React.Component {
 
@@ -62,61 +52,31 @@ class MovieHome extends React.Component {
     }));
   }
 
-  renderMovieList = entities => {
-    const { cssModule } = this.props
-    const cardClasses = mapToCssModules(
-      'd-flex justify-content-center', cssModule);
-
-    return entities.map((tvs, index) => {
-      return (
-        <Row key={`tv_row_${index}`}>
-          {
-            tvs.map(tv => {
-              const posterURL = getPosterUrl(tv.posterPath, 'm');
-              const previewURL = getPosterUrl(tv.posterPath, 'xs');
-              const tvLink = `/tv/${tv.id}`;
-              return (
-                <Col 
-                  key={`tv_${tv.id}`}
-                  md="6"
-                  sm="12"
-                >
-                  <Card className={cardClasses}>
-                    <Link 
-                      to={tvLink}
-                      style={{ display: 'block' }}
-                    >
-                      <Poster
-                        imageURL={posterURL}
-                        previewURL={previewURL}
-                      />
-                    </Link>
-                    <CardBody>
-                      <CardTitle>{tv.title}</CardTitle>
-                      <CardSubtitle>
-                        <StarRating value={tv.voteAverage} max={10} />
-                      </CardSubtitle>
-                      <CardText>
-                        { tv.overview }
-                      </CardText>
-                      <Link to={tvLink}>View More</Link>
-                    </CardBody>
-                  </Card>
-                </Col>
-              )
-            })
-          }
-        </Row>
-      );
-    });
+  renderMovieList = tvs => {
+    return (
+      <Row>
+        {
+          tvs.map(tv => (
+            <Col
+              key={`tv_${tv.id}`}
+              lg="3"
+              md="4"
+              sm="6"
+              xs="12"
+            >
+              <TvPosterCard media={tv} />
+            </Col>
+          ))
+        }
+      </Row>
+    );
   }
 
   render () {
     const { tvs } = this.props;
-    const entities = chunk(tvs, Math.ceil(tvs.length / 2));
     return (
       <Container>
-        { this.renderMovieList(entities) }
+        { this.renderMovieList(tvs) }
         <Button onClick={this.nextPage}>Load more</Button>
       </Container>
     );

@@ -6,20 +6,10 @@ import {
   Container,
   Row,
   Col,
-  Card,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardText
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { Poster } from '../../components/Poster';
-import { chunk } from 'lodash';
 import { fetchPopularMovies } from '../../actions/movieActions';
 import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
-import { getPosterUrl } from '../../utils/imageUtils';
-import { StarRating } from '../../components/StarRating';
-import { mapToCssModules } from '../../utils/helpers';
+import { MoviePosterCard } from '../../components/PosterCard';
 
 class MovieHome extends React.Component {
 
@@ -62,61 +52,30 @@ class MovieHome extends React.Component {
     }));
   }
 
-  renderMovieList = entities => {
-    const { cssModule } = this.props
-    const cardClasses = mapToCssModules(
-      'd-flex justify-content-center', cssModule);
-
-    return entities.map((movies, index) => {
-      return (
-        <Row key={`movie_row_${index}`}>
-          {
-            movies.map(movie => {
-              const posterURL = getPosterUrl(movie.posterPath, 'm');
-              const previewURL = getPosterUrl(movie.posterPath, 'xs');
-              const movieLink = `/movie/${movie.id}`;
-              return (
-                <Col 
-                  key={`movie_${movie.id}`}
-                  md="6"
-                  sm="12"
-                >
-                  <Card className={cardClasses}>
-                    <Link 
-                      to={movieLink}
-                      style={{ display: 'block' }}
-                    >
-                      <Poster
-                        imageURL={posterURL}
-                        previewURL={previewURL}
-                      />
-                    </Link>
-                    <CardBody>
-                      <CardTitle>{movie.title}</CardTitle>
-                      <CardSubtitle>
-                        <StarRating value={movie.voteAverage} max={10} />
-                      </CardSubtitle>
-                      <CardText>
-                        { movie.overview }
-                      </CardText>
-                      <Link to={movieLink}>View More</Link>
-                    </CardBody>
-                  </Card>
-                </Col>
-              )
-            })
-          }
-        </Row>
-      );
-    });
+  renderMovieList = movies => {
+    return (
+      <Row>
+        {
+          movies.map(movie => (
+            <Col
+              key={`movie_${movie.id}`}
+              lg="3"
+              md="4"
+              sm="6"
+              xs="12"
+            >
+              <MoviePosterCard media={movie} />
+            </Col>
+          ))
+        }
+      </Row>
+    );
   }
 
   render () {
-    const { movies } = this.props;
-    const entities = chunk(movies, Math.ceil(movies.length / 2));
     return (
       <Container>
-        { this.renderMovieList(entities) }
+        { this.renderMovieList(this.props.movies) }
         <Button onClick={this.nextPage}>Load more</Button>
       </Container>
     );
