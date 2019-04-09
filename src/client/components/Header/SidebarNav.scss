@@ -1,7 +1,7 @@
 @import "../../assets/styles/_base.scss";
 
 .nav-item-link {
-  @include underline("&:hover", $theme-color, 25px);
+  @include underline("&:hover", $theme-primary, 25px);
   @extend %link;
   padding: 0.75rem;
   font-size: $font-size-lg;
@@ -15,7 +15,7 @@
   }
 
   &.active {
-    color: $theme-color;
+    color: $theme-primary;
   }
 }
 

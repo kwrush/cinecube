@@ -16,7 +16,7 @@
 
 .media-button {
   @extend %plain-btn;
-  @include shadow-border(1px, $theme-color);
+  @include shadow-border(1px, $theme-primary);
   margin: 0 10px;
   padding: 0;
   width: 156px;
@@ -27,22 +27,22 @@
 
   &.media-link-button {
     @extend %link;
-    color: $theme-color;
+    color: $theme-primary;
     background: rgba(0, 0, 0, 0.1);
     transition: background 0.2s ease-in-out, color 0.1s ease;
 
     &:hover {
-      background: $theme-color;
+      background: $theme-primary;
       color: $light;
     }
   }
 
   &.media-trailer-button {
     color: $light;
-    background: $theme-color;
+    background: $theme-primary;
 
     &:hover {
-      background: $theme-color;
+      background: $theme-primary;
     }
   }
 }

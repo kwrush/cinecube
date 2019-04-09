@@ -4,11 +4,13 @@ $media-md: map-get($grid-breakpoints, 'md');
 $media-lg: map-get($grid-breakpoints, 'lg');
 $media-xl: map-get($grid-breakpoints, 'xl');
 
-$theme-color: $success !default;
-$theme-bg: $gray-900;
-$text-color: $light;
-$font-size-xs: ($font-size-base * 0.75) !default;
-$font-size-xl: ($font-size-base * 1.75) !default;
+$theme-primary:#0ab336;
+$theme-dark: #3a3a3a;
+$light-text: $light;
+$dark-text: $gray-900;
+$font-size-xs: $font-size-base * 0.75;
+$font-size-xl: $font-size-base * 1.75;
+
 
 
 

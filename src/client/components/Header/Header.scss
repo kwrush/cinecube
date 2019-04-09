@@ -9,6 +9,7 @@
   &.override {
     position: relative;
     display: flex;
+    background: $theme-dark;
     justify-content: space-between;
   }
 }
@@ -36,7 +37,7 @@
 .header-brand,
 .nav-toggler,
 .search-toggler {
-  color: $theme-color !important;
+  color: $theme-primary !important;
 }
 
 .header-brand {
