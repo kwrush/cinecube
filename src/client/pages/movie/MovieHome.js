@@ -10,6 +10,7 @@ import {
 import { fetchPopularMovies } from '../../actions/movieActions';
 import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
 import { MoviePosterCard } from '../../components/PosterCard';
+import { PosterGrid } from '../../components/PosterGrid';
 
 class MovieHome extends React.Component {
 
@@ -75,7 +76,7 @@ class MovieHome extends React.Component {
   render () {
     return (
       <Container>
-        { this.renderMovieList(this.props.movies) }
+        <PosterGrid mediaSet={this.props.movies} />
         <Button onClick={this.nextPage}>Load more</Button>
       </Container>
     );
@@ -88,7 +89,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getPopularMovies: page => {
-    dispatch(fetchPopularMovies({ page: page }))
+    dispatch(fetchPopularMovies({ page: page }));
   }
 });
 

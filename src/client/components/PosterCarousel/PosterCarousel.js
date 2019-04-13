@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import {
   Carousel,
   CarouselItem,
-  CarouselControl
+  CarouselControl,
+  Container,
+  Row,
+  Col
 } from 'reactstrap';
 import MediaQuery from 'react-responsive';
-import { Link } from 'react-router-dom';
 import { mapToCssModules } from '../../utils/helpers';
-import { Poster } from '../Poster';
 import { chunk } from 'lodash';
-import { getPosterUrl } from '../../utils/imageUtils';
+import { MoviePosterCard, TvPosterCard } from '../PosterCard';
 
 class PosterCarousel extends React.PureComponent {
   static propTypes = {
@@ -83,30 +84,24 @@ class PosterCarousel extends React.PureComponent {
     const posterClasses = mapToCssModules('ml-3 mr-3', cssModule);
 
     return (
-      <div className={posterContainerClasses}>
+      <Container className={posterContainerClasses}>
+        <Row>
         {
-          entities.map((media, index) => {
-            const posterURL = getPosterUrl(media.posterPath, 's');
-            const previewURL = getPosterUrl(media.posterPath, 'xs');
-            return (
-              <div 
-                key={`poster_${media.id}`}
-                className={posterClasses}
-              >
-                <Link 
-                  style={{ display: 'block' }} 
-                  to={`/${media.mediaType}/${media.id}`}
-                >
-                  <Poster
-                    imageURL={posterURL}
-                    previewURL={previewURL}
-                  />
-                </Link>
-              </div>
-            );
-          })
+          entities.map((media, index) => (
+            <Col
+              key={`poster_${media.id}`}
+              className={posterClasses}
+            >
+              {
+                media.mediaType === 'movie'
+                  ? <MoviePosterCard media={media} />
+                  : <TvPosterCard media={media} />
+              }
+            </Col>
+          ))
         }
-      </div>
+        </Row>
+      </Container>
     );
   }
 

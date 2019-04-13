@@ -3,9 +3,9 @@ import { searchActionTypes as t } from '../../constants/actionTypes';
 
 const initialState = {
   query: 'Something',
-  active: 'multi__[query:Something]',
+  active: 'multi__query__Something',
   listings: {
-    'multi__[query:Something]': {
+    'multi__query__Something': {
       results: [1, 4, 6],
       page: 1,
       totalPages: 10,
@@ -19,7 +19,7 @@ describe('Search reducers tests', () => {
     expect(searchReducer(initialState, {})).toEqual(initialState);
   });
 
-  it('should update query and active to tv__[query:shows] for search tv request', () => {
+  it('should update query and active to tv__query__shows for search tv request', () => {
     expect(searchReducer(initialState, {
       type: t.SEARCH_TV_REQUEST,
       payload: {
@@ -27,9 +27,9 @@ describe('Search reducers tests', () => {
       }
     })).toEqual({
       query: 'shows',
-      active: 'tv__[query:shows]',
+      active: 'tv__query__shows',
       listings: {
-        'multi__[query:Something]': {
+        'multi__query__Something': {
           results: [1, 4, 6],
           page: 1,
           totalPages: 10,
@@ -43,9 +43,9 @@ describe('Search reducers tests', () => {
 
     const state = {
       query: 'Something',
-      active: 'multi__[query:Something]',
+      active: 'multi__query__Something',
       listings: {
-        'multi__[query:Something]': {
+        'multi__query__Something': {
           results: [
             { id: 4, schema: 'movie' },
             { id: 3, schema: 'tv' },
@@ -68,9 +68,9 @@ describe('Search reducers tests', () => {
       }
     })).toEqual({
       query: 'Something',
-      active: 'multi__[query:Something]',
+      active: 'multi__query__Something',
       listings: {
-        'multi__[query:Something]': {
+        'multi__query__Something': {
           results: [
             { id: 4, schema: 'movie' },
             { id: 3, schema: 'tv' },
@@ -86,7 +86,7 @@ describe('Search reducers tests', () => {
     });
   });
 
-  it('should add movie__[query:Toys] to state when the loading has been done', () => {
+  it('should add movie__query__Toys to state when the loading has been done', () => {
     expect(searchReducer(initialState, {
       type: t.SEARCH_MOVIE_SUCCESS,
       payload: {
@@ -95,15 +95,15 @@ describe('Search reducers tests', () => {
       }
     })).toEqual({
       query: 'Something',
-      active: 'multi__[query:Something]',
+      active: 'multi__query__Something',
       listings: {
-        'multi__[query:Something]': {
+        'multi__query__Something': {
           results: [1, 4, 6],
           page: 1,
           totalPages: 10,
           totalResults: 100
         },
-        'movie__[query:Toys]': {
+        'movie__query__Toys': {
           results: [2, 3, 5],
           page: 1,
           totalPages: 10,

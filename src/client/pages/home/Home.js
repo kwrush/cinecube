@@ -19,10 +19,10 @@ class Home extends React.Component {
 
     return (
       <div>
-        <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 5) : []} />
+        <BackdropCarousel mediaEntities={popularMovies ? popularMovies.slice(0, 4) : []} />
         <div>
           <h1>Popular Movies</h1>
-          <PosterCarousel mediaEntities={popularMovies ? popularMovies.slice(5, 20) : []} />
+          <PosterCarousel mediaEntities={popularMovies ? popularMovies.slice(4, 20) : []} />
         </div>
         <div>
           <h1>Popular Series</h1>

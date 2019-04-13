@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Media } from 'reactstrap';
 import { mapToCssModules } from '../../utils/helpers';
 import './ProgressiveImage.scss';
 

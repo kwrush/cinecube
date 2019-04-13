@@ -10,6 +10,7 @@ import {
 import { TvPosterCard } from '../../components/PosterCard';
 import { fetchPopularTvs } from '../../actions/tvActions';
 import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
+import { PosterGrid } from '../../components/PosterGrid';
 
 class MovieHome extends React.Component {
 
@@ -76,7 +77,7 @@ class MovieHome extends React.Component {
     const { tvs } = this.props;
     return (
       <Container>
-        { this.renderMovieList(tvs) }
+        <PosterGrid mediaSet={tvs} />
         <Button onClick={this.nextPage}>Load more</Button>
       </Container>
     );

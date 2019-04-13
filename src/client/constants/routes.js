@@ -42,8 +42,8 @@ export const PEOPLE_ROUTES = {
 
 export const SEARCH_ROUTES = {
   multi: `${search}`,
-  movie: `${search}/movie`,
-  tv: `${search}/tv`,
-  people: `${search}/people`
+  movie: `${search}${movie}`,
+  tv: `${search}${tv}`,
+  people: `${search}${people}`
 }
 

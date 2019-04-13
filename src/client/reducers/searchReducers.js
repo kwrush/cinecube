@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { uniqueConcat } from '../utils/helpers';
 
-const _searchTypeKey = (searchType, query) => (`${searchType}__[query:${query}]`);
+const _searchTypeKey = (searchType, query) => (`${searchType}__query__${query}`);
 
 const _handleSearchResults = (state, action) => {
   const { type, payload } = action;
@@ -20,17 +20,17 @@ const _handleSearchResults = (state, action) => {
     results = uniqueConcat(prevResults, results);
   } 
 
-  return merge(
-    {}, 
-    state,
-    {
-      listings: {
-        [key]: {
-          results,
-          ...pageInfo
-        }
-      }
+  const listings = {
+    [key]: {
+      results,
+      ...pageInfo
     }
+  };
+
+  return merge(
+    {},
+    state,
+    { listings }
   );
 };
 
@@ -50,7 +50,8 @@ export default (state = {}, action) => {
   return {
     ...state,
     query,
-    active: key
+    listings: {},
+    active: key,
   };
 };
 
