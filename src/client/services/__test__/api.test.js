@@ -12,20 +12,50 @@ describe('Client api should run without any error', () => {
 
   it('should resolve media list call with no parameters', async () => {
     const mp = movie.popularMovies();
+    const mu = movie.upcomingMovies();
+    const mt = movie.topRatedMovies();
+    const mn = movie.nowPlayingMovies();
+
     const tp = tv.popularTvs();
+    const to = tv.onAirTvs();
+    const tt = tv.topRatedTvs();
+
     const pp = people.popularPeople();
+
     await expect(mp).resolves.toEqual({});
+    await expect(mu).resolves.toEqual({});
+    await expect(mt).resolves.toEqual({});
+    await expect(mn).resolves.toEqual({});
+
     await expect(tp).resolves.toEqual({});
+    await expect(to).resolves.toEqual({});
+    await expect(tt).resolves.toEqual({});
+
     await expect(pp).resolves.toEqual({});
   });
 
   it('should resolve media list call when parameters are provided', async () => {
-    const params = { language: 'zh-CH' };
+    const params = { language: 'zh-CH', page: 2 };
     const mp = movie.popularMovies(params);
+    const mu = movie.upcomingMovies(params);
+    const mt = movie.topRatedMovies(params);
+    const mn = movie.nowPlayingMovies(params);
+
     const tp = tv.popularTvs(params);
+    const to = tv.onAirTvs(params);
+    const tt = tv.topRatedTvs(params);
+
     const pp = people.popularPeople(params);
+    
     await expect(mp).resolves.toEqual({});
+    await expect(mu).resolves.toEqual({});
+    await expect(mt).resolves.toEqual({});
+    await expect(mn).resolves.toEqual({});
+
     await expect(tp).resolves.toEqual({});
+    await expect(to).resolves.toEqual({});
+    await expect(tt).resolves.toEqual({});
+
     await expect(pp).resolves.toEqual({});
   });
 
