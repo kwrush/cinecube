@@ -8,6 +8,7 @@ const TvRoutes = require('./TvRoutes');
 const PeopleRoutes = require('./PeopleRoutes');
 const SearchRoutes = require('./SearchRoutes');
 const GenreRoutes = require('./GenreRoutes');
+const TrendingRoutes = require('./TrendingRoutes');
 
 const apiRouter = express.Router();
 
@@ -20,5 +21,6 @@ new TvRoutes(apiRouter);
 new PeopleRoutes(apiRouter);
 new SearchRoutes(apiRouter);
 new GenreRoutes(apiRouter);
+new TrendingRoutes(apiRouter);
 
 module.exports = apiRouter;

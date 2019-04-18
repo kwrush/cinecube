@@ -4,7 +4,8 @@ import {
   MOVIE_ROUTES,
   TV_ROUTES,
   PEOPLE_ROUTES,
-  SEARCH_ROUTES
+  SEARCH_ROUTES,
+  TRENDING_ROUTE
 } from '../constants/routes';
 
 export const api = axios.create({
@@ -24,6 +25,8 @@ export const requestMediaList = async (reqType, listType, params) => {
     apiUrl = PEOPLE_ROUTES[listType];
   } else if (reqType === 'search') {
     apiUrl = SEARCH_ROUTES[listType];
+  } else if (reqType === 'trending') {
+    apiUrl = TRENDING_ROUTE[listType];
   }
 
   return api.get(apiUrl, {

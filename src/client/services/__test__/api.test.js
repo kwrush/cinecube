@@ -1,7 +1,9 @@
 import * as movie from '../movieApi';
 import * as tv from '../tvApi';
 import * as people from '../peopleApi';
-import * as search from '..//searchApi';
+import * as search from '../searchApi';
+import * as trending from '../trendingApi';
+
 
 jest.mock('../apiUtils', () => ({
   requestMediaList: jest.fn(() => Promise.resolve({})),
@@ -136,5 +138,17 @@ describe('Client api should run without any error', () => {
     await expect(ms).resolves.toEqual({});
     await expect(ps).resolves.toEqual({});
     await expect(ts).resolves.toEqual({});
+  });
+
+  it('should resolve trending request', async () => {
+    const all = trending.trendingAll();
+    const m = trending.trendingMovies();
+    const t = trending.trendingTvs();
+    const p = trending.trendingPeople();
+
+    await expect(all).resolves.toEqual({});
+    await expect(m).resolves.toEqual({});
+    await expect(t).resolves.toEqual({});
+    await expect(p).resolves.toEqual({});
   });
 });

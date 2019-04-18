@@ -11,6 +11,7 @@ const movie = '/movie';
 const tv = '/tv';
 const people = '/people';
 const search = '/search';
+const trending = '/trending';
 
 export const MOVIE_ROUTES = {
   home: `${movie}`,
@@ -45,5 +46,12 @@ export const SEARCH_ROUTES = {
   movie: `${search}${movie}`,
   tv: `${search}${tv}`,
   people: `${search}${people}`
-}
+};
+
+export const TRENDING_ROUTE = {
+  all: `${trending}`,
+  movie: `${trending}${movie}`,
+  tv: `${search}${tv}`,
+  people: `${search}${people}`
+};
 
