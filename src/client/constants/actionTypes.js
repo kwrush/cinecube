@@ -1,58 +1,89 @@
-import { generateActions } from '../utils/helpers';
+import { createActionTypes } from '../utils/actionUtils';
 
 const promptActions = [
   'PROMPT_MESSAGE'
 ];
 
 const movieActions = [
-  'FETCH_POPULAR_MOVIES_REQUEST',
-  'FETCH_POPULAR_MOVIES_SUCCESS',
-  'FETCH_POPULAR_MOVIES_FAILURE',
+  'FETCH_POPULAR_MOVIE_REQUEST',
+  'FETCH_POPULAR_MOVIE_SUCCESS',
+  'FETCH_POPULAR_MOVIE_FAIL',
+  'FETCH_UPCOMING_MOVIE_REQUEST',
+  'FETCH_UPCOMING_MOVIE_SUCCESS',
+  'FETCH_UPCOMING_MOVIE_FAIL',
+  'FETCH_NOWPLAYING_MOVIE_REQUEST',
+  'FETCH_NOWPLAYING_MOVIE_SUCCESS',
+  'FETCH_NOWPLAYING_MOVIE_FAIL',
+  'FETCH_TOPRATED_MOVIE_REQUEST',
+  'FETCH_TOPRATED_MOVIE_SUCCESS',
+  'FETCH_TOPRATED_MOVIE_FAIL',
   'FETCH_MOVIE_DETAIL_REQUEST',
   'FETCH_MOVIE_DETAIL_SUCCESS',
-  'FETCH_MOVIE_DETAIL_FAILURE'
+  'FETCH_MOVIE_DETAIL_FAIL'
 ];
 
 const tvActions = [
-  'FETCH_POPULAR_TVS_REQUEST',
-  'FETCH_POPULAR_TVS_SUCCESS',
-  'FETCH_POPULAR_TVS_FAILURE',
+  'FETCH_POPULAR_TV_REQUEST',
+  'FETCH_POPULAR_TV_SUCCESS',
+  'FETCH_POPULAR_TV_FAIL',
+  'FETCH_ONAIR_TV_REQUEST',
+  'FETCH_ONAIR_TV_SUCCESS',
+  'FETCH_ONAIR_TV_FAIL',
+  'FETCH_TOPRATED_TV_REQUEST',
+  'FETCH_TOPRATED_TV_SUCCESS',
+  'FETCH_TOPRATED_TV_FAIL',
   'FETCH_TV_DETAIL_REQUEST',
   'FETCH_TV_DETAIL_SUCCESS',
-  'FETCH_TV_DETAIL_FAILURE'
+  'FETCH_TV_DETAIL_FAIL'
 ];
 
 const peopleActions = [
   'FETCH_POPULAR_PEOPLE_REQUEST',
   'FETCH_POPULAR_PEOPLE_SUCCESS',
-  'FETCH_POPULAR_PEOPLE_FAILURE',
+  'FETCH_POPULAR_PEOPLE_FAIL',
   'FETCH_PEOPLE_DETAIL_REQUEST',
   'FETCH_PEOPLE_DETAIL_SUCCESS',
-  'FETCH_PEOPLE_DETAIL_FAILURE'
+  'FETCH_PEOPLE_DETAIL_FAIL'
 ];
 
 const searchActions = [
   'SEARCH_MULTI_REQUEST',
   'SEARCH_MULTI_SUCCESS',
-  'SEARCH_MULTI_FAILURE',
+  'SEARCH_MULTI_FAIL',
   'SEARCH_MOVIE_REQUEST',
   'SEARCH_MOVIE_SUCCESS',
-  'SEARCH_MOVIE_FAILURE',
+  'SEARCH_MOVIE_FAIL',
   'SEARCH_TV_REQUEST',
   'SEARCH_TV_SUCCESS',
-  'SEARCH_TV_FAILURE',
+  'SEARCH_TV_FAIL',
   'SEARCH_PEOPLE_REQUEST',
   'SEARCH_PEOPLE_SUCCESS',
-  'SEARCH_PEOPLE_FAILURE',
+  'SEARCH_PEOPLE_FAIL',
 ];
 
 const entitiesActions = [
   'MERGE_ENTITIES'
 ];
 
-export const promptActionTypes = generateActions(promptActions);
-export const movieActionTypes = generateActions(movieActions);
-export const tvActionTypes = generateActions(tvActions);
-export const peopleActionTypes = generateActions(peopleActions);
-export const searchActionTypes = generateActions(searchActions);
-export const entitiesActionTypes = generateActions(entitiesActions);
+const trendingActions = [
+  'FETCH_TRENDING_ALL_REQUEST',
+  'FETCH_TRENDING_ALL_SUCCESS',
+  'FETCH_TRENDING_ALL_FAIL',
+  'FETCH_TRENDING_MOVIE_REQUEST',
+  'FETCH_TRENDING_MOVIE_SUCCESS',
+  'FETCH_TRENDING_MOVIE_FAIL',
+  'FETCH_TRENDING_TV_REQUEST',
+  'FETCH_TRENDING_TV_SUCCESS',
+  'FETCH_TRENDING_TV_FAIL',
+  'FETCH_TRENDING_PEOPLE_REQUEST',
+  'FETCH_TRENDING_PEOPLE_SUCCESS',
+  'FETCH_TRENDING_PEOPLE_FAIL',
+];
+
+export const promptActionTypes = createActionTypes(promptActions);
+export const movieActionTypes = createActionTypes(movieActions);
+export const tvActionTypes = createActionTypes(tvActions);
+export const peopleActionTypes = createActionTypes(peopleActions);
+export const searchActionTypes = createActionTypes(searchActions);
+export const entitiesActionTypes = createActionTypes(entitiesActions);
+export const trendingActionTypes = createActionTypes(trendingActions);

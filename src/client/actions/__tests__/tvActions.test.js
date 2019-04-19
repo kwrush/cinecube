@@ -1,12 +1,14 @@
 import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk'
+import thunk from 'redux-thunk';
+import tk from 'timekeeper';
 import { api } from '../../services/apiUtils';
 import MockAdapter from 'axios-mock-adapter';
 import {
   tvActionTypes as t,
   entitiesActionTypes as et 
 } from '../../constants/actionTypes';  
-import * as m from '../tvActions';
+import * as ta from '../tvActions';
+import { getTimeStamp } from '../../utils/helpers';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -15,59 +17,108 @@ const mockApi = new MockAdapter(api);
 
 describe('Tv action creators tests', () => {
   describe('Sync actions', () => {
-    it('should create an action to request tvs', () => {
-      const exp1 = {
-        type: t.FETCH_POPULAR_TVS_REQUEST,
-        payload: {}
-      };
-      const exp2 = {
-        type: t.FETCH_TV_DETAIL_REQUEST,
-        payload: {}
-      };
 
-      expect(m.fetchPopularTvsRequest()).toEqual(exp1);
-      expect(m.fetchTvDetailRequest()).toEqual(exp2);
+    let time = new Date();
+
+    beforeEach(() => {
+      tk.freeze(time);
+    });
+
+    afterEach(() => {
+      tk.reset();
+    });
+
+    it('should create an action to request tvs', () => {
+      expect(ta.fetchPopularTvsRequest).toEqual({
+        type: t.FETCH_POPULAR_TV_REQUEST,
+      });
+
+      expect(ta.fetchTopRatedTvsRequest).toEqual({
+        type: t.FETCH_TOPRATED_TV_REQUEST,
+      });
+
+      expect(ta.fetchOnAirTvsRequest).toEqual({
+        type: t.FETCH_ONAIR_TV_REQUEST,
+      });
+
+      expect(ta.fetchTvDetailRequest).toEqual({
+        type: t.FETCH_TV_DETAIL_REQUEST,
+      });
     });
 
     it('should create an action to update result', () => {
       const result = { id: 1, title: 'Test' }; 
 
-      const exp1 = {
-        type: t.FETCH_POPULAR_TVS_SUCCESS,
-        payload: result
-      };
-      const exp2 = {
+      const listAction = entry => ({
+        type: t[`FETCH_${entry.toUpperCase()}_SUCCESS`],
+        payload: result,
+        timestamp: getTimeStamp()
+      });
+
+      const detailAction = {
         type: t.FETCH_TV_DETAIL_SUCCESS,
-        payload: result
+        payload: result,
+        timestamp: getTimeStamp()
       };
 
-      expect(m.fetchPopularTvsSuccess(result)).toEqual(exp1);
-      expect(m.fetchTvDetailSuccess(result)).toEqual(exp2);
+      expect(ta
+        .fetchPopularTvsSuccess(result))
+        .toEqual(listAction('popular_tv'));
+      expect(ta
+        .fetchOnAirTvsSuccess(result))
+        .toEqual(listAction('onair_tv'));
+      expect(ta
+        .fetchTopRatedTvsSuccess(result))
+        .toEqual(listAction('toprated_tv'));
+      expect(ta
+        .fetchTvDetailSuccess(result))
+        .toEqual(detailAction);
     });
 
     it('should create an action to update error', () => {
       const e = { message: 'Error' };
-      const exp1 = {
-        type: t.FETCH_POPULAR_TVS_FAILURE,
+
+      const listAction = entry => ({
+        type: t[`FETCH_${entry.toUpperCase()}_FAIL`],
         payload: {
           errorMessage: 'Error'
         }
-      };
-      const exp2 = {
-        type: t.FETCH_TV_DETAIL_FAILURE,
+      });
+
+      const detailAction = {
+        type: t.FETCH_TV_DETAIL_FAIL,
         payload: {
           errorMessage: 'Error'
         }
       };
 
-      expect(m.fetchPopularTvsFailure(e)).toEqual(exp1);
-      expect(m.fetchTvDetailFailure(e)).toEqual(exp2);
+      expect(ta
+        .fetchPopularTvsFail(e))
+        .toEqual(listAction('popular_tv'));
+      expect(ta
+        .fetchTopRatedTvsFail(e))
+        .toEqual(listAction('toprated_tv'));
+      expect(ta
+        .fetchOnAirTvsFail(e))
+        .toEqual(listAction('onair_tv'));
+      expect(ta
+        .fetchTvDetailFail(e))
+        .toEqual(detailAction);
     });
   });
 
   describe('Async actions', () => {
 
-    afterEach(() => store.clearActions());
+    let time = new Date();
+
+    beforeEach(() => {
+      tk.freeze(time);
+    });
+
+    afterEach(() => {
+      tk.reset();
+      store.clearActions();
+    });
 
     it('should create FETCH_POPULAR_TV_SUCCESS action when loading data has been done', async () => {
       const data = {
@@ -82,16 +133,16 @@ describe('Tv action creators tests', () => {
 
       const expActions = [
         {
-          type: t.FETCH_POPULAR_TVS_REQUEST,
-          payload: {}
+          type: t.FETCH_POPULAR_TV_REQUEST
         },
         {
           type: et.MERGE_ENTITIES,
           payload: data.entities
         },
         {
-          type: t.FETCH_POPULAR_TVS_SUCCESS,
-          payload: data.result
+          type: t.FETCH_POPULAR_TV_SUCCESS,
+          payload: data.result,
+          timestamp: getTimeStamp()
         }
       ];
       
@@ -99,19 +150,18 @@ describe('Tv action creators tests', () => {
         .onGet('/tv/popular')
         .reply(200, { ...data });
 
-      await store.dispatch(m.fetchPopularTvs({}));
+      await store.dispatch(ta.fetchPopularTvs({}));
       expect(store.getActions()).toEqual(expActions);
     });
 
-    it('should create FETCH_POPULAR_TV_FAILURE action when loading fails', async () => {
+    it('should create FETCH_POPULAR_TV_FAIL action when loading fails', async () => {
       const expActions = [
         {
-          type: t.FETCH_POPULAR_TVS_REQUEST,
-          payload: {}
+          type: t.FETCH_POPULAR_TV_REQUEST,
         },
         {
-          type: t.FETCH_POPULAR_TVS_FAILURE,
-          payload: { errorMessage: 'Network Error' }
+          type: t.FETCH_POPULAR_TV_FAIL,
+          payload: { errorMessage: 'Network Error' },
         }
       ];
 
@@ -119,7 +169,7 @@ describe('Tv action creators tests', () => {
         .onGet('/tv/popular')
         .networkError();
 
-      await store.dispatch(m.fetchPopularTvs({}));
+      await store.dispatch(ta.fetchPopularTvs({}));
       expect(store.getActions()).toEqual(expActions); 
     });
 
@@ -133,8 +183,7 @@ describe('Tv action creators tests', () => {
 
       const expActions = [
         {
-          type: t.FETCH_TV_DETAIL_REQUEST,
-          payload: {}
+          type: t.FETCH_TV_DETAIL_REQUEST
         },
         {
           type: et.MERGE_ENTITIES,
@@ -150,7 +199,7 @@ describe('Tv action creators tests', () => {
         .onGet('/tv/3')
         .reply(200, { ...data });
 
-      await store.dispatch(m.fetchTvDetail(3));
+      await store.dispatch(ta.fetchTvDetail(3));
       expect(store.getActions()).toEqual(expActions);
     });
   });

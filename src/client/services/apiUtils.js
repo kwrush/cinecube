@@ -1,32 +1,32 @@
 import axios from 'axios';
 import {
   API_URL,
-  MOVIE_ROUTES,
-  TV_ROUTES,
-  PEOPLE_ROUTES,
-  SEARCH_ROUTES,
-  TRENDING_ROUTE
-} from '../constants/routes';
+  movieApiRoute,
+  tvApiRoute,
+  peopleApiRoute,
+  searchApiRoute,
+  trendingApiRoute
+} from '../constants/apiRoutes';
 
 export const api = axios.create({
   baseURL: API_URL,
   timeout: 30000
 });
 
-export const requestMediaList = async (reqType, listType, params) => {
+export const fetchMediaList = async (reqType, listType, params) => {
 
   let apiUrl = '';
 
   if (reqType === 'movie') {
-    apiUrl = MOVIE_ROUTES[listType]; 
+    apiUrl = movieApiRoute(listType); 
   } else if (reqType === 'tv') {
-    apiUrl = TV_ROUTES[listType];
+    apiUrl = tvApiRoute(listType);
   } else if (reqType === 'people') {
-    apiUrl = PEOPLE_ROUTES[listType];
+    apiUrl = peopleApiRoute[listType];
   } else if (reqType === 'search') {
-    apiUrl = SEARCH_ROUTES[listType];
+    apiUrl = searchApiRoute[listType];
   } else if (reqType === 'trending') {
-    apiUrl = TRENDING_ROUTE[listType];
+    apiUrl = trendingApiRoute[listType];
   }
 
   return api.get(apiUrl, {
@@ -34,20 +34,18 @@ export const requestMediaList = async (reqType, listType, params) => {
   });
 };
 
-export const mediaInfo = async (mediaId, mediaType, infoType, params) => {
+export const fetchMediaInfo = async (mediaId, mediaType, infoType, params) => {
 
   let apiUrl = '';
 
   if (mediaType === 'movie') {
-    apiUrl = MOVIE_ROUTES.home;
+    apiUrl = movieApiRoute(infoType, mediaId);
   } else if (mediaType === 'tv') {
-    apiUrl = TV_ROUTES.home;
+    apiUrl = tvApiRoute(infoType, mediaId);
   } else {
-    apiUrl = PEOPLE_ROUTES.home;
+    apiUrl = peopleApiRoute(infoType, mediaId);
   }
-
-  apiUrl += (`/${mediaId}` + (infoType ? `/${infoType}` : ''));
-
+  
   return api.get(apiUrl, {
     params: { ...params }
   });

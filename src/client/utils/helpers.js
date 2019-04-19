@@ -6,18 +6,6 @@ import {
 } from 'lodash';
 import { Util } from 'reactstrap';
 
-export const generateActions = (actions) => {
-  const actionMap = {};
-
-  for (let i in actions) {
-    if (i < actions.length) {
-      actionMap[actions[i]] = actions[i];
-    }
-  }
-
-  return actionMap;
-};
-
 export const descendComparator = (v1, v2) => {
   if (v1 > v2) return -1;
   if (v1 < v2) return 1;
@@ -80,6 +68,11 @@ export const camelCaseKey = (obj) => {
   
   return newObj;
 };
+
+/**
+ * Return Unix timestamp in seconds
+ */
+export const getTimeStamp = () => Math.floor(Date.now() / 1000);
 
 export const mapPayloadToState = (state, key, payload) => {
 

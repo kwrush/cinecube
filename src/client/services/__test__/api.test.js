@@ -6,8 +6,8 @@ import * as trending from '../trendingApi';
 
 
 jest.mock('../apiUtils', () => ({
-  requestMediaList: jest.fn(() => Promise.resolve({})),
-  mediaInfo: jest.fn(() => Promise.resolve('info'))
+  fetchMediaList: jest.fn(() => Promise.resolve({})),
+  fetchMediaInfo: jest.fn(() => Promise.resolve('info'))
 }));
 
 describe('Client api should run without any error', () => {

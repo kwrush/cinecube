@@ -5,73 +5,69 @@ import {
   tvDetail
 } from '../services/tvApi'; 
 import { camelCaseKey } from '../utils/helpers';
+import {
+  fetchListRequest,
+  fetchListSuccess,
+  fetchListFail,
+  fetchInfoRequest,
+  fetchInfoSuccess,
+  fetchInfoFail,
+  fetchMediaAction
+} from '../utils/actionUtils';
 
-export const fetchPopularTvsRequest = () => ({
-  type: t.FETCH_POPULAR_TVS_REQUEST,
-  payload: {}
-});
+export const fetchPopularTvsRequest = fetchListRequest('popular', 'tv')(t);
 
-export const fetchPopularTvsSuccess = (result) => ({
-  type: t.FETCH_POPULAR_TVS_SUCCESS,
-  payload: result
-});
+export const fetchPopularTvsSuccess = fetchListSuccess('popular', 'tv')(t);
 
-export const fetchPopularTvsFailure = (e) => ({
-  type: t.FETCH_POPULAR_TVS_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchPopularTvsFail = fetchListFail('popular', 'tv')(t);
 
-export const fetchTvDetailRequest = () => ({
-  type: t.FETCH_TV_DETAIL_REQUEST,
-  payload: {}
-});
+export const fetchOnAirTvsRequest = fetchListRequest('onair', 'tv')(t);
 
-export const fetchTvDetailSuccess = (result) => ({
-  type: t.FETCH_TV_DETAIL_SUCCESS,
-  payload: result
-});
+export const fetchOnAirTvsSuccess = fetchListSuccess('onair', 'tv')(t);
 
-export const fetchTvDetailFailure = (e) => ({
-  type: t.FETCH_TV_DETAIL_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchOnAirTvsFail = fetchListFail('onair', 'tv')(t);
+
+export const fetchTopRatedTvsRequest = fetchListRequest('toprated', 'tv')(t);
+
+export const fetchTopRatedTvsSuccess = fetchListSuccess('toprated', 'tv')(t);
+
+export const fetchTopRatedTvsFail = fetchListFail('toprated', 'tv')(t);
+
+export const fetchTvDetailRequest = fetchInfoRequest('tv')(t);
+
+export const fetchTvDetailSuccess = fetchInfoSuccess('tv')(t)
+
+export const fetchTvDetailFail = fetchInfoFail('tv')(t);
+
+const shouldFetchTv = state => true;
 
 /**
  * 
  * @param {object} params request parameters 
  */
-export const fetchPopularTvs = (params) => async (dispatch) => {
-  dispatch(fetchPopularTvsRequest());
-
-  // TODO: check if the api call is needed or data in the state can be used
-  try {
-    const response = await popularTvs({ ...params });
-    const camelized = camelCaseKey(response.data);
-    dispatch(mergeEntities(camelized.entities));
-    dispatch(fetchPopularTvsSuccess(camelized.result));
-  } catch (e) {
-    dispatch(fetchPopularTvsFailure(e));
-  }
-};
+export const fetchPopularTvs = (params) => (dispatch, getState) => 
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchTv(getState()),
+    apiRequest: popularTvs,
+    requestAction: () => fetchPopularTvsRequest,
+    succesAction: fetchPopularTvsSuccess,
+    failAction: fetchPopularTvsFail,
+    params,
+    dispatch
+  });
 
 /**
  * 
  * @param {number} id tv id 
  * @param {object} params request paramerter
  */
-export const fetchTvDetail = (id, params) => async (dispatch) => {
-  dispatch(fetchTvDetailRequest());
-
-  try {
-    const response = await tvDetail(id, { ...params });
-    const camelized = camelCaseKey(response.data);
-    dispatch(mergeEntities(camelized.entities));
-    dispatch(fetchTvDetailSuccess(camelized.result));
-  } catch (e) {
-    dispatch(fetchTvDetailFailure(e));
-  }
-};
+export const fetchTvDetail = (id, params) => (dispatch, getState) => 
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchTv(getState()),
+    apiRequest: tvDetail,
+    requestAction: () => fetchTvDetailRequest,
+    succesAction: fetchTvDetailSuccess,
+    failAction: fetchTvDetailFail,
+    params,
+    dispatch
+  });

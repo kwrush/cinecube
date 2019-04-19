@@ -3,58 +3,58 @@ import { mergeEntities } from './entitiesActions';
 import {
   popularPeople,
   peopleDetail
-} from '../services/peopleApi';
+} from '../services/peopleApi'; 
 import { camelCaseKey } from '../utils/helpers';
+import {
+  fetchListRequest,
+  fetchListSuccess,
+  fetchListFail,
+  fetchInfoRequest,
+  fetchInfoSuccess,
+  fetchInfoFail,
+  fetchMediaAction
+} from '../utils/actionUtils';
 
-export const fetchPopularPeopleRequest = () => ({
-  type: t.FETCH_POPULAR_PEOPLE_REQUEST,
-  payload: {}
-});
+export const fetchPopularPeopleRequest = fetchListRequest('popular', 'people')(t);
 
-export const fetchPopularPeopleSuccess = (result) => ({
-  type: t.FETCH_POPULAR_PEOPLE_SUCCESS,
-  payload: result
-});
+export const fetchPopularPeopleSuccess = fetchListSuccess('popular', 'people')(t);
 
-export const fetchPopularPeopleFailure = (e) => ({
-  type: t.FETCH_POPULAR_PEOPLE_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchPopularPeopleFail = fetchListFail('popular', 'people')(t);
 
-export const fetchPeopleDetailRequest = () => ({
-  type: t.FETCH_PEOPLE_DETAIL_REQUEST,
-  payload: {}
-});
+export const fetchPeopleDetailRequest = fetchInfoRequest('people')(t);
 
-export const fetchPeopleDetailSuccess = (result) => ({
-  type: t.FETCH_PEOPLE_DETAIL_SUCCESS,
-  payload: result
-});
+export const fetchPeopleDetailSuccess = fetchInfoSuccess('people')(t)
 
-export const fetchPeopleDetailFailure = (e) => ({
-  type: t.FETCH_PEOPLE_DETAIL_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchPeopleDetailFail = fetchInfoFail('people')(t);
 
-export const fetchPopularPeople = (params) => async (dispatch) => {
-  dispatch(fetchPopularPeopleRequest());
+/**
+ * 
+ * @param {object} params request parameters 
+ */
+export const fetchPopularPeople = (params) => async(dispatch, getState) => {
+  dispatch(fetchPopularPeopleRequest);
 
+  // TODO: check if the api call is needed or data in the state can be used
+  // TODO: check status to handle different response
   try {
-    const response = await popularPeople({ ...params });
+    const response = await popularPeople({
+      ...params
+    });
     const camelized = camelCaseKey(response.data);
     dispatch(mergeEntities(camelized.entities));
     dispatch(fetchPopularPeopleSuccess(camelized.result));
   } catch (e) {
-    dispatch(fetchPopularPeopleFailure(e));
+    dispatch(fetchPopularPeopleFail(e));
   }
 };
 
+/**
+ * 
+ * @param {number} id people id 
+ * @param {object} params request paramerter
+ */
 export const fetchPeopleDetail = (id, params) => async (dispatch) => {
-  dispatch(fetchPeopleDetailRequest());
+  dispatch(fetchPeopleDetailRequest);
 
   try {
     const response = await peopleDetail(id, { ...params });
@@ -62,6 +62,6 @@ export const fetchPeopleDetail = (id, params) => async (dispatch) => {
     dispatch(mergeEntities(camelized.entities));
     dispatch(fetchPeopleDetailSuccess(camelized.result));
   } catch (e) {
-    dispatch(fetchPeopleDetailFailure(e));
+    dispatch(fetchPeopleDetailFail(e));
   }
 };

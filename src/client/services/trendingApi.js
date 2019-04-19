@@ -1,9 +1,9 @@
-import { requestMediaList } from "./apiUtils";
+import { fetchMediaList } from "./apiUtils";
 
-export const trendingAll = async () => requestMediaList('trending', 'all');
+export const trendingAll = () => fetchMediaList('trending', 'all');
 
-export const trendingMovies = async () => requestMediaList('trending', 'movie');
+export const trendingMovies = () => fetchMediaList('trending', 'movie');
 
-export const trendingTvs = async () => requestMediaList('trending', 'tv');
+export const trendingTvs = () => fetchMediaList('trending', 'tv');
 
-export const trendingPeople = async () => requestMediaList('trending', 'people');
+export const trendingPeople = () => fetchMediaList('trending', 'people');

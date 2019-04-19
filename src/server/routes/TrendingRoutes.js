@@ -12,7 +12,7 @@ class TrendingRoutes extends Routable {
     const baseURL = `/${this._VERSION}/trending`;
 
     this._router.get(
-      `${baseURL}/all`,
+      `${baseURL}`,
       this._getTrendingAll.bind(this)
     );
 

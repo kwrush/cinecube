@@ -5,74 +5,76 @@ import {
   movieDetail
 } from '../services/movieApi'; 
 import { camelCaseKey } from '../utils/helpers';
+import {
+  fetchListRequest,
+  fetchListSuccess,
+  fetchListFail,
+  fetchInfoRequest,
+  fetchInfoSuccess,
+  fetchInfoFail,
+  fetchMediaAction
+} from '../utils/actionUtils';
 
-export const fetchPopularMoviesRequest = () => ({
-  type: t.FETCH_POPULAR_MOVIES_REQUEST,
-  payload: {}
-});
+export const fetchPopularMoviesRequest = fetchListRequest('popular', 'movie')(t);
 
-export const fetchPopularMoviesSuccess = (result) => ({
-  type: t.FETCH_POPULAR_MOVIES_SUCCESS,
-  payload: result
-});
+export const fetchPopularMoviesSuccess = fetchListSuccess('popular', 'movie')(t);
 
-export const fetchPopularMoviesFailure = (e) => ({
-  type: t.FETCH_POPULAR_MOVIES_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchPopularMoviesFail = fetchListFail('popular', 'movie')(t);
 
-export const fetchMovieDetailRequest = () => ({
-  type: t.FETCH_MOVIE_DETAIL_REQUEST,
-  payload: {}
-});
+export const fetchNowPlayingMoviesRequest = fetchListRequest('nowplaying', 'movie')(t);
 
-export const fetchMovieDetailSuccess = (result) => ({
-  type: t.FETCH_MOVIE_DETAIL_SUCCESS,
-  payload: result
-});
+export const fetchNowPlayingMoviesSuccess = fetchListSuccess('nowplaying', 'movie')(t);
 
-export const fetchMovieDetailFailure = (e) => ({
-  type: t.FETCH_MOVIE_DETAIL_FAILURE,
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const fetchNowPlayingMoviesFail = fetchListFail('nowplaying', 'movie')(t);
+
+export const fetchUpcomingMoviesRequest = fetchListRequest('upcoming', 'movie')(t);
+
+export const fetchUpcomingMoviesSuccess = fetchListSuccess('upcoming', 'movie')(t);
+
+export const fetchUpcomingMoviesFail = fetchListFail('upcoming', 'movie')(t);
+
+export const fetchTopRatedMoviesRequest = fetchListRequest('toprated', 'movie')(t);
+
+export const fetchTopRatedMoviesSuccess = fetchListSuccess('toprated', 'movie')(t);
+
+export const fetchTopRatedMoviesFail = fetchListFail('toprated', 'movie')(t);
+
+export const fetchMovieDetailRequest = fetchInfoRequest('movie')(t);
+
+export const fetchMovieDetailSuccess = fetchInfoSuccess('movie')(t)
+
+export const fetchMovieDetailFail = fetchInfoFail('movie')(t);
+
+const shouldFetchMovie = state => true;
 
 /**
  * 
  * @param {object} params request parameters 
  */
-export const fetchPopularMovies = (params) => async (dispatch) => {
-  dispatch(fetchPopularMoviesRequest());
-
-  // TODO: check if the api call is needed or data in the state can be used
-  // TODO: check status to handle different response
-  try {
-    const response = await popularMovies({ ...params });
-    const camelized = camelCaseKey(response.data);
-    dispatch(mergeEntities(camelized.entities));
-    dispatch(fetchPopularMoviesSuccess(camelized.result));
-  } catch (e) {
-    dispatch(fetchPopularMoviesFailure(e));
-  }
-};
+export const fetchPopularMovies = (params) => (dispatch, getState) => 
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovie(getState()),
+    apiRequest: popularMovies,
+    requestAction: () => fetchPopularMoviesRequest,
+    succesAction: fetchPopularMoviesSuccess,
+    failAction: fetchPopularMoviesFail,
+    params,
+    dispatch
+  });
 
 /**
  * 
  * @param {number} id movie id 
  * @param {object} params request paramerter
  */
-export const fetchMovieDetail = (id, params) => async (dispatch) => {
-  dispatch(fetchMovieDetailRequest());
+export const fetchMovieDetail = (id, params) => (dispatch, getState) => 
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovie(getState()),
+    apiRequest: movieDetail,
+    requestAction: () => fetchMovieDetailRequest,
+    succesAction: fetchMovieDetailSuccess,
+    failAction: fetchMovieDetailFail,
+    params,
+    dispatch
+  });
 
-  try {
-    const response = await movieDetail(id, { ...params });
-    const camelized = camelCaseKey(response.data);
-    dispatch(mergeEntities(camelized.entities));
-    dispatch(fetchMovieDetailSuccess(camelized.result));
-  } catch (e) {
-    dispatch(fetchMovieDetailFailure(e));
-  }
-};

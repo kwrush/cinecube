@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk'
+import tk from 'timekeeper';
 import { api } from '../../services/apiUtils';
 import MockAdapter from 'axios-mock-adapter';
 import {
@@ -7,67 +8,128 @@ import {
   entitiesActionTypes as et 
 } from '../../constants/actionTypes';  
 import * as m from '../movieActions';
+import { getTimeStamp } from '../../utils/helpers';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const store = mockStore({});
 const mockApi = new MockAdapter(api);
 
+
 describe('Movie action creators tests', () => {
   describe('Sync actions', () => {
-    it('should create an action to request movies', () => {
-      const exp1 = {
-        type: t.FETCH_POPULAR_MOVIES_REQUEST,
-        payload: {}
-      };
-      const exp2 = {
-        type: t.FETCH_MOVIE_DETAIL_REQUEST,
-        payload: {}
-      };
 
-      expect(m.fetchPopularMoviesRequest()).toEqual(exp1);
-      expect(m.fetchMovieDetailRequest()).toEqual(exp2);
+    let time = new Date();
+
+    beforeEach(() => {
+      tk.freeze(time);
+    });
+
+    afterEach(() => {
+      tk.reset();
+    });
+
+    it('should create an action to request movies', () => {
+      expect(m.fetchPopularMoviesRequest).toEqual({
+        type: t.FETCH_POPULAR_MOVIE_REQUEST,
+      });
+
+      expect(m.fetchUpcomingMoviesRequest).toEqual({
+        type: t.FETCH_UPCOMING_MOVIE_REQUEST,
+      });
+
+      expect(m.fetchTopRatedMoviesRequest).toEqual({
+        type: t.FETCH_TOPRATED_MOVIE_REQUEST,
+      });
+
+      expect(m.fetchNowPlayingMoviesRequest).toEqual({
+        type: t.FETCH_NOWPLAYING_MOVIE_REQUEST,
+      });
+
+      expect(m.fetchMovieDetailRequest).toEqual({
+        type: t.FETCH_MOVIE_DETAIL_REQUEST,
+      });
     });
 
     it('should create an action to update result', () => {
       const result = { id: 1, title: 'Test' }; 
 
-      const exp1 = {
-        type: t.FETCH_POPULAR_MOVIES_SUCCESS,
-        payload: result
-      };
-      const exp2 = {
+      const listAction = entry => ({
+        type: t[`FETCH_${entry.toUpperCase()}_SUCCESS`],
+        payload: result,
+        timestamp: getTimeStamp()
+      });
+
+      const detailAction = {
         type: t.FETCH_MOVIE_DETAIL_SUCCESS,
-        payload: result
+        payload: result,
+        timestamp: getTimeStamp()
       };
 
-      expect(m.fetchPopularMoviesSuccess(result)).toEqual(exp1);
-      expect(m.fetchMovieDetailSuccess(result)).toEqual(exp2);
+      expect(m
+        .fetchPopularMoviesSuccess(result))
+        .toEqual(listAction('popular_movie'));
+      expect(m
+        .fetchNowPlayingMoviesSuccess(result))
+        .toEqual(listAction('nowplaying_movie'));
+      expect(m
+        .fetchTopRatedMoviesSuccess(result))
+        .toEqual(listAction('toprated_movie'));
+      expect(m
+        .fetchUpcomingMoviesSuccess(result))
+        .toEqual(listAction('upcoming_movie'));
+      expect(m
+        .fetchMovieDetailSuccess(result))
+        .toEqual(detailAction);
     });
 
     it('should create an action to update error', () => {
       const e = { message: 'Error' };
-      const exp1 = {
-        type: t.FETCH_POPULAR_MOVIES_FAILURE,
+
+      const listAction = entry => ({
+        type: t[`FETCH_${entry.toUpperCase()}_FAIL`],
         payload: {
           errorMessage: 'Error'
         }
-      };
-      const exp2 = {
-        type: t.FETCH_MOVIE_DETAIL_FAILURE,
+      });
+
+      const detailAction = {
+        type: t.FETCH_MOVIE_DETAIL_FAIL,
         payload: {
           errorMessage: 'Error'
         }
       };
 
-      expect(m.fetchPopularMoviesFailure(e)).toEqual(exp1);
-      expect(m.fetchMovieDetailFailure(e)).toEqual(exp2);
+      expect(m
+        .fetchPopularMoviesFail(e))
+        .toEqual(listAction('popular_movie'));
+      expect(m
+        .fetchNowPlayingMoviesFail(e))
+        .toEqual(listAction('nowplaying_movie'));
+      expect(m
+        .fetchTopRatedMoviesFail(e))
+        .toEqual(listAction('toprated_movie'));
+      expect(m
+        .fetchUpcomingMoviesFail(e))
+        .toEqual(listAction('upcoming_movie'));
+      expect(m
+        .fetchMovieDetailFail(e))
+        .toEqual(detailAction);
     });
   });
 
   describe('Async actions', () => {
 
-    afterEach(() => store.clearActions());
+    let time = new Date();
+
+    beforeEach(() => {
+      tk.freeze(time);
+    });
+
+    afterEach(() => {
+      tk.reset();
+      store.clearActions();
+    });
 
     it('should create FETCH_POPULAR_MOVIE_SUCCESS action when loading data has been done', async () => {
       const data = {
@@ -82,16 +144,16 @@ describe('Movie action creators tests', () => {
 
       const expActions = [
         {
-          type: t.FETCH_POPULAR_MOVIES_REQUEST,
-          payload: {}
+          type: t.FETCH_POPULAR_MOVIE_REQUEST
         },
         {
           type: et.MERGE_ENTITIES,
           payload: data.entities
         },
         {
-          type: t.FETCH_POPULAR_MOVIES_SUCCESS,
-          payload: data.result
+          type: t.FETCH_POPULAR_MOVIE_SUCCESS,
+          payload: data.result,
+          timestamp: getTimeStamp()
         }
       ];
       
@@ -103,14 +165,14 @@ describe('Movie action creators tests', () => {
       expect(store.getActions()).toEqual(expActions);
     });
 
-    it('should create FETCH_POPULAR_MOVIE_FAILURE action when loading fails', async () => {
+    it('should create FETCH_POPULAR_MOVIE_FAIL action when loading fails', async () => {
       const expActions = [
         {
-          type: t.FETCH_POPULAR_MOVIES_REQUEST,
+          type: t.FETCH_POPULAR_MOVIE_REQUEST,
           payload: {}
         },
         {
-          type: t.FETCH_POPULAR_MOVIES_FAILURE,
+          type: t.FETCH_POPULAR_MOVIE_FAIL,
           payload: { errorMessage: 'Network Error' }
         }
       ];
@@ -133,8 +195,7 @@ describe('Movie action creators tests', () => {
 
       const expActions = [
         {
-          type: t.FETCH_MOVIE_DETAIL_REQUEST,
-          payload: {}
+          type: t.FETCH_MOVIE_DETAIL_REQUEST
         },
         {
           type: et.MERGE_ENTITIES,

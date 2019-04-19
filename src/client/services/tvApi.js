@@ -2,42 +2,42 @@
  * Calls backend api to fetch information about tv shows
  */
 
-import { requestMediaList, mediaInfo } from './apiUtils';
+import { fetchMediaList, fetchMediaInfo } from './apiUtils';
 
-const fetchTvList = (endpoint, { language, page, region }) => requestMediaList(
+const fetchTvList = (endpoint, { language, page, region }) => fetchMediaList(
   'tv', 
   endpoint, 
   { language, page, region }
 );
 
-export const popularTvs = async (params = {}) => fetchTvList('popular', { ...params });
+export const popularTvs = (params = {}) => fetchTvList('popular', { ...params });
 
-export const onAirTvs = async (params = {}) => fetchTvList('on-air', { ...params });
+export const onAirTvs = (params = {}) => fetchTvList('on-air', { ...params });
 
-export const topRatedTvs = async (params = {}) => fetchTvList('top-rated', { ...params });
+export const topRatedTvs = (params = {}) => fetchTvList('top-rated', { ...params });
 
-export const tvDetail = async (id, params = {}) => {
+export const tvDetail = (id, params = {}) => {
   const { language } = params;
-  return mediaInfo(id, 'tv', null, { language: language });
+  return fetchMediaInfo(id, 'tv', 'detail', { language: language });
 };
 
-export const tvCredits = async (id, params = {}) => {
+export const tvCredits = (id, params = {}) => {
   const { language } = params;
-  return mediaInfo(id, 'tv', 'credits', { language });
+  return fetchMediaInfo(id, 'tv', 'credits', { language });
 };
 
-export const tvImages = async (id, params = {}) => {
+export const tvImages = (id, params = {}) => {
   const { language } = params;
-  return mediaInfo(id, 'tv', 'images', { language });
+  return fetchMediaInfo(id, 'tv', 'images', { language });
 };
 
-export const tvVideos = async (id, params = {}) => {
+export const tvVideos = (id, params = {}) => {
   const { language } = params;
-  return mediaInfo(id, 'tv', 'videos', { language });
+  return fetchMediaInfo(id, 'tv', 'videos', { language });
 };
 
-export const similarTvs = async (id, params = {}) => {
+export const similarTvs = (id, params = {}) => {
   const { language } = params;
-  return mediaInfo(id, 'tv', 'similar', { language });
+  return fetchMediaInfo(id, 'tv', 'similar', { language });
 };
 
