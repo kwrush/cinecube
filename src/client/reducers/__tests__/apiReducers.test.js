@@ -1,9 +1,7 @@
 import apiReducers from '../apiReducers';
 import { movieActionTypes as mt } from '../../constants/actionTypes';
 
-const err = {
-  errorMessage: 'Something wrong'
-};
+const err = new Error('Something wrong');
 
 describe('Api reducer tests', () => {
   it('should return the initial state if the input is not an api action', () => {
@@ -13,20 +11,18 @@ describe('Api reducer tests', () => {
   it('should set fetching to ture and error to false for the request action', () => {
     expect(
       apiReducers({}, { 
-        type: mt.FETCH_MOVIE_DETAIL_REQUEST,
-        payload: {} 
+        type: mt.FETCH_MOVIE_DETAIL_REQUEST
       })).toEqual({
-        error: { fetchMovieDetail: { error: false, message: '' } }, 
+        error: { fetchMovieDetail: { error: false, message: '', notify: false } }, 
         fetching: { fetchMovieDetail: true } 
       });
 
     expect(
       apiReducers({}, {
-        type: mt.FETCH_POPULAR_MOVIES_REQUEST,
-        payload: {}
+        type: mt.FETCH_POPULAR_MOVIE_REQUEST,
       })).toEqual({
-        error: { fetchPopularMovies: { error: false, message: '' } },
-        fetching: { fetchPopularMovies: true }
+        error: { fetchPopularMovie: { error: false, message: '', notify: false } },
+        fetching: { fetchPopularMovie: true }
       });
   });
 
@@ -36,37 +32,39 @@ describe('Api reducer tests', () => {
         type: mt.FETCH_MOVIE_DETAIL_SUCCESS,
         payload: {}
       })).toEqual({
-        error: { fetchMovieDetail: { error: false, message: '' } },
+        error: { fetchMovieDetail: { error: false, message: '', notify: false } },
         fetching: { fetchMovieDetail: false }
       });
 
     expect(
       apiReducers({}, {
-        type: mt.FETCH_POPULAR_MOVIES_SUCCESS,
+        type: mt.FETCH_POPULAR_MOVIE_SUCCESS,
         payload: {}
       })).toEqual({
-        error: { fetchPopularMovies: { error: false, message: '' } },
-        fetching: { fetchPopularMovies: false }
+        error: { fetchPopularMovie: { error: false, message: '', notify: false } },
+        fetching: { fetchPopularMovie: false }
       });
   });
 
   it('should set fetching and error to false for the failure action', () => {
     expect(
       apiReducers({}, {
-        type: mt.FETCH_MOVIE_DETAIL_FAILURE,
-        payload: err
+        type: mt.FETCH_MOVIE_DETAIL_FAIL,
+        payload: err.message,
+        error: err
       })).toEqual({
-        error: { fetchMovieDetail: { error: true, message: 'Something wrong' } },
+        error: { fetchMovieDetail: { error: true, message: 'Something wrong', notify: false } },
         fetching: { fetchMovieDetail: false }
       });
 
     expect(
       apiReducers({}, {
-        type: mt.FETCH_POPULAR_MOVIES_FAILURE,
-        payload: err
+        type: mt.FETCH_POPULAR_MOVIE_FAIL,
+        payload: err.message,
+        error: err
       })).toEqual({
-        error: { fetchPopularMovies: { error: true, message: 'Something wrong' } },
-        fetching: { fetchPopularMovies: false }
+        error: { fetchPopularMovie: { error: true, message: 'Something wrong', notify: false } },
+        fetching: { fetchPopularMovie: false }
       });
   });
 });

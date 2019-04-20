@@ -1,5 +1,10 @@
-import searchReducer from '../searchReducers';
-import { searchActionTypes as t } from '../../constants/actionTypes';
+import searchReducer from '../searchReducer';
+import tk from 'timekeeper';
+import {
+  searchMediaRequest,
+  searchMediaSuccess,
+} from '../../actions/searchActions';
+import { getTimeStamp } from '../../utils/helpers';
 
 const initialState = {
   query: 'Something',
@@ -15,18 +20,26 @@ const initialState = {
 };
 
 describe('Search reducers tests', () => {
+  let time = new Date();
+
+  beforeEach(() => {
+    tk.freeze(time);
+  });
+
+  afterEach(() => {
+    tk.reset();
+  });
+
   it('should return the inital state', () => {
     expect(searchReducer(initialState, {})).toEqual(initialState);
   });
 
   it('should update query and active to tv__query__shows for search tv request', () => {
-    expect(searchReducer(initialState, {
-      type: t.SEARCH_TV_REQUEST,
-      payload: {
-        query: 'shows'
-      }
-    })).toEqual({
-      query: 'shows',
+    const query = 'shows'
+    const action = searchMediaRequest('tv', query);
+
+    expect(searchReducer(initialState, action)).toEqual({
+      query,
       active: 'tv__query__shows',
       listings: {
         'multi__query__Something': {
@@ -39,10 +52,10 @@ describe('Search reducers tests', () => {
     });
   });
 
-  it('should merge results in multi__[query:Something] when the loading has been done', () => {
-
+  it('should merge results in multi__query__Something when the loading has been done', () => {
+    const query = 'Something'
     const state = {
-      query: 'Something',
+      query,
       active: 'multi__query__Something',
       listings: {
         'multi__query__Something': {
@@ -53,20 +66,23 @@ describe('Search reducers tests', () => {
           ],
           page: 1,
           totalPages: 10,
-          totalResults: 100
+          totalResults: 100,
+          lastUpdated: getTimeStamp()
         }
       }
     };
 
-    expect(searchReducer(state, {
-      type: t.SEARCH_MULTI_SUCCESS,
-      payload: {
-        query: 'Something',
-        result: { page: 2, totalPages: 10, totalResults: 200, results: [
-          { id: 3, schema: 'movie' }, { id: 3, schema: 'tv' }, { id: 6, schema: 'people' }
-        ] }
-      }
-    })).toEqual({
+    const res = {
+      page: 2, totalPages: 10, totalResults: 200, results: [
+        { id: 3, schema: 'movie' },
+        { id: 3, schema: 'tv' },
+        { id: 6, schema: 'people' }
+      ]
+    };
+
+    const action = searchMediaSuccess('multi', query)(res);
+
+    expect(searchReducer(state, action)).toEqual({
       query: 'Something',
       active: 'multi__query__Something',
       listings: {
@@ -80,20 +96,18 @@ describe('Search reducers tests', () => {
           ],
           page: 2,
           totalPages: 10,
-          totalResults: 200
+          totalResults: 200,
+          lastUpdated: getTimeStamp()
         }
       }
     });
   });
 
   it('should add movie__query__Toys to state when the loading has been done', () => {
-    expect(searchReducer(initialState, {
-      type: t.SEARCH_MOVIE_SUCCESS,
-      payload: {
-        query: 'Toys',
-        result: { page: 1, totalPages: 10, totalResults: 100, results: [2, 3, 5] }
-      }
-    })).toEqual({
+    const res = { page: 1, totalPages: 10, totalResults: 100, results: [2, 3, 5] };
+    const action = searchMediaSuccess('movie', 'Toys')(res);
+
+    expect(searchReducer(initialState, action)).toEqual({
       query: 'Something',
       active: 'multi__query__Something',
       listings: {
@@ -107,7 +121,8 @@ describe('Search reducers tests', () => {
           results: [2, 3, 5],
           page: 1,
           totalPages: 10,
-          totalResults: 100
+          totalResults: 100,
+          lastUpdated: getTimeStamp()
         }
       }
     });

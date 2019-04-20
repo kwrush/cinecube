@@ -12,31 +12,31 @@ const fetchTvList = (endpoint, { language, page, region }) => fetchMediaList(
 
 export const popularTvs = (params = {}) => fetchTvList('popular', { ...params });
 
-export const onAirTvs = (params = {}) => fetchTvList('on-air', { ...params });
+export const onAirTvs = (params = {}) => fetchTvList('onair', { ...params });
 
-export const topRatedTvs = (params = {}) => fetchTvList('top-rated', { ...params });
+export const topRatedTvs = (params = {}) => fetchTvList('toprated', { ...params });
 
-export const tvDetail = (id, params = {}) => {
+export const tvDetail = id => (params = {}) => {
   const { language } = params;
-  return fetchMediaInfo(id, 'tv', 'detail', { language: language });
+  return fetchMediaInfo(id, 'tv', 'detail', { language });
 };
 
-export const tvCredits = (id, params = {}) => {
+export const tvCredits = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'tv', 'credits', { language });
 };
 
-export const tvImages = (id, params = {}) => {
+export const tvImages = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'tv', 'images', { language });
 };
 
-export const tvVideos = (id, params = {}) => {
+export const tvVideos = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'tv', 'videos', { language });
 };
 
-export const similarTvs = (id, params = {}) => {
+export const similarTvs = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'tv', 'similar', { language });
 };

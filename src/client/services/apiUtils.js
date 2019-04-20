@@ -22,11 +22,11 @@ export const fetchMediaList = async (reqType, listType, params) => {
   } else if (reqType === 'tv') {
     apiUrl = tvApiRoute(listType);
   } else if (reqType === 'people') {
-    apiUrl = peopleApiRoute[listType];
+    apiUrl = peopleApiRoute(listType);
   } else if (reqType === 'search') {
-    apiUrl = searchApiRoute[listType];
+    apiUrl = searchApiRoute(listType);
   } else if (reqType === 'trending') {
-    apiUrl = trendingApiRoute[listType];
+    apiUrl = trendingApiRoute(listType);
   }
 
   return api.get(apiUrl, {

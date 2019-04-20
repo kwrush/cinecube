@@ -8,7 +8,7 @@ import { camelCase } from 'lodash';
 
 const _matchApiAction = (actionType = '') => {
 
-  const matches = /(.*)_(REQUEST|SUCCESS|FAILURE)/.exec(actionType);
+  const matches = /(.*)_(REQUEST|SUCCESS|FAIL)/.exec(actionType);
 
   if (!matches) return false;
   
@@ -18,6 +18,16 @@ const _matchApiAction = (actionType = '') => {
     requestName,
     requestState
   };
+}
+
+const notifyError = e => {
+  //TODO: implement this
+  if (e.response) {
+    const status = e.response.status;
+    if (status === 401 || status === 404) return true;
+  } 
+
+  return false;
 }
 
 const fetchingReducer = (state = {}, action) => {
@@ -35,19 +45,21 @@ const fetchingReducer = (state = {}, action) => {
 };
 
 const errorReducer = (state = {}, action) => {
-  const { type, payload } = action;
+  const { type, payload, error } = action;
   const matches = _matchApiAction(type);
 
   if (!matches) return state;
 
   const { requestName, requestState } = matches;
-  const failure = requestState === 'FAILURE';
+  const failure = requestState === 'FAIL';
+  const notify = failure && notifyError(error);
 
   return {
     ...state,
     [camelCase(requestName)]: {
       error: failure,
-      message: failure ? payload.errorMessage : ''
+      notify,
+      message: failure ? payload : '',
     }
   };
 };

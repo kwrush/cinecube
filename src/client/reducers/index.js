@@ -1,15 +1,17 @@
 import { combineReducers } from 'redux';
 import entities from './entitiesReducer';
-import popularMedia from './popularMediaReducers';
+import mediaListing from './mediaListReducers';
 import mediaInfo from './mediaInfoReducers';
-import search from './searchReducers';
+import trending from './trendingReducer';
+import search from './searchReducer';
 import prompt from './promptReducer';
 import api from './apiReducers';
 
 export default combineReducers({
   entities,
-  popularMedia,
+  mediaListing,
   mediaInfo,
+  trending,
   search,
   prompt,
   api

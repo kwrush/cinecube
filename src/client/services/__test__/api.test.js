@@ -65,17 +65,17 @@ describe('Client api should run without any error', () => {
     const mp = movie.movieDetail(1);
     const tp = tv.tvDetail(1);
     const pp = people.peopleDetail(1);
-    await expect(mp).resolves.toBe('info');
-    await expect(tp).resolves.toBe('info');
-    await expect(pp).resolves.toBe('info');
+    await expect(mp()).resolves.toBe('info');
+    await expect(tp()).resolves.toBe('info');
+    await expect(pp()).resolves.toBe('info');
   });
 
   it('should resolve detail call when id and options are provided', async () => {
     const params = {page: 1, language: 'zh-CH'};
     
-    const mp = movie.movieDetail(1, params);
-    const tp = tv.tvDetail(1, params);
-    const pp = people.peopleDetail(1, params);
+    const mp = movie.movieDetail(1)(params);
+    const tp = tv.tvDetail(1)(params);
+    const pp = people.peopleDetail(1)(params);
     await expect(mp).resolves.toBe('info');
     await expect(tp).resolves.toBe('info');
     await expect(pp).resolves.toBe('info');
@@ -85,32 +85,32 @@ describe('Client api should run without any error', () => {
     const mp = movie.movieCredits(1);
     const tp = tv.tvCredits(1);
     const pp = people.peopleCredits(1);
-    await expect(mp).resolves.toBe('info');
-    await expect(tp).resolves.toBe('info');
-    await expect(pp).resolves.toBe('info');
+    await expect(mp()).resolves.toBe('info');
+    await expect(tp()).resolves.toBe('info');
+    await expect(pp()).resolves.toBe('info');
   });
 
   it('should resolve images call when id is provided', async () => {
     const mp = movie.movieImages(1);
     const tp = tv.tvImages(1);
     const pp = people.peopleImages(1);
-    await expect(mp).resolves.toBe('info');
-    await expect(tp).resolves.toBe('info');
-    await expect(pp).resolves.toBe('info');
+    await expect(mp()).resolves.toBe('info');
+    await expect(tp()).resolves.toBe('info');
+    await expect(pp()).resolves.toBe('info');
   });
 
   it('should resolve videos call when id is provided', async () => {
     const mp = movie.movieVideos(1);
     const tp = tv.tvVideos(1);
-    await expect(mp).resolves.toBe('info');
-    await expect(tp).resolves.toBe('info');
+    await expect(mp()).resolves.toBe('info');
+    await expect(tp()).resolves.toBe('info');
   });
 
   it('should resolve similarMovies call when id is provided', async () => {
     const mp = movie.similarMovies(1);
     const tp = tv.similarTvs(1);
-    await expect(mp).resolves.toBe('info');
-    await expect(tp).resolves.toBe('info');
+    await expect(mp()).resolves.toBe('info');
+    await expect(tp()).resolves.toBe('info');
   });
 
   it('should resolve search call when query is provided', async () => {
@@ -120,19 +120,19 @@ describe('Client api should run without any error', () => {
     const ps = search.searchPeople('Tom');
     const ts = search.searchTvs('Tom');
 
-    await expect(s).resolves.toEqual({});
-    await expect(ms).resolves.toEqual({});
-    await expect(ps).resolves.toEqual({});
-    await expect(ts).resolves.toEqual({});
+    await expect(s()).resolves.toEqual({});
+    await expect(ms()).resolves.toEqual({});
+    await expect(ps()).resolves.toEqual({});
+    await expect(ts()).resolves.toEqual({});
   });
 
   it('should resolve search call when query and parameters are provided', async () => {
     const params = {page: 1, language: 'zh-CH'};
     
-    const s = search.searchMulti('Tom', params);
-    const ms = search.searchMovies('Tom', params);
-    const ps = search.searchPeople('Tom', params);
-    const ts = search.searchTvs('Tom', params);
+    const s = search.searchMulti('Tom')(params);
+    const ms = search.searchMovies('Tom')(params);
+    const ps = search.searchPeople('Tom')(params);
+    const ts = search.searchTvs('Tom')(params);
 
     await expect(s).resolves.toEqual({});
     await expect(ms).resolves.toEqual({});

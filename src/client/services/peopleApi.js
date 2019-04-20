@@ -12,17 +12,17 @@ export const popularPeople = (params = {}) => {
   });
 };
 
-export const peopleDetail = (id, params = {}) => {
+export const peopleDetail = id => (params = {}) => {
   const { language } = params;
-  return fetchMediaInfo(id, 'people', null, { language });
+  return fetchMediaInfo(id, 'people', 'detail', { language });
 };
 
-export const peopleCredits = (id, params = {}) => {
+export const peopleCredits = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'people', 'credits', { language });
 };
 
-export const peopleImages = (id, params = {}) => {
+export const peopleImages = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'people', 'images', { language });
 };

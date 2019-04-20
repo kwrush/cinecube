@@ -1,10 +1,11 @@
 import { movieActionTypes as t } from '../constants/actionTypes';
-import { mergeEntities } from './entitiesActions';
 import {
   popularMovies,
+  upcomingMovies,
+  topRatedMovies,
+  nowPlayingMovies,
   movieDetail
 } from '../services/movieApi'; 
-import { camelCaseKey } from '../utils/helpers';
 import {
   fetchListRequest,
   fetchListSuccess,
@@ -45,19 +46,53 @@ export const fetchMovieDetailSuccess = fetchInfoSuccess('movie')(t)
 
 export const fetchMovieDetailFail = fetchInfoFail('movie')(t);
 
+//TODO: implement this
 const shouldFetchMovie = state => true;
 
 /**
  * 
  * @param {object} params request parameters 
  */
-export const fetchPopularMovies = (params) => (dispatch, getState) => 
+export const fetchPopularMovies = params => (dispatch, getState) => 
   fetchMediaAction({
     shouldDispatchAction: shouldFetchMovie(getState()),
-    apiRequest: popularMovies,
-    requestAction: () => fetchPopularMoviesRequest,
+    requestAction: fetchPopularMoviesRequest,
     succesAction: fetchPopularMoviesSuccess,
     failAction: fetchPopularMoviesFail,
+    apiRequest: popularMovies,
+    params,
+    dispatch
+  });
+
+export const fetchUpcomingMovies = params => (dispatch, getState) =>
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovie(getState()),
+    requestAction: fetchUpcomingMoviesRequest,
+    succesAction: fetchUpcomingMoviesSuccess,
+    failAction: fetchUpcomingMoviesFail,
+    apiRequest: upcomingMovies,
+    params,
+    dispatch
+  });
+
+export const fetchNowPlayingMovies = params => (dispatch, getState) =>
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovie(getState()),
+    requestAction: fetchNowPlayingMoviesRequest,
+    succesAction: fetchNowPlayingMoviesSuccess,
+    failAction: fetchNowPlayingMoviesFail,
+    apiRequest: nowPlayingMovies,
+    params,
+    dispatch
+  });
+
+export const fetchTopRatedMovies = params => (dispatch, getState) =>
+  fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovie(getState()),
+    requestAction: fetchTopRatedMoviesRequest,
+    succesAction: fetchTopRatedMoviesSuccess,
+    failAction: fetchTopRatedMoviesFail,
+    apiRequest: topRatedMovies,
     params,
     dispatch
   });
@@ -70,10 +105,10 @@ export const fetchPopularMovies = (params) => (dispatch, getState) =>
 export const fetchMovieDetail = (id, params) => (dispatch, getState) => 
   fetchMediaAction({
     shouldDispatchAction: shouldFetchMovie(getState()),
-    apiRequest: movieDetail,
-    requestAction: () => fetchMovieDetailRequest,
+    requestAction: fetchMovieDetailRequest,
     succesAction: fetchMovieDetailSuccess,
     failAction: fetchMovieDetailFail,
+    apiRequest: movieDetail(id),
     params,
     dispatch
   });

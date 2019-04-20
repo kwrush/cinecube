@@ -14,31 +14,31 @@ export const popularMovies = (params = {}) => fetchMovieList('popular', { ...par
 
 export const upcomingMovies = (params = {}) => fetchMovieList('upcoming', { ...params });
 
-export const nowPlayingMovies = (params = {}) => fetchMovieList('now-playing', { ...params });
+export const nowPlayingMovies = (params = {}) => fetchMovieList('nowplaying', { ...params });
 
-export const topRatedMovies = (params = {}) => fetchMovieList('top-rated', { ...params });
+export const topRatedMovies = (params = {}) => fetchMovieList('toprated', { ...params });
 
-export const movieDetail = (id, params = {}) => {
+export const movieDetail = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'movie', 'detail', { language });
 };
 
-export const movieCredits = (id, params = {}) => {
+export const movieCredits = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'movie', 'credits', { language });
 };
 
-export const movieImages = (id, params = {}) => {
+export const movieImages = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'movie', 'images', { language });
 };
 
-export const movieVideos = (id, params = {}) => {
+export const movieVideos = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'movie', 'videos', { language });
 };
 
-export const similarMovies = (id, params = {}) => {
+export const similarMovies = id => (params = {}) => {
   const { language } = params;
   return fetchMediaInfo(id, 'movie', 'similar', { language });
 };

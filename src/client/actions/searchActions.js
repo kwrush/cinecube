@@ -1,36 +1,24 @@
 import { searchActionTypes as t } from '../constants/actionTypes';
-import { camelCaseKey } from '../utils/helpers';
 import { 
   searchMulti,
   searchMovies,
   searchTvs,
   searchPeople
 } from '../services/searchApi';
-import { mergeEntities } from './entitiesActions';
+import { searchRequest, searchSuccess, searchFail, fetchMediaAction } from '../utils/actionUtils';
 
-export const searchMediaRequest = (type, query) => ({
-  type: t[`SEARCH_${type.toUpperCase()}_REQUEST`],
-  payload: { query }
-});
+export const searchMediaRequest = (mediaType, query) => searchRequest(mediaType, query)(t);
 
-export const searchMediaSuccess = (type, query, result) => ({
-  type: t[`SEARCH_${type.toUpperCase()}_SUCCESS`],
-  payload: {
-    query,
-    result
-  }
-});
+export const searchMediaSuccess = (mediaType, query) => searchSuccess(mediaType, query)(t);
 
-export const searchMediaFailure = (type, e) => ({
-  type: t[`SEARCH_${type.toUpperCase()}_FAILURE`],
-  payload: {
-    errorMessage: e.message || 'Error occured during the request of resource'
-  }
-});
+export const searchMediaFail = mediaType => searchFail(mediaType)(t);
 
-export const searchByMediaType = (mediaType, params = {}) => async (dispatch) => {
+// TODO: implement this
+const shouldSearch = state => true;
 
-  let searchApi;
+export const searchByMediaType = (mediaType, params = {}) => (dispatch, getState) => {
+
+  let searchApi = () => {};
 
   if (mediaType === 'multi') {
     searchApi = searchMulti;
@@ -40,22 +28,17 @@ export const searchByMediaType = (mediaType, params = {}) => async (dispatch) =>
     searchApi = searchTvs;
   } else if (mediaType === 'people') {
     searchApi = searchPeople;
-  } else {
-    throw new Error('The media type requested is not available.');
   }
 
-  const { query, ...options } = params;
+  const { query, ...rest } = params;
 
-  try {
-    dispatch(searchMediaRequest(mediaType, query));
-
-    const response = await searchApi(query, options);
-    const camelized = camelCaseKey(response.data);
-
-    dispatch(mergeEntities(camelized.entities));
-    dispatch(searchMediaSuccess(mediaType, query, camelized.result));
-
-  } catch (e) {
-    dispatch(searchMediaFailure(mediaType, e));
-  }
+  return fetchMediaAction({
+    shouldDispatchAction: shouldSearch(getState()),
+    apiRequest: searchApi(query),
+    requestAction: searchMediaRequest(mediaType, query),
+    succesAction: searchMediaSuccess(mediaType, query),
+    failAction: searchMediaFail(mediaType),
+    params: rest,
+    dispatch
+  });
 }; 
