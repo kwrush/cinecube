@@ -17,13 +17,12 @@ export default (state = {}, action) => {
   if (!mediaType) return state;
   const key = `${mediaType}__${payload.id}`;
   
-  const ids = state.ids ? uniqueConcat(state.ids, [key]) : [key];
+  const activeItem = { [key]: lastUpdated };
+  const items = state.items ? uniqueConcat(state.items, [activeItem]) : [activeItem];
 
   return {
     ...state,
-    active: {
-      [key]: lastUpdated
-    },
-    ids: ids,
+    active: activeItem,
+    items
   };
 };

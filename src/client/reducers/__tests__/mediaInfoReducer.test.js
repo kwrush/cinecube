@@ -22,29 +22,50 @@ describe('Media detail reducers test', () => {
   });
 
   it('should update state correctly when the loading has been done', () => {
+    const item = { 'movie__3': getTimeStamp() };
     expect(infoReducer({}, fetchMovieDetailSuccess({ id: 3 }))).toEqual({
-      active: { 'movie__3': getTimeStamp() },
-      ids: ['movie__3']
+      active: item,
+      items: [item]
     });
   });
 
   it('should set active to `tv__1` when the loading has been done', () => {
-    expect(infoReducer({
+    const state = {
       active: { 'tv__2': getTimeStamp() - 2000 },
-      ids: ['tv__2', 'movie__3'],
-    }, fetchTvDetailSuccess({ id: 1 }))).toEqual({
+      items: [
+        { 'movie_3': getTimeStamp() - 5000 },
+        { 'tv__2': getTimeStamp() - 2000 }
+      ]
+    };
+
+    expect(infoReducer(state, 
+      fetchTvDetailSuccess({ id: 1 }))).toEqual({
       active: { 'tv__1': getTimeStamp() },
-      ids: ['tv__2', 'movie__3', 'tv__1'],
+      items: [
+        { 'movie_3': getTimeStamp() - 5000 },
+        { 'tv__2': getTimeStamp() - 2000 },
+        { 'tv__1': getTimeStamp() }
+      ]
     });
   });
 
   it('should set active to `people__2` when the loading has been done', () => {
-    expect(infoReducer({
+    const state = {
       active: { 'tv__2': getTimeStamp() - 2000 },
-      ids: ['tv__2', 'movie__3'],
-    }, fetchPeopleDetailSuccess({ id: 2 }))).toEqual({
-      active: { 'people__2': getTimeStamp() },
-      ids: ['tv__2', 'movie__3', 'people__2'],
+      items: [
+        { 'movie_3': getTimeStamp() - 5000 },
+        { 'tv__2': getTimeStamp() - 2000 }
+      ]
+    };
+
+    expect(infoReducer(state, 
+      fetchPeopleDetailSuccess({ id: 2 }))).toEqual({
+        active: { 'people__2': getTimeStamp() },
+        items: [
+          { 'movie_3': getTimeStamp() - 5000 },
+          { 'tv__2': getTimeStamp() - 2000 },
+          { 'people__2': getTimeStamp() }
+        ]
     });
   });
 });
