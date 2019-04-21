@@ -1,68 +1,133 @@
 import { get } from 'lodash';
 import { createSelector } from 'reselect';
-import {
-  getMovieEntities,
-  getTvEntities,
-  getPeopleEntities
-} from './entitiesSelectors';
+import { 
+  createMediaListPath, 
+  createEntitiesSelector, 
+  getEntitiesBySchema,
+  getEntitiesByIds
+} from '../utils/selectorUtils';
 
-const _entitiesSelector = (mediaType) => {
-  const type = mediaType.toLowerCase();
 
-  let entitiesSelector;
-
-  if (type === 'movie') {
-    entitiesSelector = getMovieEntities;
-  } else if (type === 'tv') {
-    entitiesSelector = getTvEntities;
-  } else if (type === 'people') {
-    entitiesSelector = getPeopleEntities;
-  }
-
-  return entitiesSelector;
+export const getPopularMediaResults = mediaType => {
+  const path = createMediaListPath('popular', mediaType, 'results');
+  return state => get(state, path);
 };
 
-export const getPopularMediaResults = (mediaType) => (state) => 
-  get(state, `popularMedia.${mediaType.toLowerCase()}.results`);
+export const getTrendingMediaResults = mediaType => {
+  const path = createMediaListPath('trending', mediaType, 'results');
+  return state => get(state, path);
+};
 
-export const getPopularMediaPageNumber = (mediaType) => (state) => 
-  get(state, `popularMedia.${mediaType.toLowerCase()}.page`);
+export const getTopRatedMediaResults = mediaType => {
+  const path = createMediaListPath('toprated', mediaType, 'results');
+  return state => get(state, path);
+};
 
-export const getPopularMediaTotalPages = (mediaType) => (state) => 
-  get(state, `popularMedia.${mediaType.toLowerCase()}.totalPages`);
+export const getUpcomingMovieResults = state => {
+  const path = createMediaListPath('upcoming', 'movie', 'results');
+  return get(state, path);
+};
 
-export const getPopularMediaResultsCount = (mediaType) => (state) => 
-  get(state, `popularMedia.${mediaType.toLowerCase()}.totalResults`);
+export const getNowPlayingMovieResults = state => {
+  const path = createMediaListPath('nowplaying', 'movie', 'results');
+  return get(state, path);
+};
 
-export const hasMorePopularMediaResults = (mediaType) => createSelector(
-  getPopularMediaPageNumber(mediaType),
-  getPopularMediaTotalPages(mediaType),
-  (page, totalPages) => page < totalPages
-);
+export const getOnAirTvsResults = state => {
+  const path = createMediaListPath('onair', 'tv', 'results');
+  return get(state, path);
+};
 
-export const getPopularMedia = (mediaType) => createSelector(
-  _entitiesSelector(mediaType),
+export const getMediaListUpdatedTime = (entityType, mediaType) => {
+  const path = createMediaListPath(entityType, mediaType, 'lastUpdated');
+  return state => get(state, path);
+};
+
+export const getMediaPageNumber = (entityType, mediaType) => {
+  const path = createMediaListPath(entityType, mediaType, 'page');
+  return state => get(state, path);
+};
+
+export const getMediaTotalPages = (entityType, mediaType) => {
+  const path = createMediaListPath(entityType, mediaType, 'totalPages');
+  return state => get(state, path);
+};
+
+export const hasMoreResults = (entityType, mediaType) => 
+  createSelector(
+    getMediaPageNumber(entityType, mediaType),
+    getMediaTotalPages(entityType, mediaType),
+    (page, totalPages) => page < totalPages
+  );
+
+export const getPopularMedia = mediaType => createSelector(
+  createEntitiesSelector(mediaType),
   getPopularMediaResults(mediaType),
-  (entities, ids) => ids && ids.map(id => {
-    const entity = get(entities, id);
-    if (entity && !entity.mediaType) entity.mediaType = mediaType;
-    return entity;
-  })
+  (entities, ids) => getEntitiesByIds(entities, mediaType, ids)
 );
 
-export const getActiveMediaId = (state) => get(state, 'mediaInfo.active');
+export const getTrendingMedia = mediaType => createSelector(
+  createEntitiesSelector(mediaType),
+  getTrendingMediaResults(mediaType),
+  (entities, ids) => getEntitiesByIds(entities, mediaType, ids)
+);
 
-export const getMediaInfoResults = (state) => get(state, 'mediaInfo.ids');
+export const getTopRatedMedia = mediaType => createSelector(
+  createEntitiesSelector(mediaType),
+  getTopRatedMediaResults(mediaType),
+  (entities, ids) => getEntitiesByIds(entities, mediaType, ids)
+);
 
-export const getMediaDetail = (mediaType) => createSelector(
-  _entitiesSelector(mediaType),
+export const getUpcomingMovie = createSelector(
+  createEntitiesSelector('movie'),
+  getUpcomingMovieResults,
+  (entities, ids) => getEntitiesByIds(entities, 'movie', ids)
+);
+
+export const getNowPlayingMovie = createSelector(
+  createEntitiesSelector('movie'),
+  getNowPlayingMovieResults,
+  (entities, ids) => getEntitiesByIds(entities, 'movie', ids)
+);
+
+export const getOnAirTv = createSelector(
+  createEntitiesSelector('tv'),
+  getOnAirTvsResults,
+  (entities, ids) => getEntitiesByIds(entities, 'tv', ids)
+);
+
+export const getTrendingAllResults = state => get(state, 'trending.results');
+
+export const getTrendingAllUpdatedTime = state => get(state, 'trending.lastUpdated');
+
+export const getTrendingAll = createSelector(
+  createEntitiesSelector('all'),
+  getTrendingAllResults,
+  getEntitiesBySchema
+);
+
+export const getActiveMediaId = state => {
+  const active = get(state, 'mediaInfo.active');
+  const key = Object.keys(active)[0];
+  if (!key) return undefined;
+
+  const [, id] = key.split('__');
+  return id;
+};
+
+export const getMediaInfoResults = state => get(state, 'mediaInfo.items');
+
+export const getMediaInfoUpdatedTime = (mediaType, id) => createSelector(
+  getMediaInfoResults,
+  items => {
+    if (!items) return undefined;
+    const key = `${mediaType.toLowerCase()}__${id}`;
+    return items[key];
+  }
+);
+
+export const getMediaDetail = mediaType => createSelector(
+  createEntitiesSelector(mediaType),
   getActiveMediaId,
-  (entities, activeId) => {
-
-    if (!activeId) return false;
-
-    const [, id] = activeId.split('__');
-
-    return get(entities, id);
-  } 
+  (entities, activeId) => get(entities, activeId)
 );

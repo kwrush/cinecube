@@ -1,7 +1,7 @@
 import { trendingActionTypes as t } from '../constants/actionTypes';
 
 const trendingReducer = (state = {}, action) => {
-  const { type, payload } = action;
+  const { type, payload, lastUpdated } = action;
 
   if (type !== t.FETCH_TRENDING_ALL_SUCCESS ) return state;
 
@@ -9,7 +9,8 @@ const trendingReducer = (state = {}, action) => {
   return {
     ...state,
     ...rest,
-    results
+    results,
+    lastUpdated
   };
 };
 

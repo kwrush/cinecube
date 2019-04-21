@@ -1,35 +1,13 @@
 import { get } from 'lodash';
 import { createSelector } from 'reselect';
-import {
-  getEntities,
-  getMovieEntities,
-  getTvEntities,
-  getPeopleEntities
-} from './entitiesSelectors';
+import { 
+  createEntitiesSelector, 
+  getEntitiesBySchema 
+} from '../utils/selectorUtils';
 
-const _entitiesSelector = (mediaType) => {
-  const type = mediaType.toLowerCase();
+export const getSearchQuery = state => get(state, 'search.query');
 
-  let entitiesSelector;
-
-  if (type === 'movie') {
-    entitiesSelector = getMovieEntities;
-  } else if (type === 'tv') {
-    entitiesSelector = getTvEntities;
-  } else if (type === 'people') {
-    entitiesSelector = getPeopleEntities;
-  } else if (type === 'multi') {
-    entitiesSelector = getEntities
-  }
-
-  return entitiesSelector;
-};
-
-export const getSearchQuery = (state) => 
-  get(state, 'search.query');
-
-export const getActiveSearch = (state) => 
-  get(state, 'search.active');
+export const getActiveSearch = state => get(state, 'search.active');
 
 export const getSearchListing = (searchType, query) => (state) => {
   const key = `${searchType}__query__${query}`;
@@ -63,16 +41,9 @@ export const hasMoreSearchResults = (searchType, query) => createSelector(
 );
 
 export const getSearchMedia = (searchType, query) => createSelector(
-  _entitiesSelector(searchType),
+  createEntitiesSelector('multi'),
   getSearchResults(searchType, query),
-  (entities, results) => results && results.map(res => {
-    if (typeof res === 'object') {
-      const { schema, id } = res;
-      return get(entities, `${schema}.${id}`);
-    } else {
-      return get(entities, res);
-    }
-  })
+  getEntitiesBySchema
 );
 
 

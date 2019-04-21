@@ -25,47 +25,46 @@ describe('Media detail reducers test', () => {
     const item = { 'movie__3': getTimeStamp() };
     expect(infoReducer({}, fetchMovieDetailSuccess({ id: 3 }))).toEqual({
       active: item,
-      items: [item]
+      items: item
     });
   });
 
   it('should set active to `tv__1` when the loading has been done', () => {
     const state = {
-      active: { 'tv__2': getTimeStamp() - 2000 },
-      items: [
-        { 'movie_3': getTimeStamp() - 5000 },
-        { 'tv__2': getTimeStamp() - 2000 }
-      ]
+      active: { 'movie__3': getTimeStamp() - 2000 },
+      items: {
+        'movie_3': getTimeStamp() - 5000,
+        'tv__2': getTimeStamp() - 2000
+      }
     };
 
     expect(infoReducer(state, 
-      fetchTvDetailSuccess({ id: 1 }))).toEqual({
-      active: { 'tv__1': getTimeStamp() },
-      items: [
-        { 'movie_3': getTimeStamp() - 5000 },
-        { 'tv__2': getTimeStamp() - 2000 },
-        { 'tv__1': getTimeStamp() }
-      ]
+      fetchTvDetailSuccess({ id: 2 }))).toEqual({
+      active: { 'tv__2': getTimeStamp() },
+      items: {
+        'movie_3': getTimeStamp() - 5000,
+        'tv__2': getTimeStamp()
+      }
     });
   });
 
   it('should set active to `people__2` when the loading has been done', () => {
     const state = {
       active: { 'tv__2': getTimeStamp() - 2000 },
-      items: [
-        { 'movie_3': getTimeStamp() - 5000 },
-        { 'tv__2': getTimeStamp() - 2000 }
-      ]
+      items: {
+        'movie_3': getTimeStamp() - 5000,
+        'tv__2': getTimeStamp() - 2000
+      }
     };
 
     expect(infoReducer(state, 
       fetchPeopleDetailSuccess({ id: 2 }))).toEqual({
         active: { 'people__2': getTimeStamp() },
-        items: [
-          { 'movie_3': getTimeStamp() - 5000 },
-          { 'tv__2': getTimeStamp() - 2000 },
-          { 'people__2': getTimeStamp() }
-        ]
+        items: {
+          'movie_3': getTimeStamp() - 5000,
+          'tv__2': getTimeStamp() - 2000,
+          'people__2': getTimeStamp()
+        }
     });
   });
 });
