@@ -13,7 +13,9 @@ import {
   fetchInfoRequest,
   fetchInfoSuccess,
   fetchInfoFail,
-  fetchMediaAction
+  fetchMediaAction,
+  shouldFetchMediaList,
+  shouldFetchMediaInfo
 } from '../utils/actionUtils';
 
 export const fetchPopularMoviesRequest = fetchListRequest('popular', 'movie')(t);
@@ -46,16 +48,23 @@ export const fetchMovieDetailSuccess = fetchInfoSuccess('movie')(t)
 
 export const fetchMovieDetailFail = fetchInfoFail('movie')(t);
 
-//TODO: implement this
-const shouldFetchMovie = state => true;
+const shouldFetchMovieList = (state = {}, fetchType = '', nextPage) => {
+  const ft = fetchType.toLowerCase();
+
+  if (['popular', 'toprated', 'nowplaying', 'upcoming'].indexOf(ft) < 0)
+    return false;
+
+  return shouldFetchMediaList(state, ft, 'movie', nextPage);
+};
 
 /**
  * 
  * @param {object} params request parameters 
  */
-export const fetchPopularMovies = params => (dispatch, getState) => 
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchMovie(getState()),
+export const fetchPopularMovies = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovieList(getState(), 'popular', page),
     requestAction: fetchPopularMoviesRequest,
     succesAction: fetchPopularMoviesSuccess,
     failAction: fetchPopularMoviesFail,
@@ -63,10 +72,13 @@ export const fetchPopularMovies = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
+  
 
-export const fetchUpcomingMovies = params => (dispatch, getState) =>
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchMovie(getState()),
+export const fetchUpcomingMovies = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovieList(getState(), 'upcoming', page),
     requestAction: fetchUpcomingMoviesRequest,
     succesAction: fetchUpcomingMoviesSuccess,
     failAction: fetchUpcomingMoviesFail,
@@ -74,10 +86,12 @@ export const fetchUpcomingMovies = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
 
-export const fetchNowPlayingMovies = params => (dispatch, getState) =>
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchMovie(getState()),
+export const fetchNowPlayingMovies = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovieList(getState(), 'nowplaying', page),
     requestAction: fetchNowPlayingMoviesRequest,
     succesAction: fetchNowPlayingMoviesSuccess,
     failAction: fetchNowPlayingMoviesFail,
@@ -85,10 +99,13 @@ export const fetchNowPlayingMovies = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
 
-export const fetchTopRatedMovies = params => (dispatch, getState) =>
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchMovie(getState()),
+export const fetchTopRatedMovies = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchMovieList(getState(), 'toprated', page),
     requestAction: fetchTopRatedMoviesRequest,
     succesAction: fetchTopRatedMoviesSuccess,
     failAction: fetchTopRatedMoviesFail,
@@ -96,6 +113,9 @@ export const fetchTopRatedMovies = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
+
+const shouldFetchMovieInfo = (state, id) => shouldFetchMediaInfo(state, 'movie', id);
 
 /**
  * 
@@ -104,7 +124,7 @@ export const fetchTopRatedMovies = params => (dispatch, getState) =>
  */
 export const fetchMovieDetail = (id, params) => (dispatch, getState) => 
   fetchMediaAction({
-    shouldDispatchAction: shouldFetchMovie(getState()),
+    shouldDispatchAction: shouldFetchMovieInfo(getState(), id),
     requestAction: fetchMovieDetailRequest,
     succesAction: fetchMovieDetailSuccess,
     failAction: fetchMovieDetailFail,

@@ -12,7 +12,9 @@ import {
   fetchInfoRequest,
   fetchInfoSuccess,
   fetchInfoFail,
-  fetchMediaAction
+  fetchMediaAction,
+  shouldFetchMediaList,
+  shouldFetchMediaInfo
 } from '../utils/actionUtils';
 
 export const fetchPopularTvsRequest = fetchListRequest('popular', 'tv')(t);
@@ -39,26 +41,36 @@ export const fetchTvDetailSuccess = fetchInfoSuccess('tv')(t)
 
 export const fetchTvDetailFail = fetchInfoFail('tv')(t);
 
-const shouldFetchTv = state => true;
+const shouldFetchTvList = (state = {}, fetchType = '', nextPage) => {
+  const ft = fetchType.toLowerCase();
+
+  if (['popular', 'toprated', 'onair'].indexOf(ft) < 0)
+    return false;
+
+  return shouldFetchMediaList(state, ft, 'tv', nextPage);
+};
 
 /**
 * 
 * @param {object} params request parameters 
 */
-export const fetchPopularTvs = params => (dispatch, getState) => 
- fetchMediaAction({
-   shouldDispatchAction: shouldFetchTv(getState()),
-   requestAction: fetchPopularTvsRequest,
-   succesAction: fetchPopularTvsSuccess,
-   failAction: fetchPopularTvsFail,
-   apiRequest: popularTvs,
-   params,
-   dispatch
- });
+export const fetchPopularTvs = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchTvList(getState(), 'popular', page),
+    requestAction: fetchPopularTvsRequest,
+    succesAction: fetchPopularTvsSuccess,
+    failAction: fetchPopularTvsFail,
+    apiRequest: popularTvs,
+    params,
+    dispatch
+  });
+};
 
-export const fetchTopRatedTvs = params => (dispatch, getState) =>
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchTv(getState()),
+export const fetchTopRatedTvs = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchTvList(getState(), 'toprated', page),
     requestAction: fetchTopRatedTvsRequest,
     succesAction: fetchTopRatedTvsSuccess,
     failAction: fetchTopRatedTvsFail,
@@ -66,10 +78,12 @@ export const fetchTopRatedTvs = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
 
-export const fetchOnAirTvs = params => (dispatch, getState) =>
-  fetchMediaAction({
-    shouldDispatchAction: shouldFetchTv(getState()),
+export const fetchOnAirTvs = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchTvList(getState(), 'onair', page),
     requestAction: fetchOnAirTvsRequest,
     succesAction: fetchOnAirTvsSuccess,
     failAction: fetchOnAirTvsFail,
@@ -77,6 +91,9 @@ export const fetchOnAirTvs = params => (dispatch, getState) =>
     params,
     dispatch
   });
+};
+
+const shouldFetchTvInfo = (state, id) => shouldFetchMediaInfo(state, 'tv', id);
 
 /**
 * 
@@ -85,7 +102,7 @@ export const fetchOnAirTvs = params => (dispatch, getState) =>
 */
 export const fetchTvDetail = (id, params) => (dispatch, getState) => 
  fetchMediaAction({
-   shouldDispatchAction: shouldFetchTv(getState()),
+   shouldDispatchAction: shouldFetchTvInfo(getState(), id),
    requestAction: fetchTvDetailRequest,
    succesAction: fetchTvDetailSuccess,
    failAction: fetchTvDetailFail,

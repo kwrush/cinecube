@@ -10,7 +10,9 @@ import {
   fetchInfoRequest,
   fetchInfoSuccess,
   fetchInfoFail,
-  fetchMediaAction
+  fetchMediaAction,
+  shouldFetchMediaList,
+  shouldFetchMediaInfo
 } from '../utils/actionUtils';
 
 export const fetchPopularPeopleRequest = fetchListRequest('popular', 'people')(t);
@@ -25,23 +27,33 @@ export const fetchPeopleDetailSuccess = fetchInfoSuccess('people')(t)
 
 export const fetchPeopleDetailFail = fetchInfoFail('people')(t);
 
-//TODO: implement this
-const shouldFetchPeople = state => true;
+const shouldFetchPeopleList = (state = {}, fetchType = '', nextPage) => {
+  const ft = fetchType.toLowerCase();
+
+  if (ft !== 'popular')
+    return false;
+
+  return shouldFetchMediaList(state, ft, 'people', nextPage);
+};
+
 /**
  * 
  * @param {object} params request parameters 
  */
-export const fetchPopularPeople = params => (dispatch, getState) => 
- fetchMediaAction({
-   shouldDispatchAction: shouldFetchPeople(getState()),
-   requestAction: fetchPopularPeopleRequest,
-   succesAction: fetchPopularPeopleSuccess,
-   failAction: fetchPopularPeopleFail,
-   apiRequest: popularPeople,
-   params,
-   dispatch
- });
+export const fetchPopularPeople = (params = { page: 1 }) => (dispatch, getState) => {
+  const { page } = params;
+  return fetchMediaAction({
+    shouldDispatchAction: shouldFetchPeopleList(getState(), 'popular', page),
+    requestAction: fetchPopularPeopleRequest,
+    succesAction: fetchPopularPeopleSuccess,
+    failAction: fetchPopularPeopleFail,
+    apiRequest: popularPeople,
+    params,
+    dispatch
+  });
+};
 
+const shouldFetchPeopleInfo = (state = {}, id) => shouldFetchMediaInfo(state, 'people', id);
 /**
  * 
  * @param {number} id people id 
@@ -49,7 +61,7 @@ export const fetchPopularPeople = params => (dispatch, getState) =>
  */
 export const fetchPeopleDetail= (id, params) => (dispatch, getState) => 
  fetchMediaAction({
-   shouldDispatchAction: shouldFetchPeople(getState()),
+   shouldDispatchAction: shouldFetchPeopleInfo(getState(), id),
    requestAction: fetchPeopleDetailRequest,
    succesAction: fetchPeopleDetailSuccess,
    failAction: fetchPeopleDetailFail,

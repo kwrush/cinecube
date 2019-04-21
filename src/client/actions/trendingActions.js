@@ -6,6 +6,11 @@ import {
   fetchMediaAction
 } from '../utils/actionUtils';
 import { trendingAll } from '../services/trendingApi';
+import { 
+  getMediaListUpdatedTime, 
+  getTrendingAllUpdatedTime 
+} from '../selectors/mediaSelectors';
+import { getTimeStamp, differenceInTime } from '../utils/helpers';
 
 export const fetchTrendingAllRequest = fetchListRequest('trending', 'all')(t);
 
@@ -31,8 +36,19 @@ export const fetchTrendingPeopleSuccess = fetchListSuccess('trending', 'people')
 
 export const fetchTrendingPeopleFail = fetchListFail('trending', 'people')(t);
 
-//TODO: implement this
-const shouldFetchTrending = state => true;
+const shouldFetchTrendingList = (state = {}, mediaType = '') => {
+  const mt = mediaType.toLowerCase();
+  if (['all', 'movie', 'tv', 'people'].indexOf(mt) < 0) 
+    return false;
+
+  const currently = getTimeStamp();
+  const lastUpdated = mt === 'all' 
+    ? getTrendingAllUpdatedTime(state)
+    : getMediaListUpdatedTime('trending', mt)(state);
+
+  return typeof lastUpdated === 'undefined' 
+    || differenceInTime(lastUpdated * 1000, currently * 1000, 'days') > 1;
+}; 
 
 /**
  * 
@@ -40,7 +56,7 @@ const shouldFetchTrending = state => true;
  */
 export const fetchTrendingAll = params => (dispatch, getState) => 
   fetchMediaAction({
-    shouldDispatchAction: shouldFetchTrending(getState()),
+    shouldDispatchAction: shouldFetchTrendingList(getState(), 'all'),
     requestAction: fetchTrendingAllRequest,
     succesAction: fetchTrendingAllSuccess,
     failAction: fetchTrendingAllFail,
@@ -51,7 +67,7 @@ export const fetchTrendingAll = params => (dispatch, getState) =>
 
 export const fetchTrendingMovies = params => (dispatch, getState) => 
   fetchMediaAction({
-    shouldDispatchAction: shouldFetchTrending(getState()),
+    shouldDispatchAction: shouldFetchTrendingList(getState(), 'movie'),
     requestAction: fetchTrendingMoviesRequest,
     succesAction: fetchTrendingMoviesSuccess,
     failAction: fetchTrendingMoviesFail,
@@ -62,7 +78,7 @@ export const fetchTrendingMovies = params => (dispatch, getState) =>
 
 export const fetchTrendingTvs = params => (dispatch, getState) => 
   fetchMediaAction({
-    shouldDispatchAction: shouldFetchTrending(getState()),
+    shouldDispatchAction: shouldFetchTrendingList(getState(), 'tv'),
     requestAction: fetchTrendingTvsRequest,
     succesAction: fetchTrendingTvsSuccess,
     failAction: fetchTrendingTvsFail,
@@ -73,7 +89,7 @@ export const fetchTrendingTvs = params => (dispatch, getState) =>
 
 export const fetchTrendingPeople = params => (dispatch, getState) => 
   fetchMediaAction({
-    shouldDispatchAction: shouldFetchTrending(getState()),
+    shouldDispatchAction: shouldFetchTrendingList(getState(), 'people'),
     requestAction: fetchTrendingPeopleRequest,
     succesAction: fetchTrendingPeopleSuccess,
     failAction: fetchTrendingPeopleFail,
