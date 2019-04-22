@@ -13,7 +13,7 @@ const _matchListingAction = (actionType = '') => {
   };
 };
 
-const _handleMediaListResult = (state, payload) => {
+const _handleMediaListResult = (state, payload, lastUpdated) => {
   const { results, page, ...rest } = payload;
   const prevResults = state && state.results ? state.results : [];
   const prevPage = state && state.page ? state.page : 0;
@@ -25,12 +25,13 @@ const _handleMediaListResult = (state, payload) => {
   return {
     results: newResults,
     page,
-    ...rest
+    ...rest,
+    lastUpdated
   };
 };
 
 export default (state = {}, action) => {
-  const { type, payload } = action;
+  const { type, payload, lastUpdated } = action;
   const matches = _matchListingAction(type);
 
   if (!matches) return state;
@@ -42,6 +43,6 @@ export default (state = {}, action) => {
   const listKey = camelCase(`${fetchType}_${fetchMedia}`);
   return {
     ...state,
-    [listKey]: _handleMediaListResult(state[listKey], payload)
+    [listKey]: _handleMediaListResult(state[listKey], payload, lastUpdated)
   };
 };

@@ -127,7 +127,7 @@ export const shouldFetchMediaList = (state, listType, mediaType, nextPage) => {
 
   // timestamp is in seconds so *1000 here to convert
   // it into miliseconds
-  return page !== nextPage
+  return page < nextPage
     || typeof lastUpdated === 'undefined'
     || differenceInTime(lastUpdated * 1000, currently * 1000, 'hours') > 1;
 };

@@ -1,5 +1,3 @@
-import { uniqueConcat } from "../utils/helpers";
-
 const _matchMediaType = (actionType = '') => {
   const matches = /FETCH_(MOVIE|TV|PEOPLE)_DETAIL_SUCCESS/.exec(actionType);
 
