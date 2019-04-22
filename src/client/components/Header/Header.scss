@@ -7,10 +7,8 @@
 
 .navbar {
   &.override {
-    position: relative;
-    display: flex;
-    background: $theme-dark;
-    justify-content: space-between;
+    @extend %bottom-shadow;
+    background-color: $theme-light;
   }
 }
 
@@ -24,10 +22,27 @@
   z-index: 1;
 }
 
+.header-brand {
+  @extend %position-center;
+}
+
+.header-brand-link {
+  @extend %link;
+  color: $theme-primary;
+  display: block;
+}
+
+.nav-toggler {
+  font-size: $font-size-xl !important;
+}
+
+.search-toggler {
+  font-size: $font-size-lg !important;
+}
+
 .nav-toggler,
 .search-toggler {
-  @extend %text-btn;
-  font-size: $font-size-xl !important;
+  @extend %text-btn; 
   &:hover {
     cursor: pointer;
   }
@@ -40,26 +55,8 @@
   color: $theme-primary !important;
 }
 
-.header-brand {
-  position: relative;
-  z-index: 1;
-}
-
 .nav-toggler {
   font-size: $font-size-xl;
-}
-
-.search-toggler {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  display: block;
-  transition: opacity 0.2s ease-in;
-
-  &.close {
-    z-index: 10;
-  }
 }
 
 .header-search{
@@ -68,6 +65,17 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.searchbar-container {
+  position: absolute;
+  margin: 0 auto;
+  top: 100%;
+  width: 576px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: $light;
+  z-index: 1;
 }
 
 

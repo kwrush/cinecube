@@ -27,7 +27,7 @@ const Toggler = props => {
   );
 };
 
-Toggler.propTyåpes = propTypes;
+Toggler.propTypes = propTypes;
 Toggler.defaultProps = defaultProps;
 
 export default Toggler;

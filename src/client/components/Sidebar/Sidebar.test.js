@@ -29,10 +29,45 @@ describe('<Sidebar /> test', () => {
     expect(document.body.className).toContain('modal-open');
   });
 
-  it('should call onClose when clicks button', () => {
+  it('should call onClick when clicks button', () => {
     const onClick = jest.fn();
-    const wrapper = mount(<Sidebar onToggle={onClick} />);
-    wrapper.find(Button).simulate('click');
+    const wrapper = mount(<Sidebar open onToggle={onClick} />);
+    wrapper.instance()._animate = false;
+    wrapper.find('button.close-btn').simulate('click');
     expect(onClick).toBeCalled();
   }); 
+
+  it('should call onClick when clicks backdrop', () => {
+    const onClick = jest.fn();
+    const wrapper = mount(<Sidebar open onToggle={onClick} />);
+    wrapper.instance()._animate = false;
+    wrapper.find('div.sidebar-backdrop').simulate('click');
+    expect(onClick).toBeCalled();
+  }); 
+
+  it('should render headerContent directly', () => {
+    const wrapper = mount(
+      <Sidebar headerContent={<div className="sb-header"></div>}/>
+    );
+
+    expect(wrapper.find(".sb-header")).toHaveLength(1);
+  });
+
+  it('should pass open property to headerContent function', () => {
+    const wrapper = mount(
+      <Sidebar open headerContent={
+        open => open 
+          ? <div className="sb-open"></div>
+          : <div className="sb-close"></div>
+      }/>
+    );
+
+    expect(wrapper.find('.sb-open')).toHaveLength(1);
+    expect(wrapper.find('.sb-close')).toHaveLength(0);
+
+    wrapper.setProps({ open: false });
+
+    expect(wrapper.find('.sb-open')).toHaveLength(0);
+    expect(wrapper.find('.sb-close')).toHaveLength(1);
+  });
 });

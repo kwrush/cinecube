@@ -8,34 +8,42 @@ import {
 } from 'react-spring/renderprops';
 import { 
   Nav,
-  Button 
+  Button
 } from 'reactstrap';
 import { IoMdClose } from 'react-icons/io';
 import { mapToCssModules } from '../../utils/helpers';
 import './Sidebar.scss';
+
 
 class Sidebar extends React.PureComponent {
 
   static propTypes = {
     open: PropTypes.bool,
     onToggle: PropTypes.func,
+    headerContent: PropTypes.oneOfType(
+      PropTypes.func,
+      PropTypes.node
+    ),
     className: PropTypes.string,
     cssModule: PropTypes.object
   }
 
   static defaultProps = {
     open: false,
+    headerContent: undefined,
     onToggle: () => {},
   }
 
   componentDidMount () {
     this._isMounted = true;
+    this._animated = false;
   }
 
   componentWillUnmount () {
     const bodyModal = mapToCssModules('modal-open', this.props.cssModule);
     document.body.className.remove(bodyModal);
     this._isMounted = false;
+    this._animate = false;
   }
 
   componentDidUpdate () {
@@ -46,19 +54,26 @@ class Sidebar extends React.PureComponent {
       : document.body.classList.remove(bodyModal);
   }
 
-  onToggleSiderBar = e => {
+  onToggleSideBar = e => {
+    e && e.preventDefault();
+    !this._animate && this.props.onToggle();
+  }
+
+  onItemClick = e => {
     e && e.preventDefault();
     this.props.onToggle();
   }
 
-  onItemClick = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.props.onToggle();
+  onAnimationStart = () => {
+    this._animate = true;
+  }
+
+  onAnimationRest = () => {
+    this._animate = false;
   }
 
   renderBackdrop = () => {
-    const { open, onToggle } = this.props;
+    const { open } = this.props;
 
     return (
       <Transition
@@ -73,7 +88,7 @@ class Sidebar extends React.PureComponent {
             <animated.div
               styleName="sidebar-backdrop"
               style={props} 
-              onClick={onToggle}
+              onClick={this.onToggleSideBar}
             > </animated.div>
           ))
         }
@@ -120,7 +135,7 @@ class Sidebar extends React.PureComponent {
   }
 
   render () {
-    const { open, onToggle, className, cssModule } = this.props;
+    const { open, className, cssModule, headerContent } = this.props;
     const classes = mapToCssModules(className, cssModule);
 
     return (
@@ -131,6 +146,8 @@ class Sidebar extends React.PureComponent {
           immediate={!this._isMounted}
           from={{ x: open ? -100 : 0 }}
           to={{ x: open ? 0 : -100 }}
+          onStart={this.onAnimationStart}
+          onRest={this.onAnimationRest}
         >
           {
             ({ x }) => (
@@ -141,10 +158,17 @@ class Sidebar extends React.PureComponent {
                   transform: x.interpolate(x => `translateX(${x}%)`)
                 }}
               >
+                <div styleName="sidebar-header">
+                  { 
+                    headerContent && typeof headerContent === 'function' 
+                      ? headerContent(open) 
+                      : headerContent
+                  }
+                </div>
                 {this.renderContent()}
                 <Button
                   styleName="close-btn override"
-                  onClick={onToggle}
+                  onClick={this.onItemClick}
                 >
                   <IoMdClose />
                 </Button>

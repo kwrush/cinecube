@@ -28,13 +28,15 @@ const Avatar = props => {
   const classes = mapToCssModules(className, cssModule);
   const styleNames = classNames('avatar', { border }, { round });
   return (
-    <div className={classes} styleName={styleNames}>
-      <ProgressiveImage 
-        src={src}
-        placeholder={src}
-        alt={alt}
-        blur={false}
-      />
+    <div styleName="avatar-container">
+      <div className={classes} styleName={styleNames}>
+        <ProgressiveImage
+          src={src}
+          placeholder={src}
+          alt={alt}
+          blur={false}
+        />
+      </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   Col,
 } from 'reactstrap';
 import { fetchPopularMovies } from '../../actions/movieActions';
-import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
+import { getPopularMedia, hasMoreResults} from '../../selectors/mediaSelectors';
 import { MoviePosterCard } from '../../components/PosterCard';
 import { PosterGrid } from '../../components/PosterGrid';
 
@@ -41,7 +41,7 @@ class MovieHome extends React.Component {
   }
 
   loadMovie = () => {
-    if (hasMorePopularMediaResults('movie')) {
+    if (hasMoreResults('popular', 'movie')) {
       this.props.getPopularMovies(this.state.page);
     }
   }

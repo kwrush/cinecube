@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import { TvPosterCard } from '../../components/PosterCard';
 import { fetchPopularTvs } from '../../actions/tvActions';
-import { getPopularMedia, hasMorePopularMediaResults } from '../../selectors/mediaSelectors';
+import { getPopularMedia, hasMoreResults } from '../../selectors/mediaSelectors';
 import { PosterGrid } from '../../components/PosterGrid';
 
 class MovieHome extends React.Component {
@@ -41,7 +41,7 @@ class MovieHome extends React.Component {
   }
 
   loadMovie = () => {
-    if (hasMorePopularMediaResults('tv')) {
+    if (hasMoreResults('popular', 'tv')) {
       this.props.getPopularTvs(this.state.page);
     }
   }

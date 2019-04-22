@@ -6,6 +6,7 @@ $media-xl: map-get($grid-breakpoints, 'xl');
 
 $theme-primary:#0ab336;
 $theme-dark: #3a3a3a;
+$theme-light: $light;
 $light-text: $light;
 $dark-text: $gray-900;
 $font-size-xs: $font-size-base * 0.75;

@@ -12,17 +12,27 @@ import './SearchInput.scss';
 class SearchInput extends React.PureComponent {
 
   static propTypes = {
+    placeholderText: PropTypes.string,
+    clearValue: PropTypes.bool,
     onSearch: PropTypes.func,
     className: PropTypes.string,
     cssModule: PropTypes.object,
   }
 
   static defaultProps = {
+    placeholderText: 'Search...',
+    clearValue: false,
     onSearch: () => {}
   }
 
   componentWillMount () {
     this.refs = {};
+  }
+
+  componentDidUpdate() {
+    if (this.props.clearValue) {
+      this.refs.input.value = '';
+    }
   }
 
   handleSearch = () => {
@@ -45,7 +55,7 @@ class SearchInput extends React.PureComponent {
 
   render () {
 
-    const { className, cssModule } = this.props;
+    const { className, cssModule, placeholderText } = this.props;
     const classes = mapToCssModules(className, cssModule);
     
     return (
@@ -61,7 +71,7 @@ class SearchInput extends React.PureComponent {
           styleName="search-input"
           innerRef={this.initRef}
           onKeyDown={this.handleKeyDown}
-          placeholder="Search for movies, tv series and more..."
+          placeholder={placeholderText}
         />
       </InputGroup>
     );

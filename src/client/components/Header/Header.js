@@ -1,28 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import {
   Navbar,
   NavbarBrand,
   Button,
+  Collapse
 } from 'reactstrap';
 import Headroom from 'react-headroom';
-import { IoMdMenu } from 'react-icons/io';
+import MediaQuery from 'react-responsive';
+import { IoMdMenu, IoMdSearch } from 'react-icons/io';
 import { Logo } from '../Logo';
 import { Avatar } from '../Avatar';
 import SidebarNav  from './SidebarNav';
 import Toggler from './Toggler';
-import HeaderSearch from './HeaderSearch';
-import cx from 'classnames';
 import { mapToCssModules } from '../../utils/helpers';
+import SearchBar from './SearchBar';
 import './Header.scss';
+import HeaderContent from './HeaderSearch';
 
 export const SidebarContext= React.createContext({
   openSidebar: false,
   onToggleSidebar: () => {}
 });
 
-class Header extends React.PureComponent {
+const propTypes = {
+  className: PropTypes.string,
+  cssModule: PropTypes.object
+};
+
+const Header = props => {
+  const [openSidebar, toggleSidebar] = useState(false);
+  const [showSearchBar, toggleSearchBar] = useState(false);
+
+  const { className, cssModule } = props;
+  const classes = mapToCssModules(className, cssModule);
+  const contentClasses = mapToCssModules(
+    'd-flex justify-content-end align-items-center',
+    cssModule
+  );
+  const onToggleSidebar = () => toggleSidebar(!openSidebar);
+
+  return (
+    <React.Fragment>
+      <Headroom 
+        downTolerance={3}
+        styleName="header-container"
+      >
+        <Navbar
+          className={classes}
+          styleName="override navbar"
+        >
+          <Toggler
+            styleName="nav-toggler"
+            onToggle={onToggleSidebar}
+          >
+            <IoMdMenu />
+          </Toggler>
+          <div styleName="header-brand">
+            <Link to="/" styleName="header-brand-link">
+              <Logo size="2.25rem" />
+            </Link>
+          </div>
+          <div className={contentClasses}>
+            <HeaderContent />
+            <Avatar />
+          </div>
+        </Navbar>
+      </Headroom>
+      <SidebarContext.Provider value={{
+        openSidebar,
+        onToggleSidebar: onToggleSidebar
+      }}>
+        <SidebarNav items={['movie', 'tv', 'people']} />
+      </SidebarContext.Provider>
+    </React.Fragment>
+  );
+};
+
+Header.propTypes = propTypes;
+Header.defaultProps = {};
+
+/* class Header extends React.PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
@@ -87,6 +146,6 @@ class Header extends React.PureComponent {
       </React.Fragment>
     );
   }
-}
+} */
 
 export default withRouter(Header);

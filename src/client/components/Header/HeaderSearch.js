@@ -1,112 +1,83 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
+import MediaQuery from 'react-responsive';
 import { 
-  IoMdSearch,
-  IoMdClose
-} from 'react-icons/io';
-import { 
-  Transition,
   Spring,
   animated 
 } from 'react-spring/renderprops';
-import { SearchInput } from '../SearchInput';
-import cx from 'classnames';
-import { mapToCssModules } from '../../utils/helpers';
-import './HeaderSearch.scss';
+import { IoMdSearch } from 'react-icons/io';
 import Toggler from './Toggler';
+import SearchBar from './SearchBar';
+import './HeaderSearch.scss';
+import { mapToCssModules } from '../../utils/helpers';
 
 class HeaderSearch extends React.PureComponent {
-  static propTypes = {
-    history: PropTypes.object,
-    className: PropTypes.string,
-    cssModule: PropTypes.object
-  }
 
-  static defaultProps = {
-    history: null
+  static propTypes = {
+    cssModule: PropTypes.object
   }
 
   constructor (props) {
     super(props);
-
     this.state = {
-      openSearchInput: false
-    };
+      showSearchBar: false
+    }
+
+    this._isMounted = false;
   }
 
   componentDidMount () {
     this._isMounted = true;
   }
 
-  onSearch = query => {
-    const { history } = this.props;
-    history && history.push(`/search?query=${query}`);
-    this.toggleSearchIpout();
-  }
-
-  toggleSearchIpout = e => {
-    e && e.preventDefault();
+  toggleSearchBar = () => {
     this.setState(prevState => ({
-      openSearchInput: !prevState.openSearchInput
+      showSearchBar: !prevState.showSearchBar
     }));
   }
 
+  onToggleSearchBar = e => {
+    e.preventDefault();
+    this.toggleSearchBar();
+  }
+
   render () {
-    const { className, cssModule } = this.props;
-    const { openSearchInput } = this.state;
-    const classes = mapToCssModules(className, cssModule);
-    const searchStyles = cx('header-search', { top: openSearchInput });
+    const { showSearchBar } = this.state;
+    const classes = mapToCssModules('rounded-bottom', this.props.cssModule); 
 
     return (
-      <div styleName={searchStyles}>
+      <MediaQuery minWidth={575}>
+        <Toggler
+          styleName="search-toggler"
+          onToggle={this.onToggleSearchBar}
+        >
+          <IoMdSearch />
+        </Toggler>
         <Spring
           native
           immediate={!this._isMounted}
-          from={{ opacity: openSearchInput ? 0 : 1 }}
-          to={{ opacity: openSearchInput ? 1 : 0 }}
+          from={{
+            opacity: showSearchBar ? 0 : 1,
+          }}
+          to={{
+            opacity: showSearchBar ? 1 : 0,
+          }}
         >
           {
-            ({ opacity }) => (
+            (props) => (
               <animated.div 
-                style={{ opacity }} 
-                styleName="search-input-container"
+                style={props} 
+                className={classes}
+                styleName="searchbar-container"
               >
-                <SearchInput
-                  className={classes}
-                  onSearch={this.onSearch}
-                />
+                <SearchBar />
               </animated.div>
             )
           }
         </Spring>
-        <Toggler
-          styleName="search-toggler"
-          onToggle={this.toggleSearchIpout}
-        >
-          <Transition
-            initial={null}
-            items={openSearchInput}
-            from={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              opacity: 0
-            }}
-            enter={{ opacity: 1 }}
-            leave={{ opacity: 0 }}
-          >
-            {
-              openSearchInput => openSearchInput
-                ? props => <IoMdClose style={props} />
-                : props => <IoMdSearch style={props} />
-            }
-          </Transition>
-        </Toggler>
-      </div>
+      </MediaQuery>
     );
   }
 }
 
-export default withRouter(HeaderSearch);
+export default HeaderSearch;
